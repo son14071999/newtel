@@ -34,8 +34,8 @@ Route::post('login', [LoginController::class, 'login'])->name('postLogin');
 //User
 Route::get('listUser', [UserController::class, 'index'])->name('listUser');
 Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser');
-Route::post('User/{id}', [UserController::class, 'show'])->name('showUser');
-Route::post('listUser', [UserController::class, 'edit'])->name('editUser');
+// Route::post('User/{id}', [UserController::class, 'show'])->name('showUser');
+Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser');
 Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser');
 Route::get('addUser', function(){
     return view('listUser.addUser');
