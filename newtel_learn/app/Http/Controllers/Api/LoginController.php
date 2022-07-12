@@ -27,23 +27,15 @@ class LoginController extends Controller
             }else{
                 $userSession = $checkToken;
             }
-            return view ('auth.login', compact([
+            return response()->json([
                 'code' => 200,
                 'data' => $userSession
-            ]));
-            // return response()->json([
-            //     'code' => 200,
-            //     'data' => $userSession
-            // ], 200);
+            ], 200);
         }else{
-            return view ('auth.login', [
-                'code' => 200,
-                'message' => 'Lỗi r'
-            ]);
-            // return response()->json([
-            //     'code' => 304,
-            //     'messageError' => 'Email hoặc password sai'
-            // ], 200);
+            return response()->json([
+                'code' => 405,
+                'messageError' => 'Email hoặc password sai'
+            ], 405);
         }
     }
 }

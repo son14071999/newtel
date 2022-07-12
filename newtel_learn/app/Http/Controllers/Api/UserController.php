@@ -25,8 +25,11 @@ class UserController extends Controller
         }
         Paginator::useBootstrap();
         $users = User::paginate($this->itemPerPage);
-        // dd($users);
-        return view('listUser.list', ['code' => 200, 'users' => $users,'itemPerPage' => $this->itemPerPage]);
+        return response()->json([
+            'code' => 200,
+            'users' => $users,
+            'itemPerPage' => $this->itemPerPage
+        ], 200);
     }
 
     public function changeItemPerPage(){
@@ -117,7 +120,14 @@ class UserController extends Controller
         $user = User::find($id);
         if(!empty($user)){
             $user->delete();
+            return response()->json([
+                'code' => 200, 
+                'message' => 'Xóa thành công'
+            ], 200);
         }
-        return back()->withInput();
+        return response()->json([
+            'code' => 405, 
+            'message' => 'Người dùng không tồn tại'
+        ], 405);
     }
 }

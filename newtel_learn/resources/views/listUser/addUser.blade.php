@@ -10,8 +10,6 @@
 </head>
 <body>
     <div class="container">
-
-    
 <div class="edit-wrapper">
     <div>
         
