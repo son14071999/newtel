@@ -38,6 +38,7 @@ Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser');
 Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser');
 Route::get('addUser', function(){
     return view('listUser.addUser');
-})->name('addUser');
+});
 Route::post('addUser', [UserController::class, 'store'])->name('addUserPost');
+Route::get('changeItemPerPage/{number}', [UserController::class, 'changeItemPerPage'])->whereNumber('number');
 // Route::get('listUser', UserController::class);

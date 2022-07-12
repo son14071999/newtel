@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -20,6 +21,7 @@ class UserController extends Controller
     {
         $pattern = "/.*limit=([0-9]+).*/i";
         preg_match($pattern, $request->fullUrl(), $result);
+        dd($result);
         if(!empty($result) && isset($result[1])){
             $this->itemPerPage=intval($result[1]);
         }
@@ -32,8 +34,14 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function changeItemPerPage(){
-
+    public function changeItemPerPage($itemPerPage){
+        $this->itemPerPage = $itemPerPage;
+        return response()->json([
+            'code' =>  200,
+            'message' => 'Success',
+            'check' =>  $this->itemPerPage,
+            'check1' => $itemPerPage
+        ], 200);
     }
 
     /**
@@ -58,8 +66,12 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
         ]);
-        return redirect()->route('listUser');
+        return response()->json([
+            'message' => 'success'
+        ], 200);
     }
 
     /**
@@ -72,9 +84,13 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if(empty($user)){
-            return back()->withInput();
+            return response()->json([
+                'message' => 'User ko tồn tại'
+            ], 405);
         }else{
-            return view('listUser.editUser', ['user' => $user]);
+            return response()->json([
+                'user' => $user
+            ], 200);
         }
     }
 
@@ -90,10 +106,14 @@ class UserController extends Controller
         $user = User::find($id);
         $user_email = User::where('email',$request->email)->first();
         if(!empty($user_email) && $user!=$user_email && $request->email==$user_email->email){
-            return redirect()->back()->with(['error' => 'email da ton tai']);
+            return response()->json([
+                'message' => 'Error'
+            ], 405);
         }else{
             User::find($id)->update($request->all());
-            return redirect()->route('listUser');
+            return response()->json([
+                'message' => 'success'
+            ], 200);
         }
     }
 
@@ -121,12 +141,12 @@ class UserController extends Controller
         if(!empty($user)){
             $user->delete();
             return response()->json([
-                'code' => 200, 
+                'code' => 200,
                 'message' => 'Xóa thành công'
             ], 200);
         }
         return response()->json([
-            'code' => 405, 
+            'code' => 405,
             'message' => 'Người dùng không tồn tại'
         ], 405);
     }

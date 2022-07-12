@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function(){
         input.addEventListener('change', function(){
             var url = window.location.href;
             let result = url.match(/limit=[0-9]+/i);
-    
+
             if(result){
                 let pattern = /(.*limit=)([0-9]+)(.*)/i;
                 url = url.replace(pattern, "$1"+this.value+"$3");

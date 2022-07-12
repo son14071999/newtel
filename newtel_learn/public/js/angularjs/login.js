@@ -1,26 +1,18 @@
 app.controller(
     "loginController",
-    function ($scope, $http, convertObjectToString, configURL) {
-        $scope.user = {
-            email: "",
-            password: "",
-        };
-
+    function ($scope, $http) {
         $scope.login = function () {
             $scope.errorMessage = "";
             $scope.errorStatus = false;
             let url = rootUrl + "api/login";
+            console.log(url);
             $http
                 .post(url, $scope.user)
                 .then(function (response) {
-                    console.log(response);
-                    $scope.errorMessage = "";
-                    // window.location.replace(rootUrl + "listUser");
+                    window.location.replace(rootUrl + "listUser");
                 })
                 .catch(function (err) {
-                    console.log(err);
-                    $scope.errorStatus = true;
-                    $scope.errorMessage = response.data.messageError;
+                    alert('Tài khoản hoặc mật khẩu sai')
                 });
         };
     }
