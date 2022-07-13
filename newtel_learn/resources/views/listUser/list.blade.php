@@ -2,14 +2,17 @@
 @section('content')
     <link rel="stylesheet" href="{{ url('/css/listUser.css') }}">
     <div class="container" ng-controller="user">
+        <div>
+            <button>Logout</button>
+        </div>
         <div class="row header-wrapper">
-            <div class="col-lg-5 col-sm-5 col-md-5">
+            <div class="col-lg-3 col-sm-3 col-md-3">
                 <h3>List User</h3>
             </div>
-            <div class="col-lg-7 col-sm-7 col-md-7">
+            <div class="col-lg-9 col-sm-9 col-md-9">
                 <div class="input-group" style="margin-right: 20px">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" ng-model="textSearch" />
-                    <button type="button" class="btn btn-outline-primary" ng-click="search()">search</button>
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" ng-change="filterNameGmail()" aria-describedby="search-addon" ng-model="search" />
+                    <button type="button" class="btn btn-outline-primary" ng-click="filterNameGmail()">search</button>
                 </div>
                     <a href="#" ng-click="addUser()"><button type="button" class="btn btn-success"><i
                                 class="fa-solid fa-plus"></i> Add User</button></a>
@@ -47,7 +50,7 @@
                   </nav>
               </div>
               <div class="col-lg-4 col-md-4">
-                <input type="number" min="1" max="2000" ng-model="itemPerPage" id="itemPerPage" ng-change="changeItemPerPage()">
+                <input type="number" min="1" max="2000" ng-model="limit" id="itemPerPage" ng-change="changeItemPerPage()">
               </div>
           </div>
       </div>

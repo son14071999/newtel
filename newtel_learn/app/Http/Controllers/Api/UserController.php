@@ -18,13 +18,10 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $itemPerPage = 10;
-        $page = 1;
-        $search = '';
-        $uri = $_SERVER['REQUEST_URI'];
-        $this->checkRegex("/.*limit=([0-9]+).*/i", $uri, $itemPerPage);
-        $this->checkRegex("/.*search=([^\&]+).*/i", $uri, $search);
-        $this->checkRegex("/.*page=([0-9]+).*/i", $uri, $page);
+        $itemPerPage = isset($_GET['limit']) ? intval($_GET['limit']) : 5;
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+
         $itemPerPage = intval($itemPerPage);
         $page = intval($page);
         $users = User::
@@ -41,16 +38,16 @@ class UserController extends Controller
             'search' => $search,
             'page' => $page,
             'pages' => ceil($totalItems/$itemPerPage),
-            'totalItems' => $totalItems
+            'totalItems' => $totalItems,
         ], 200);
     }
 
-    public function checkRegex($regex, $uri, &$variable){
-        preg_match( $regex, $uri, $result);
-        if(!empty($result) && isset($result[1])){
-            $variable = $result[1];
-        }
-    }
+    // public function checkRegex($regex, $uri, &$variable){
+    //     preg_match( $regex, $uri, $result);
+    //     if(!empty($result) && isset($result[1])){
+    //         $variable = $result[1];
+    //     }
+    // }
 
     /**
      * Show the form for creating a new resource.

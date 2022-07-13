@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\SessionUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class LoginController extends Controller
@@ -16,20 +17,20 @@ class LoginController extends Controller
             'password' => $request->password,
         ];
         if(auth()->attempt($dataCheckLogin)){
-            $checkToken = SessionUser::where('user_id', auth()->id())->first();
-            if(empty($checkToken)){
-                $userSession = SessionUser::create([
-                    'token' => Str::random(40),
-                    'refresh_token' => Str::random(40),
-                    'refresh_token_expried' => date('Y-m-d H:i:s', strtotime('+20 day', time())),
-                    'user_id' => auth()->id()
-                ]);
-            }else{
-                $userSession = $checkToken;
-            }
+            // $checkToken = SessionUser::where('user_id', auth()->id())->first();
+            // if(empty($checkToken)){
+            //     $userSession = SessionUser::create([
+            //         'token' => Str::random(40),
+            //         'refresh_token' => Str::random(40),
+            //         'refresh_token_expried' => date('Y-m-d H:i:s', strtotime('+20 day', time())),
+            //         'user_id' => auth()->id()
+            //     ]);
+            // }else{
+            //     $userSession = $checkToken;
+            // }
+            Auth::login();
             return response()->json([
                 'code' => 200,
-                'data' => $userSession
             ], 200);
         }else{
             return response()->json([
