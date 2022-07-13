@@ -3,12 +3,16 @@
     <link rel="stylesheet" href="{{ url('/css/listUser.css') }}">
     <div class="container" ng-controller="user">
         <div class="row header-wrapper">
-            <div class="col-lg-8 col-sm-8 col-md-8">
+            <div class="col-lg-5 col-sm-5 col-md-5">
                 <h3>List User</h3>
             </div>
-            <div class="col-lg-4 col-sm-4 col-md-4">
-                <a href="#" ng-click="addUser()"><button type="button" class="btn btn-success"><i
-                            class="fa-solid fa-plus"></i> Add User</button></a>
+            <div class="col-lg-7 col-sm-7 col-md-7">
+                <div class="input-group" style="margin-right: 20px">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" ng-model="textSearch" />
+                    <button type="button" class="btn btn-outline-primary" ng-click="search()">search</button>
+                </div>
+                    <a href="#" ng-click="addUser()"><button type="button" class="btn btn-success"><i
+                                class="fa-solid fa-plus"></i> Add User</button></a>
             </div>
         </div>
         <table class="table">
@@ -34,9 +38,14 @@
         </table>
         <div class="footer">
           <div class="row">
-              {{-- <div class="col-lg-8 col-md-8">
-                {{ $users->links() }}
-              </div> --}}
+              <div class="col-lg-8 col-md-8">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li ng-repeat="p in pages" class="page-item"><a class="page-link" ng-class="{'pageCurrent': currentPage==p}" href="#" ng-click="changePage(p)">@{{p}}</a></li>
+                      
+                    </ul>
+                  </nav>
+              </div>
               <div class="col-lg-4 col-md-4">
                 <input type="number" min="1" max="2000" ng-model="itemPerPage" id="itemPerPage" ng-change="changeItemPerPage()">
               </div>

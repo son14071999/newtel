@@ -16,32 +16,40 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public $itemPerPage = 10;
     public function index(Request $request)
     {
-        $pattern = "/.*limit=([0-9]+).*/i";
-        preg_match($pattern, $request->fullUrl(), $result);
-        dd($result);
-        if(!empty($result) && isset($result[1])){
-            $this->itemPerPage=intval($result[1]);
-        }
-        Paginator::useBootstrap();
-        $users = User::paginate($this->itemPerPage);
+        $itemPerPage = 10;
+        $page = 1;
+        $search = '';
+        $uri = $_SERVER['REQUEST_URI'];
+        $this->checkRegex("/.*limit=([0-9]+).*/i", $uri, $itemPerPage);
+        $this->checkRegex("/.*search=([^\&]+).*/i", $uri, $search);
+        $this->checkRegex("/.*page=([0-9]+).*/i", $uri, $page);
+        $itemPerPage = intval($itemPerPage);
+        $page = intval($page);
+        $users = User::
+        where('name','LIKE', '%'.$search.'%')
+        ->orWhere('email','LIKE', '%'.$search.'%')
+        ->skip($itemPerPage*($page-1))->take($itemPerPage)->get();
+        $totalItems =  User::where('name','LIKE', '%'.$search.'%')
+        ->orWhere('email','LIKE', '%'.$search.'%')
+        ->count();
         return response()->json([
             'code' => 200,
             'users' => $users,
-            'itemPerPage' => $this->itemPerPage
+            'itemPerPage' => $itemPerPage,
+            'search' => $search,
+            'page' => $page,
+            'pages' => ceil($totalItems/$itemPerPage),
+            'totalItems' => $totalItems
         ], 200);
     }
 
-    public function changeItemPerPage($itemPerPage){
-        $this->itemPerPage = $itemPerPage;
-        return response()->json([
-            'code' =>  200,
-            'message' => 'Success',
-            'check' =>  $this->itemPerPage,
-            'check1' => $itemPerPage
-        ], 200);
+    public function checkRegex($regex, $uri, &$variable){
+        preg_match( $regex, $uri, $result);
+        if(!empty($result) && isset($result[1])){
+            $variable = $result[1];
+        }
     }
 
     /**

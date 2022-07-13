@@ -32,6 +32,6 @@
 
 <body ng-app="app-demo">
     <script src="{{ url('/js/angularjs/app.js') }}"></script>
-    <script src="{{ url('/js/angularjs/configUrl.js') }}"></script>
+    <script src="{{ url('/js/angularjs/handle.js') }}"></script>
     @yield('content')
 </body>

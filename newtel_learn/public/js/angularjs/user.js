@@ -1,9 +1,11 @@
-app.controller('user',  function($scope, $http) {
-    $http.get(rootUrl+"api/listUser")
+app.controller('user',  function($scope, $http, functionHandle) {
+    $http.get(rootUrl+"api/listUser"+window.location.search)
     .then(
         function successCallback(response){
-            $scope.users = response.data.users.data;
+            $scope.users = response.data.users;
             $scope.itemPerPage = response.data.itemPerPage
+            $scope.pages = Array.from({length: response.data.pages}, (_, i) => i + 1)
+            $scope.currentPage = response.data.page
         },
         function errorCallback(response){
             alert('Lỗi r')
@@ -68,21 +70,32 @@ app.controller('user',  function($scope, $http) {
     }
 
     $scope.changeItemPerPage = function(){
-        var url = window.location.href;
-        let result = url.match(/limit=[0-9]+/i);
-        if(result){
-            let pattern = /(.*limit=)([0-9]+)(.*)/i;
-            url = url.replace(pattern, "$1"+$scope.itemPerPage+"$3");
-        }else{
-            if (url.indexOf('?') > -1){
-            url += '&limit='+$scope.itemPerPage
-            }else{
-            url += '?param='+$scope.itemPerPage
-            }
+        if($scope.itemPerPage){
+            setTimeout(() => {     
+                url = functionHandle.insertUrl('limit',$scope.itemPerPage)
+                window.location.href = url;
+            }, 1000);
         }
-        window.location.href = url;
     }
 
+
+    $scope.search = function (){
+        $scope.textSearch = $scope.textSearch ?? ''
+        setTimeout(() => {     
+            url = functionHandle.insertUrl('search',$scope.textSearch)
+            window.location.href = url;
+        }, 1000);
+        
+    }
+    $scope.changePage = function(p){
+        console.log(p);
+        if(p){
+            setTimeout(() => {     
+                url = functionHandle.insertUrl('page',p)
+                window.location.href = url;
+            }, 100);
+        }
+    }
 
 
 
