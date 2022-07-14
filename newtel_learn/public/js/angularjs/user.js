@@ -16,6 +16,7 @@ app.controller('user', function ($scope, $http, functionHandle) {
     }
 
     $scope.editUser = function ($id) {
+        console.log($('#editModal'));
         $http.get(rootUrl + 'api/showUser/' + $id, functionHandle.header)
             .then(function (response) {
                 $scope.userEdit = response.data.user

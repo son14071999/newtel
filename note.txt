@@ -32,6 +32,8 @@ db::transaction
 DB::commit 
 DB::rollback
 
+angulajs route
+
 
 
 

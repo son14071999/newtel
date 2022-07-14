@@ -1,37 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{ url('/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-    <div class="container">
-<div class="edit-wrapper">
-    <div>
-        
-      <form method="POST" action="{{ route('addUserPost') }}">
-        @csrf
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <div class="form-group">
-          <label for="exampleInputName">Name address</label>
-          <input type="text" class="form-control" id="exampleInputName"  name="name">
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="name" class="col-form-label">name</label>
+                    <input type="text" class="form-control" id="name" ng-model="userAdd.name"
+                        value="@{{userAdd.name}}">
+                </div>
+                <div class="form-group">
+                    <label for="email-name" class="col-form-label">email</label>
+                    <input type="text" class="form-control" id="email-name" ng-model="userAdd.email"
+                        value="@{{userAdd.email}}">
+                </div>
+                <div class="form-group">
+                    <label for="password-text" class="col-form-label">password:</label>
+                    <input type="password" class="form-control" id="name-text" ng-model="userAdd.password"
+                        value="@{{userAdd.password}}">
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="exampleInputName">password</label>
-            <input type="text" class="form-control" id="exampleInputName"  name="password">
-          </div>
-        <div class="btn-submit-wrapper" style="margin-top: 30px">
-          <button type="submit" class="btn btn-primary">save</button>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="saveAddUser()">Save</button>
         </div>
-        </form>
     </div>
 </div>
 </div>
-</body>

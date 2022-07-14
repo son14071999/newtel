@@ -22,3 +22,10 @@ Route::get('/login', function(){
 Route::get('/listUser', function(){
     return view('listUser.list');
 });
+
+Route::get('/editUser', function(){
+    return view('listUser.editUser');
+});
+Route::get('/addUser', function(){
+    return view('listUser.addUser');
+});
