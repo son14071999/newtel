@@ -23,22 +23,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('register', [RegisterController::class, 'register']);
-Route::get('login', function(){
+Route::get('login', function () {
     return view('auth.login');
 });
-Route::get('listUser', function(){
+Route::get('listUser', function () {
     return view('listUser.list');
 });
-Route::post('login', [LoginController::class, 'login'])->name('postLogin');
+Route::post('login', [LoginController::class, 'login'])->name('login');
 
 //User
-Route::get('listUser', [UserController::class, 'index'])->name('listUser');
-Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser');
-Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser');
-Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser');
-Route::get('addUser', function(){
-    return view('listUser.addUser');
+Route::group(['middleware' => 'authLogin'], function () {
+    Route::get('listUser', [UserController::class, 'index'])->name('listUser');
+    Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser');
+    Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser');
+    Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser');
+    Route::get('addUser', function () {
+        return view('listUser.addUser');
+    });
+    Route::post('addUser', [UserController::class, 'store'])->name('addUserPost');
+    Route::get('changeItemPerPage/{number}', [UserController::class, 'changeItemPerPage'])->whereNumber('number');
+// logout
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 });
-Route::post('addUser', [UserController::class, 'store'])->name('addUserPost');
-Route::get('changeItemPerPage/{number}', [UserController::class, 'changeItemPerPage'])->whereNumber('number');
 // Route::get('listUser', UserController::class);

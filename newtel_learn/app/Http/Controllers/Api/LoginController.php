@@ -16,21 +16,22 @@ class LoginController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ];
-        if(auth()->attempt($dataCheckLogin)){
-            // $checkToken = SessionUser::where('user_id', auth()->id())->first();
-            // if(empty($checkToken)){
-            //     $userSession = SessionUser::create([
-            //         'token' => Str::random(40),
-            //         'refresh_token' => Str::random(40),
-            //         'refresh_token_expried' => date('Y-m-d H:i:s', strtotime('+20 day', time())),
-            //         'user_id' => auth()->id()
-            //     ]);
-            // }else{
-            //     $userSession = $checkToken;
-            // }
-            Auth::login();
+        if(Auth::attempt($dataCheckLogin)){
+            $checkToken = SessionUser::where('user_id', Auth::id())->first();
+            if(empty($checkToken)){
+                $userSession = SessionUser::create([
+                    'token' => Str::random(40),
+                    'refresh_token' => Str::random(40),
+                    'refresh_token_expried' => date('Y-m-d H:i:s', strtotime('+20 day', time())),
+                    'user_id' => Auth::id()
+                ]);
+            }else{
+                $userSession = $checkToken;
+            }
             return response()->json([
                 'code' => 200,
+                'userSession' => $userSession,
+                'userId' => Auth::id()
             ], 200);
         }else{
             return response()->json([
@@ -38,5 +39,20 @@ class LoginController extends Controller
                 'messageError' => 'Email hoặc password sai'
             ], 405);
         }
+    }
+
+    public function logout(Request $request){
+         if($sesstion=SessionUser::where('token', $request->header('token'))){
+            $sesstion->delete();
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'Xoá thành công'
+            ], 200);
+         }
+         return response()->json([
+            'status' => 'Fail',
+            'message' => 'Session không hợp lệ',
+            ''
+         ], 304);
     }
 }

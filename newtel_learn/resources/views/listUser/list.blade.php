@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ url('/css/listUser.css') }}">
     <div class="container" ng-controller="user">
         <div>
-            <button>Logout</button>
+            <button ng-click="logout()">Logout</button>
         </div>
         <div class="row header-wrapper">
             <div class="col-lg-3 col-sm-3 col-md-3">

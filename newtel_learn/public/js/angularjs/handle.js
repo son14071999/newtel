@@ -19,17 +19,31 @@ app.value('functionHandle', {
         return url
     },
     'getListUser': ($scope, $http) => {
-        $http.get(rootUrl + "api/listUser?limit=" + $scope.limit + "&search="+$scope.search+'&page='+$scope.page)
-            .then(
-                function successCallback(response) {
-                    $scope.users = response.data.users;
-                    $scope.itemPerPage = response.data.itemPerPage
-                    $scope.pages = Array.from({ length: response.data.pages }, (_, i) => i + 1)
-                    $scope.currentPage = response.data.page
-                },
-                function errorCallback(response) {
-                    alert('Lỗi r')
+        $http.get(rootUrl + "api/listUser?limit=" + $scope.limit + "&search=" + $scope.search + '&page=' + $scope.page, {
+            headers: {
+                'token': localStorage.getItem('token'),
+                'userId': localStorage.getItem('userId'),
+            }
+        })
+            .then(function (response) {
+                $scope.users = response.data.users;
+                $scope.itemPerPage = response.data.itemPerPage
+                $scope.pages = Array.from({ length: response.data.pages }, (_, i) => i + 1)
+                $scope.currentPage = response.data.page
+            })
+            .catch(function(err){
+                if(err.status==401){
+                    window.location.replace(rootUrl + "login");
+                }else{
+                    alert(err)
                 }
-            )
+            })
+    },
+    'header': {
+        headers: {
+            'token': localStorage.getItem('token'),
+            'userId': localStorage.getItem('userId'),
+        }
+
     }
 })

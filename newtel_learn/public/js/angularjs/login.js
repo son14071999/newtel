@@ -9,6 +9,8 @@ app.controller(
             $http
                 .post(url, $scope.user)
                 .then(function (response) {
+                    localStorage.setItem('token', response.data.userSession.token)
+                    localStorage.setItem('userId', response.data.userId)
                     window.location.replace(rootUrl + "listUser");
                 })
                 .catch(function (err) {

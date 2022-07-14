@@ -1,0 +1,9 @@
+<?php 
+Auth::login($user);
+Auth::check();
+Auth::loginUsingId($userid);
+Auth::attempt();
+Auth::user()->name;
+Auth::user()->Password;
+Auth::id();
+Auth::logout();

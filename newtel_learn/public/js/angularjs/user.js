@@ -2,24 +2,21 @@ app.controller('user', function ($scope, $http, functionHandle) {
     $scope.limit = 10
     $scope.search = ''
     $scope.page = 1
-
     functionHandle.getListUser($scope, $http)
 
     $scope.deleteUser = function($idUser){
-        $http.get(rootUrl+'api/deleteListUser/'+$idUser)
-        .then(
-            function successCallback(response){
-                alert(response.data.message)
-                functionHandle.getListUser($scope, $http)
-            },
-            function errorCallback(response){
-                alert(response.data.message)
-            }
-        )
+        $http.get(rootUrl+'api/deleteListUser/'+$idUser, functionHandle.header)
+        .then(function(response){
+            alert(response.data.message)
+            functionHandle.getListUser($scope, $http)
+        })
+        .catch(function(err){
+            console.log(err)
+        })
     }
 
     $scope.editUser = function ($id) {
-        $http.get(rootUrl + 'api/showUser/' + $id)
+        $http.get(rootUrl + 'api/showUser/' + $id, functionHandle.header)
             .then(function (response) {
                 $scope.userEdit = response.data.user
                 $('#editModal').modal('show')
@@ -29,11 +26,10 @@ app.controller('user', function ($scope, $http, functionHandle) {
     }
 
     $scope.saveEditUser = function () {
-        console.log($scope.userEdit.id);
         $http.post(rootUrl + "api/editUser/" + $scope.userEdit.id, {
             'name': $scope.userEdit.name,
             'email': $scope.userEdit.email,
-        })
+        }, functionHandle.header)
             .then(function (response) {
                 $('#editModal').modal('hide');
                 functionHandle.getListUser($scope, $http)
@@ -49,7 +45,7 @@ app.controller('user', function ($scope, $http, functionHandle) {
 
     $scope.saveAddUser = function () {
         console.log($scope.userAdd);
-        $http.post(rootUrl + "api/addUser", $scope.userAdd)
+        $http.post(rootUrl + "api/addUser", $scope.userAdd,functionHandle.header)
             .then(function (response) {
                 $('#addUserModal').modal('hide');
                 functionHandle.getListUser($scope, $http)
@@ -83,4 +79,14 @@ app.controller('user', function ($scope, $http, functionHandle) {
             }, 100);
         }
     }
+
+    $scope.logout = function() {
+        $http.post(rootUrl+'api/logout', {},functionHandle.header)
+        .then((response) => {
+            window.location.replace(rootUrl+'login')
+        }).catch((err) => {
+            alert('Logout thất bại')
+        })
+    }
 });
+    
