@@ -1,12 +1,12 @@
 app.directive('editUser', function () {
     return {
         restrict: 'E',
-        templateUrl: "editUser"
+        templateUrl: rootUrl+"editUser"
     };
 })
 app.directive('addUser', function () {
     return {
         restrict: 'E',
-        templateUrl: "addUser"
+        templateUrl: rootUrl+"addUser"
     };
 })
