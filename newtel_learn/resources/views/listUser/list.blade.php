@@ -11,7 +11,7 @@
             </div>
             <div class="col-lg-9 col-sm-9 col-md-9">
                 <div class="input-group" style="margin-right: 20px">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" ng-change="filterNameGmail()" aria-describedby="search-addon" ng-model="search" />
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" ng-change="filterNameGmail()" aria-describedby="search-addon" ng-model="paramRequest.search" />
                     <button type="button" class="btn btn-outline-primary" ng-click="filterNameGmail()">search</button>
                 </div>
                     <a href="#" ng-click="addUser()"><button type="button" class="btn btn-success"><i
@@ -50,7 +50,7 @@
                   </nav>
               </div>
               <div class="col-lg-4 col-md-4">
-                <input type="number" min="1" max="2000" ng-model="limit" id="itemPerPage" ng-change="changeItemPerPage()">
+                <input type="number" min="1" max="2000" ng-model="paramRequest.limit" id="itemPerPage" ng-change="changeItemPerPage()">
               </div>
           </div>
       </div>
@@ -130,5 +130,5 @@
 
 
     </div>
-    <script src="{{ url('/js/angularjs/user.js') }}"></script>
+    <script src="{{ url('/js/angularjs/controller/user.js') }}"></script>
 @endsection

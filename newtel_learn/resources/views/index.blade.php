@@ -32,6 +32,8 @@
 
 <body ng-app="app-demo">
     <script src="{{ url('/js/angularjs/app.js') }}"></script>
-    <script src="{{ url('/js/angularjs/handle.js') }}"></script>
+    <script src="{{ url('/js/angularjs/handler/handle.js') }}"></script>
     @yield('content')
+    <script src="{{ url('/js/angularjs/factory/userFactory.js') }}"></script>
+    <script src="{{ url('/js/angularjs/factory/loginFactory.js') }}"></script>
 </body>
