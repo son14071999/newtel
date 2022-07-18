@@ -1,59 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+@extends('index')
+@section('content')
     <link rel="stylesheet" href="{{ url('/css/listUser.css') }}">
-    <link rel="stylesheet" href="{{ url('/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="{{ url('/js/list.js') }}"></script>
-  </head>
-<body>
-    <div class="container">
+    <div class="container" ng-controller="user">
+        <div>
+            <button ng-click="logout()">Logout</button>
+        </div>
         <div class="row header-wrapper">
-            <div class="col-lg-8 col-sm-8 col-md-8">
+            <div class="col-lg-3 col-sm-3 col-md-3">
                 <h3>List User</h3>
             </div>
-            <div class="col-lg-4 col-sm-4 col-md-4">
-                <a href="{{ route('addUser') }}"><button type="button" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add User</button></a>
+            <div class="col-lg-9 col-sm-9 col-md-9">
+                <div class="input-group" style="margin-right: 20px">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" ng-change="filterNameGmail()" aria-describedby="search-addon" ng-model="paramRequest.search" />
+                    <button type="button" class="btn btn-outline-primary" ng-click="filterNameGmail()">search</button>
+                </div>
+                    <a href="#" ng-click="addUser()"><button type="button" class="btn btn-success"><i
+                                class="fa-solid fa-plus"></i> Add User</button></a>
             </div>
         </div>
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Stt</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($users as $user)
-          <tr>
-              <th>{{ $loop->index + 1 }}</th>
-              <th>{{ $user->name }}</th>
-              <th>{{ $user->email ?? '' }}</th>
-              <th>
-                <a href="{{ route('deleteUser', ['id' => $user->id]) }}"><i class="fa-solid fa-circle-minus"></i></a>
-                <a href="{{ route('showUser', ['id' => $user->id]) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-              </th>
-        </tr>
-        @endforeach
-        </tbody>
-      </table>
-      <div class="footer">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Stt</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in users">
+                    <th>@{{ user.id }}</th>
+                    <th>@{{ user.name }}</th>
+                    <th>@{{ user.email }}</th>
+                    <th>
+                        <a href="#" ng-click="deleteUser(user.id)"><i class="fa-solid fa-circle-minus"></i></a>
+                        <a href="#" ng-click="editUser(user.id)"><i class="fa-solid fa-pen-to-square"></i></a>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer">
           <div class="row">
               <div class="col-lg-8 col-md-8">
-                {{ $users->links() }}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li ng-repeat="p in pages" class="page-item"><a class="page-link" ng-class="{'pageCurrent': currentPage==p}" href="#" ng-click="changePage(p)">@{{p}}</a></li>
+                      
+                    </ul>
+                  </nav>
               </div>
               <div class="col-lg-4 col-md-4">
-                <input type="number" min="1" max="2000" value="{{ $itemPerPage ?? 0 }}" id="itemPerPage">
+                <input type="number" min="1" max="2000" ng-model="paramRequest.limit" id="itemPerPage" ng-change="changeItemPerPage()">
               </div>
           </div>
       </div>
+
+
+
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="email-name" class="col-form-label">email</label>
+                                <input type="text" class="form-control" id="email-name" ng-model="userEdit.email"
+                                    value="@{{ userEdit.email }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="name-text" class="col-form-label">name:</label>
+                                <input type="text" class="form-control" id="name-text" ng-model="userEdit.name"
+                                    value="@{{ userEdit.name }}">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="saveEditUser()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="name" class="col-form-label">name</label>
+                                <input type="text" class="form-control" id="name" ng-model="userAdd.name"
+                                    value="@{{userAdd.name}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="email-name" class="col-form-label">email</label>
+                                <input type="text" class="form-control" id="email-name" ng-model="userAdd.email"
+                                    value="@{{userAdd.email}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="password-text" class="col-form-label">password:</label>
+                                <input type="password" class="form-control" id="name-text" ng-model="userAdd.password"
+                                    value="@{{userAdd.password}}">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="saveAddUser()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
-    
-</body>
-</html>
+    <script src="{{ url('/js/angularjs/controller/user.js') }}"></script>
+@endsection
