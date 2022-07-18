@@ -33,5 +33,5 @@
         </div>
       </div>
     </div>
-    <script src="{{ url('/js/angularjs/login.js') }}"></script>
+    <script src="{{ url('/js/angularjs/controller/login.js') }}"></script>
 @endsection

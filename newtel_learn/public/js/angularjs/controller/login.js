@@ -1,13 +1,8 @@
 app.controller(
     "loginController",
-    function ($scope, $http) {
+    function ($scope, loginFactory) {
         $scope.login = function () {
-            $scope.errorMessage = "";
-            $scope.errorStatus = false;
-            let url = rootUrl + "api/login";
-            console.log(url);
-            $http
-                .post(url, $scope.user)
+            loginFactory.login($scope.user)
                 .then(function (response) {
                     localStorage.setItem('token', response.data.userSession.token)
                     localStorage.setItem('userId', response.data.userId)

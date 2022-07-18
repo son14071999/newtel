@@ -31,23 +31,13 @@ class UserController extends Controller
         $totalItems =  User::where('name','LIKE', '%'.$search.'%')
         ->orWhere('email','LIKE', '%'.$search.'%')
         ->count();
+        $users = User::where('name','LIKE', '%'.$search.'%')
+        ->orWhere('email','LIKE', '%'.$search.'%')->paginate($itemPerPage);
         return response()->json([
             'code' => 200,
             'users' => $users,
-            'itemPerPage' => $itemPerPage,
-            'search' => $search,
-            'page' => $page,
-            'pages' => ceil($totalItems/$itemPerPage),
-            'totalItems' => $totalItems,
         ], 200);
     }
-
-    // public function checkRegex($regex, $uri, &$variable){
-    //     preg_match( $regex, $uri, $result);
-    //     if(!empty($result) && isset($result[1])){
-    //         $variable = $result[1];
-    //     }
-    // }
 
     /**
      * Show the form for creating a new resource.
