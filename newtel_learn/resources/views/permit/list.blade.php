@@ -55,6 +55,6 @@
       <add-user></add-user>
     </div>
     <script src="{{ url('/js/angularjs/ridective.js') }}"></script>
-    <script src="{{ url('/js/angularjs/controller/user.js') }}"></script>
+    <script src="{{ url('/js/angularjs/controller/permit.js') }}"></script>
     <script src="{{ url('/js/angularjs/factory/userFactory.js') }}"></script>
 @endsection

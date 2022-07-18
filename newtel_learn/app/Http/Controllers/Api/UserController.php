@@ -19,18 +19,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $itemPerPage = isset($_GET['limit']) ? intval($_GET['limit']) : 5;
-        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $search = isset($_GET['search']) ? $_GET['search'] : '';
-
         $itemPerPage = intval($itemPerPage);
-        $page = intval($page);
-        $users = User::
-        where('name','LIKE', '%'.$search.'%')
-        ->orWhere('email','LIKE', '%'.$search.'%')
-        ->skip($itemPerPage*($page-1))->take($itemPerPage)->get();
-        $totalItems =  User::where('name','LIKE', '%'.$search.'%')
-        ->orWhere('email','LIKE', '%'.$search.'%')
-        ->count();
         $users = User::where('name','LIKE', '%'.$search.'%')
         ->orWhere('email','LIKE', '%'.$search.'%')->paginate($itemPerPage);
         return response()->json([

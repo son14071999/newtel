@@ -9,7 +9,6 @@
             <div class="card-body p-4 p-sm-5">
               <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
               <form name="formLogin">
-                <span style="color: red" ng-show="errorStatus">@{{errorMessage}}</span>
                 @csrf
                 <div class="form-floating mb-3">
                   <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" ng-model="user.email" ng-required="true">
@@ -34,4 +33,5 @@
       </div>
     </div>
     <script src="{{ url('/js/angularjs/controller/login.js') }}"></script>
+    <script src="{{ url('/js/angularjs/factory/loginFactory.js') }}"></script>
 @endsection

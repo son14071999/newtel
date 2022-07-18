@@ -19,13 +19,25 @@ Route::get('/', function () {
 Route::get('/login', function(){
     return view('auth.login');
 });
+
+
 Route::get('/listUser', function(){
     return view('listUser.list');
 });
-
 Route::get('/editUser', function(){
     return view('listUser.editUser');
 });
 Route::get('/addUser', function(){
     return view('listUser.addUser');
+});
+
+
+Route::get('/listPermit', function(){
+    return view('permit.list');
+});
+Route::get('/editPermit', function(){
+    return view('permit.editPermit');
+});
+Route::get('/addPermit', function(){
+    return view('permit.addPermit');
 });

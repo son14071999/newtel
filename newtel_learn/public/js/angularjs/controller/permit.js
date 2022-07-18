@@ -1,10 +1,9 @@
 app.controller('user', function ($scope, userFactory) {
     $scope.menuShow = {
-        'users' : true,
-        'permits' : false, 
+        'users' : false,
+        'permits' : true, 
         'roles' : false
     }
-    console.log($scope.menuShow);
     $scope.paramRequest = {
         'limit': 10,
         'search': '',

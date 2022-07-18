@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-app.factory('UserFactory', function($scope,$http, functionHandle){
-    
-})
-=======
 app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
     function ($http, $httpParamSerializer, functionHandle) {
         var userFactory = {}
@@ -33,4 +28,3 @@ app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
         return userFactory
     }
 ])
->>>>>>> 77bbf6533645da75c4503d38d13e65e6428fb6b4
