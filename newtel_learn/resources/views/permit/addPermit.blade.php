@@ -1,9 +1,9 @@
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="addPermitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Add Permit</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -11,25 +11,20 @@ aria-hidden="true">
         <div class="modal-body">
             <form>
                 <div class="form-group">
-                    <label for="name" class="col-form-label">name</label>
-                    <input type="text" class="form-control" id="name" ng-model="userAdd.name"
-                        value="@{{userAdd.name}}">
+                    <label for="code" class="col-form-label">Display name</label>
+                    <input type="text" class="form-control" id="code" ng-model="permitAdd.code"
+                        value="@{{permitAdd.code}}">
                 </div>
                 <div class="form-group">
-                    <label for="email-name" class="col-form-label">email</label>
-                    <input type="text" class="form-control" id="email-name" ng-model="userAdd.email111213232"
-                        value="@{{userAdd.email213213}}">
-                </div>
-                <div class="form-group">
-                    <label for="password-text" class="col-form-label">password:</label>
-                    <input type="password" class="form-control" id="name-text" ng-model="userAdd.password"
-                        value="@{{userAdd.password}}">
+                    <label for="name_display" class="col-form-label">Code</label>
+                    <input type="text" class="form-control" id="name_display" ng-model="permit.display_name"
+                        value="@{{permit.display_name}}">
                 </div>
             </form>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" ng-click="saveAddUser()">Save</button>
+            <button type="button" class="btn btn-primary" ng-click="saveAddPermit()">Save</button>
         </div>
     </div>
 </div>

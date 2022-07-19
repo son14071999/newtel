@@ -88,13 +88,4 @@ app.controller('user', function ($scope, userFactory) {
             }, 100);
         }
     }
-
-    // $scope.logout = function () {
-    //     userFactory.logout()
-    //         .then((response) => {
-    //             window.location.replace(rootUrl + 'login')
-    //         }).catch((err) => {
-    //             alert('Logout thất bại')
-    //         })
-    // }
 });

@@ -15,6 +15,22 @@ app.value('functionHandle', {
                 }
             })
     },
+    'getListPermit': ($scope, permitFactory) => {
+        permitFactory
+            .then(function (response) {
+                $scope.permits = response.data.permits.data
+                $scope.itemPerPage = response.data.permits.per_page
+                $scope.pages = Array.from({ length: Math.ceil(response.data.permits.total/response.data.permits.per_page) }, (_, i) => i + 1)
+                $scope.currentPage = response.data.permits.current_page
+            })
+            .catch(function(err){
+                if(err.status==401){
+                    window.location.replace(rootUrl + "login");
+                }else{
+                    alert(err)
+                }
+            })
+    },
     'header': {
         headers: {
             'token': localStorage.getItem('token'),

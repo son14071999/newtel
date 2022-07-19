@@ -511,7 +511,6 @@ class ComposerStaticInita2dbc36066f0e39c3ddb44a0c01562cf
         'App\\Http\\Controllers\\Api\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/RegisterController.php',
         'App\\Http\\Controllers\\Api\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/UserController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
-        'App\\Http\\Controllers\\PermitController' => __DIR__ . '/../..' . '/app/Http/Controllers/PermitController.php',
         'App\\Http\\Controllers\\RolesController' => __DIR__ . '/../..' . '/app/Http/Controllers/RolesController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',

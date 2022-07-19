@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\PermitController;
 
 use function PHPSTORM_META\registerArgumentsSet;
 
@@ -26,13 +27,13 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::get('login', function () {
     return view('auth.login');
 });
-Route::get('listUser', function () {
-    return view('listUser.list');
-});
 Route::post('login', [LoginController::class, 'login'])->name('login');
 
-//User
+
 Route::group(['middleware' => 'authLogin'], function () {
+    // Logout
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+    //User
     Route::get('listUser', [UserController::class, 'index'])->name('listUser');
     Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser');
     Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser');
@@ -42,7 +43,14 @@ Route::group(['middleware' => 'authLogin'], function () {
     });
     Route::post('addUser', [UserController::class, 'store'])->name('addUserPost');
     Route::get('changeItemPerPage/{number}', [UserController::class, 'changeItemPerPage'])->whereNumber('number');
-// logout
-    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+    //Permit
+    Route::get('listPermit', [PermitController::class, 'index'])->name('listPermit');
+    Route::get('showPermit/{id}', [PermitController::class, 'show'])->name('showPermit');
+    Route::post('editPermit/{id}', [PermitController::class, 'edit'])->name('editPermit');
+    Route::get('deleteListPermit/{id}', [PermitController::class, 'destroy'])->name('deletePermit');
+    Route::get('addPermit', function () {
+        return view('listPermit.addPermit');
+    });
+    Route::post('addPermit', [PermitController::class, 'store'])->name('addPermitPost');
+    Route::get('changeItemPerPage/{number}', [PermitController::class, 'changeItemPerPage'])->whereNumber('number');
 });
-// Route::get('listUser', UserController::class);

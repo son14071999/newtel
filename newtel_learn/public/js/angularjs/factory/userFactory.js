@@ -13,9 +13,6 @@ app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
         userFactory.saveAddUser = function ($params){
             return $http.post(rootUrl + "api/addUser", $params,functionHandle.header)
         }
-        userFactory.logout = function(){
-            return $http.post(rootUrl+'api/logout', {},functionHandle.header)
-        }
         userFactory.getListUser = function($scope){
             var request = $http.get(rootUrl + "api/listUser?" + $httpParamSerializer($scope.paramRequest), {
                 headers: {

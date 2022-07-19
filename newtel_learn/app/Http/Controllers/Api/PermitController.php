@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\permit;
+use App\Models\Permit;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,15 @@ class PermitController extends Controller
      */
     public function index()
     {
-        //
+        $itemPerPage = isset($_GET['limit']) ? intval($_GET['limit']) : 5;
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+        $itemPerPage = intval($itemPerPage);
+        $permits = Permit::where('display_name','LIKE', '%'.$search.'%')
+        ->orWhere('code','LIKE', '%'.$search.'%')->paginate($itemPerPage);
+        return response()->json([
+            'code' => 200,
+            'permits' => $permits,
+        ], 200);
     }
 
     /**
@@ -36,7 +44,13 @@ class PermitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Permit::create([
+            'code' => $request->code,
+            'display_name' => $request->display_name
+        ]);
+        return response()->json([
+            'message' => 'success'
+        ], 200);
     }
 
     /**
@@ -45,9 +59,18 @@ class PermitController extends Controller
      * @param  \App\Models\permit  $permit
      * @return \Illuminate\Http\Response
      */
-    public function show(permit $permit)
+    public function show($id)
     {
-        //
+        $permit = Permit::find($id);
+        if(empty($permit)){
+            return response()->json([
+                'message' => 'Permit ko tồn tại'
+            ], 405);
+        }else{
+            return response()->json([
+                'permit' => $permit
+            ], 200);
+        }
     }
 
     /**
@@ -56,9 +79,20 @@ class PermitController extends Controller
      * @param  \App\Models\permit  $permit
      * @return \Illuminate\Http\Response
      */
-    public function edit(permit $permit)
+    public function edit(Request $request, $id)
     {
-        //
+        $permit = Permit::find($id);
+        $permit_code = Permit::where('code',$request->code)->first();
+        if(!empty($permit_code) && $permit!=$permit_code && $request->code==$permit_code->code){
+            return response()->json([
+                'message' => 'Error'
+            ], 405);
+        }else{
+            Permit::find($id)->update($request->all());
+            return response()->json([
+                'message' => 'success'
+            ], 200);
+        }
     }
 
     /**
@@ -79,8 +113,19 @@ class PermitController extends Controller
      * @param  \App\Models\permit  $permit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(permit $permit)
+    public function destroy($id)
     {
-        //
+        $permit = Permit::find($id);
+        if(!empty($user)){
+            $user->delete();
+            return response()->json([
+                'code' => 200,
+                'message' => 'Xóa thành công'
+            ], 200);
+        }
+        return response()->json([
+            'code' => 405,
+            'message' => 'Người dùng không tồn tại'
+        ], 405);
     }
 }

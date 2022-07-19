@@ -1,7 +1,7 @@
 app.controller(
     "logoutController",
-    function ($scope) {
-        $scope.login = function () {
+    function ($scope, logoutFactory) {
+        $scope.logout = function () {
             logoutFactory.logout()
                 .then((response) => {
                     window.location.replace(rootUrl + 'login')

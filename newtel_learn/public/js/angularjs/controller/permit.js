@@ -1,4 +1,4 @@
-app.controller('user', function ($scope, userFactory) {
+app.controller('permit', function ($scope, permitFactory) {
     $scope.menuShow = {
         'users' : false,
         'permits' : true, 
@@ -9,54 +9,54 @@ app.controller('user', function ($scope, userFactory) {
         'search': '',
         'page': 1
     }
-    $scope.userAdd = {}
-    userFactory.getListUser($scope)
+    $scope.permitAdd = {}
+    permitFactory.getListPermit($scope)
 
-    $scope.deleteUser = function ($idUser) {
-        userFactory.deleteUser($idUser)
+    $scope.deletePermit = function ($idPermit) {
+        permitFactory.deletePermit($idPermit)
             .then(function (response) {
                 alert(response.data.message)
-                userFactory.getListUser($scope)
+                permitFactory.getListPermit($scope)
             })
             .catch(function (err) {
                 console.log(err)
             })
     }
 
-    $scope.editUser = function ($id) {
-        userFactory.userEdit($id)
+    $scope.editPermit = function ($id) {
+        permitFactory.permitEdit($id)
             .then(function (response) {
-                $scope.userEdit = response.data.user
-                $('#editModal').modal('show')
+                $scope.permitEdit = response.data.permit
+                $('#editPermitModal').modal('show')
             }).catch(function (err) {
                 console.log(err)
             })
     }
 
-    $scope.saveEditUser = function () {
-        userFactory.saveEditUser($scope.userEdit.id, {
-            'name': $scope.userEdit.name,
-            'email': $scope.userEdit.email,
+    $scope.saveEditPermit = function () {
+        permitFactory.saveEditPermit($scope.permitEdit.id, {
+            'code': $scope.permitEdit.code,
+            'display_name': $scope.permitEdit.display_name,
         })
             .then(function (response) {
-                $('#editModal').modal('hide');
-                userFactory.getListUser($scope)
+                console.log(response)
+                $('#editPermitModal').modal('hide');
+                permitFactory.getListPermit($scope)
             })
             .catch(function (err) {
                 console.log('Có lỗi xảy ra')
             })
     }
 
-    $scope.addUser = function () {
-        $('#addUserModal').modal('show')
-        console.log($scope.useAdd);
+    $scope.addPermit = function () {
+        $('#addPermitModal').modal('show')
     }
 
-    $scope.saveAddUser = function () {
-        userFactory.saveAddUser($scope.userAdd)
+    $scope.saveAddPermit = function () {
+        permitFactory.saveAddPermit($scope.permitAdd)
             .then(function (response) {
-                $('#addUserModal').modal('hide');
-                userFactory.getListUser($scope)
+                $('#addPermitModal').modal('hide');
+                permitFactory.getListPermit($scope)
             })
             .catch(function (err) {
                 alert('Có lỗi xảy ra')
@@ -66,7 +66,7 @@ app.controller('user', function ($scope, userFactory) {
     $scope.changeItemPerPage = function () {
         if ($scope.paramRequest.limit) {
             setTimeout(() => {
-                userFactory.getListUser($scope)
+                permitFactory.getListPermit($scope)
             }, 1000);
         }
     }
@@ -75,7 +75,7 @@ app.controller('user', function ($scope, userFactory) {
     $scope.filterNameGmail = function () {
         setTimeout(() => {
             $scope.paramRequest.page = 1
-            userFactory.getListUser($scope)
+            permitFactory.getListPermit($scope)
         }, 1000);
 
     }
@@ -83,17 +83,8 @@ app.controller('user', function ($scope, userFactory) {
         if (p) {
             setTimeout(() => {
                 $scope.paramRequest.page = p
-                userFactory.getListUser($scope)
+                permitFactory.getListPermit($scope)
             }, 100);
         }
     }
-
-    // $scope.logout = function () {
-    //     userFactory.logout()
-    //         .then((response) => {
-    //             window.location.replace(rootUrl + 'login')
-    //         }).catch((err) => {
-    //             alert('Logout thất bại')
-    //         })
-    // }
 });
