@@ -1,7 +1,11 @@
 app.controller(
     "logoutController",
     function ($scope, logoutFactory) {
-        $scope.menuActive = localStorage.getItem('menuCurrent')
+        let url = window.location.href
+        $scope.menuActive = 'user'
+        if (url.indexOf('listRole') != -1) {
+            $scope.menuActive = 'role'
+        }
         $scope.logout = function () {
             logoutFactory.logout()
                 .then((response) => {
@@ -12,4 +16,3 @@ app.controller(
         };
     }
 );
-

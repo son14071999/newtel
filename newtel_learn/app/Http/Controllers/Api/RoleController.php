@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Role;
 use App\Models\Permit;
+use App\Models\Role_permit;
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -19,13 +22,13 @@ class RoleController extends Controller
         $itemPerPage = isset($_GET['limit']) ? intval($_GET['limit']) : 5;
         $search = isset($_GET['search']) ? $_GET['search'] : '';
         $itemPerPage = intval($itemPerPage);
-        $roles = Role::where('name','LIKE', '%'.$search.'%')
-        ->orWhere('code','LIKE', '%'.$search.'%')->paginate($itemPerPage);
-        
+        $roles = Role::where('name', 'LIKE', '%' . $search . '%')
+            ->orWhere('code', 'LIKE', '%' . $search . '%')->paginate($itemPerPage);
+
         return response()->json([
             'code' => 200,
             'roles' => $roles,
-            
+
         ], 200);
     }
 
@@ -66,11 +69,11 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         $permits = Permit::get();
-        if(empty($role)){
+        if (empty($role)) {
             return response()->json([
                 'message' => 'Role ko tồn tại'
             ], 405);
-        }else{
+        } else {
             return response()->json([
                 'role' => $role,
                 'permits' => $permits
@@ -86,17 +89,31 @@ class RoleController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $role = Role::find($id);
-        $role_code = Role::where('code',$request->code)->first();
-        if(!empty($role_code) && $role!=$role_code && $request->code==$role_code->code){
+        DB::beginTransaction();
+        try {
+            $role = Role::find($id);
+            $permits = $request->permits;
+            $permitIds = array_column($permits, 'id');
+            $role_code = Role::where('code', $request->code)->first();
+            if (!empty($role_code) && $role != $role_code && $request->code == $role_code->code) {
+                return response()->json([
+                    'message' => 'Error'
+                ], 405);
+            } else {
+                Role::find($id)->update($request->all());
+                $role->permissions()->sync($permitIds);
+                DB::commit();
+                return response()->json([
+                    'message' => 'success',
+                    'permits' => $permits,
+                    'permitIds' => $permitIds
+                ], 200);
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
             return response()->json([
-                'message' => 'Error'
+                'error' => $e
             ], 405);
-        }else{
-            Role::find($id)->update($request->all());
-            return response()->json([
-                'message' => 'success'
-            ], 200);
         }
     }
 
@@ -121,7 +138,7 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $role = Role::find($id);
-        if(!empty($role)){
+        if (!empty($role)) {
             $role->delete();
             return response()->json([
                 'code' => 200,

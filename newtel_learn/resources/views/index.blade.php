@@ -48,13 +48,10 @@
                             class="nav_logo-name">MyApp</span>
                     </a>
                     <div class="nav_list">
-                        <a href="/listUser" class="nav_link" ng-class="{'active': menuActive=='user'}">
+                        <a href="/listUser" class="nav_link" ng-class="{'active': menuActive == 'user'}">
                             <i class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span>
                         </a>
-                        <a href="/listPermit" class="nav_link" ng-class="{'active': menuActive=='permit'}">
-                            <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Permit</span>
-                        </a>
-                        <a href="/listRole" class="nav_link" ng-class="{'active': menuActive=='role'}"> <i
+                        <a href="/listRole" class="nav_link" ng-class="{'active': menuActive == 'role'}"> <i
                                 class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Roles</span>
                         </a>
 

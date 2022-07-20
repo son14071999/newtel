@@ -1,5 +1,4 @@
 app.controller('role', function ($scope, roleFactory) {
-    localStorage.setItem('menuCurrent', 'role')
     $scope.paramRequest = {
         'limit': 10,
         'search': '',
@@ -31,9 +30,13 @@ app.controller('role', function ($scope, roleFactory) {
     }
 
     $scope.saveEditRole = function () {
+        var permitsChecked = $scope.permits.filter(function(permit){
+            return permit.checked
+        })
         roleFactory.saveEditRole($scope.roleEdit.id, {
             'code': $scope.roleEdit.code,
             'name': $scope.roleEdit.name,
+            'permits' : permitsChecked
         })
             .then(function (response) {
                 console.log(response)

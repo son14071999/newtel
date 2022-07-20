@@ -1,6 +1,4 @@
 app.controller('user', function ($scope, userFactory) {
-    localStorage.setItem('menuCurrent', 'user')
-    console.log($scope.menuShow);
     $scope.paramRequest = {
         'limit': 10,
         'search': '',

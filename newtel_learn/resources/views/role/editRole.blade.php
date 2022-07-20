@@ -20,9 +20,10 @@
                         <input type="text" class="form-control" id="name_display" ng-model="roleEdit.name"
                             value="@{{ roleEdit.name }}">
                     </div>
-                    <div class="form-group">
+                    <div style="margin-top: 7px;"><span>Chọn permission: </span></div>
+                    <div class="form-group" style="width: 100%; min-height: 150px; overflow: auto;margin-top: 5px; margin-left: 10px">
                         <div ng-repeat="permit in permits">
-                            <input type="checkbox" name="permitsOfRole" id="@{{permit.code}}" value="@{{permit.display_name}}">
+                            <input type="checkbox" name="permitsOfRole" id="@{{permit.id}}" value="@{{permit.display_name}}" ng-model="permit.checked">
                             <label for="@{{permit.code}}">@{{permit.display_name}}</label><br>
                         </div>
                     </div>

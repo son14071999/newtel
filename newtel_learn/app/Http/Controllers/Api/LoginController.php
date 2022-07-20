@@ -52,7 +52,6 @@ class LoginController extends Controller
          return response()->json([
             'status' => 'Fail',
             'message' => 'Session không hợp lệ',
-            ''
          ], 304);
     }
 }

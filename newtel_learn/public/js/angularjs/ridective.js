@@ -11,20 +11,6 @@ app.directive('addUser', function () {
     };
 })
 
-
-app.directive('editPermit', function() {
-    return {
-        restrict: 'E',
-        templateUrl: rootUrl + 'editPermit'
-    }
-})
-app.directive('addPermit', function () {
-    return {
-        restrict: 'E',
-        templateUrl: rootUrl+"addPermit"
-    };
-})
-
 app.directive('editRole', function() {
     return {
         restrict: 'E',
