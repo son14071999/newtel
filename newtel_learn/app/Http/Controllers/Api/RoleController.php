@@ -2,27 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Role;
 use App\Models\Permit;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class PermitController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $itemPerPage = isset($_GET['limit']) ? intval($_GET['limit']) : 5;
         $search = isset($_GET['search']) ? $_GET['search'] : '';
         $itemPerPage = intval($itemPerPage);
-        $permits = Permit::where('display_name','LIKE', '%'.$search.'%')
+        $roles = Role::where('name','LIKE', '%'.$search.'%')
         ->orWhere('code','LIKE', '%'.$search.'%')->paginate($itemPerPage);
+        
         return response()->json([
             'code' => 200,
-            'permits' => $permits,
+            'roles' => $roles,
+            
         ], 200);
     }
 
@@ -44,9 +47,9 @@ class PermitController extends Controller
      */
     public function store(Request $request)
     {
-        Permit::create([
+        Role::create([
             'code' => $request->code,
-            'display_name' => $request->display_name
+            'name' => $request->name
         ]);
         return response()->json([
             'message' => 'success'
@@ -56,19 +59,21 @@ class PermitController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\permit  $permit
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $permit = Permit::find($id);
-        if(empty($permit)){
+        $role = Role::find($id);
+        $permits = Permit::get();
+        if(empty($role)){
             return response()->json([
-                'message' => 'Permit ko tồn tại'
+                'message' => 'Role ko tồn tại'
             ], 405);
         }else{
             return response()->json([
-                'permit' => $permit
+                'role' => $role,
+                'permits' => $permits
             ], 200);
         }
     }
@@ -76,19 +81,19 @@ class PermitController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\permit  $permit
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
-        $permit = Permit::find($id);
-        $permit_code = Permit::where('code',$request->code)->first();
-        if(!empty($permit_code) && $permit!=$permit_code && $request->code==$permit_code->code){
+        $role = Role::find($id);
+        $role_code = Role::where('code',$request->code)->first();
+        if(!empty($role_code) && $role!=$role_code && $request->code==$role_code->code){
             return response()->json([
                 'message' => 'Error'
             ], 405);
         }else{
-            Permit::find($id)->update($request->all());
+            Role::find($id)->update($request->all());
             return response()->json([
                 'message' => 'success'
             ], 200);
@@ -99,10 +104,10 @@ class PermitController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\permit  $permit
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, permit $permit)
+    public function update(Request $request, Role $role)
     {
         //
     }
@@ -110,14 +115,14 @@ class PermitController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\permit  $permit
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $permit = Permit::find($id);
-        if(!empty($permit)){
-            $permit->delete();
+        $role = Role::find($id);
+        if(!empty($role)){
+            $role->delete();
             return response()->json([
                 'code' => 200,
                 'message' => 'Xóa thành công'
@@ -125,7 +130,7 @@ class PermitController extends Controller
         }
         return response()->json([
             'code' => 405,
-            'message' => 'Permit không tồn tại'
+            'message' => 'Người dùng không tồn tại'
         ], 405);
     }
 }

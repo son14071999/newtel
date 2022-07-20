@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PermitController;
+use App\Http\Controllers\Api\RoleController;
 
 use function PHPSTORM_META\registerArgumentsSet;
 
@@ -53,4 +54,14 @@ Route::group(['middleware' => 'authLogin'], function () {
     });
     Route::post('addPermit', [PermitController::class, 'store'])->name('addPermitPost');
     Route::get('changeItemPerPage/{number}', [PermitController::class, 'changeItemPerPage'])->whereNumber('number');
+    // role
+    Route::get('listRole', [RoleController::class, 'index'])->name('listRole');
+    Route::get('showRole/{id}', [RoleController::class, 'show'])->name('showRole');
+    Route::post('editRole/{id}', [RoleController::class, 'edit'])->name('editRole');
+    Route::get('deleteListRole/{id}', [RoleController::class, 'destroy'])->name('deleteRole');
+    Route::get('addRole', function () {
+        return view('listRole.addRole');
+    });
+    Route::post('addRole', [RoleController::class, 'store'])->name('addRolePost');
+    Route::get('changeItemPerPage/{number}', [RoleController::class, 'changeItemPerPage'])->whereNumber('number');
 });

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 use Illuminate\Support\Str;
-
+use App\Models\Permit;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,6 +16,7 @@ class PermitFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    protected $model = Permit::class;
     public function definition()
     {
         return [

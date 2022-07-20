@@ -20,7 +20,7 @@ Route::get('/login', function(){
     return view('auth.login');
 });
 
-
+// user
 Route::get('/listUser', function(){
     return view('listUser.list');
 });
@@ -32,6 +32,7 @@ Route::get('/addUser', function(){
 });
 
 
+// permit
 Route::get('/listPermit', function(){
     return view('permit.list');
 });
@@ -40,4 +41,16 @@ Route::get('/editPermit', function(){
 });
 Route::get('/addPermit', function(){
     return view('permit.addPermit');
+});
+
+
+// role
+Route::get('/listRole', function(){
+    return view('role.list');
+});
+Route::get('/editRole', function(){
+    return view('role.editRole');
+});
+Route::get('/addRole', function(){
+    return view('role.addRole');
 });

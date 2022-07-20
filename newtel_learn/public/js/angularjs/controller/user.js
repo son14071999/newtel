@@ -1,9 +1,5 @@
 app.controller('user', function ($scope, userFactory) {
-    $scope.menuShow = {
-        'users' : true,
-        'permits' : false, 
-        'roles' : false
-    }
+    localStorage.setItem('menuCurrent', 'user')
     console.log($scope.menuShow);
     $scope.paramRequest = {
         'limit': 10,

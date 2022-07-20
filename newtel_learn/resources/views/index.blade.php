@@ -35,33 +35,31 @@
 <body ng-app="app-demo">
 
     <body id="body-pd">
-        <header class="header" id="header" ng-controller="logoutController">
+        <header class="header" id="header">
             <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-            <div class="header_info">
-                <div>
-                    <button ng-click="logout()">Logout</button>
-                </div>
-            </div>
+            {{-- <div class="header_info">
+                
+            </div> --}}
         </header>
-        <div class="l-navbar" id="nav-bar">
+        <div class="l-navbar" id="nav-bar" ng-controller="logoutController">
             <nav class="nav">
                 <div>
                     <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span
                             class="nav_logo-name">MyApp</span>
                     </a>
                     <div class="nav_list">
-                        <a href="/listUser" class="nav_link" ng-class="{'active': menuShow.users}">
+                        <a href="/listUser" class="nav_link" ng-class="{'active': menuActive=='user'}">
                             <i class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span>
                         </a>
-                        <a href="/listPermit" class="nav_link" ng-class="{'active' : menuShow.permits}">
+                        <a href="/listPermit" class="nav_link" ng-class="{'active': menuActive=='permit'}">
                             <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Permit</span>
                         </a>
-                        <a href="#" class="nav_link" ng-class="{'active' : menuShow.roles}"> <i
+                        <a href="/listRole" class="nav_link" ng-class="{'active': menuActive=='role'}"> <i
                                 class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Roles</span>
                         </a>
 
                     </div>
-                </div> <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span
+                </div> <a href="#" class="nav_link" > <i class='bx bx-log-out nav_icon'></i> <span
                         class="nav_name">SignOut</span> </a>
             </nav>
         </div>

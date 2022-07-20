@@ -23,4 +23,5 @@ class RolesFactory extends Factory
             'code' => fake()->name(),
         ];
     }
+    
 }
