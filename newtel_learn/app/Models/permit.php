@@ -12,4 +12,8 @@ class Permit extends Model
         'code',
         'display_name',
     ];
+
+    public function childPermit(){
+        return $this->hasMany(Permit::class, 'parent_id');
+    }
 }

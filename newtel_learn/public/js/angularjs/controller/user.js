@@ -22,6 +22,15 @@ app.controller('user', function ($scope, userFactory) {
         userFactory.userEdit($id)
             .then(function (response) {
                 $scope.userEdit = response.data.user
+                $scope.roles = response.data.roles
+                angular.forEach($scope.roles, function(item){
+                    if(item.id == $scope.userEdit.role_id){
+                        item.selected = true
+                    }else{
+                        item.selected = false
+                    }
+                })
+                console.log($scope.roles);
                 $('#editModal').modal('show')
             }).catch(function (err) {
                 console.log(err)
@@ -32,6 +41,7 @@ app.controller('user', function ($scope, userFactory) {
         userFactory.saveEditUser($scope.userEdit.id, {
             'name': $scope.userEdit.name,
             'email': $scope.userEdit.email,
+            'role_id': $scope.userEdit.role_id,
         })
             .then(function (response) {
                 $('#editModal').modal('hide');
@@ -43,8 +53,14 @@ app.controller('user', function ($scope, userFactory) {
     }
 
     $scope.addUser = function () {
+        $scope.userAdd = {}
+        userFactory.getListRole()
+        .then((response) => {
+            $scope.roles = response.data.roles
+        }).catch((err) => {
+            alert(err)
+        })
         $('#addUserModal').modal('show')
-        console.log($scope.useAdd);
     }
 
     $scope.saveAddUser = function () {

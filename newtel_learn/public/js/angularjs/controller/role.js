@@ -25,7 +25,7 @@ app.controller('role', function ($scope, roleFactory) {
                 $scope.permits = response.data.permits
                 $('#editRoleModal').modal('show')
             }).catch(function (err) {
-                console.log(err)
+                alert(err.data.message)
             })
     }
 
@@ -44,22 +44,41 @@ app.controller('role', function ($scope, roleFactory) {
                 roleFactory.getListRole($scope)
             })
             .catch(function (err) {
-                console.log('Có lỗi xảy ra')
+                alert(err.data.message)
             })
     }
 
     $scope.addRole = function () {
+        $scope.roleAdd = {}
+        roleFactory.getListPermit()
+        .then(function(response){
+            $scope.parentPermits = response.data.permits
+        }).catch(function (err){
+            alert(err.data.message)
+        })
         $('#addRoleModal').modal('show')
     }
 
     $scope.saveAddRole = function () {
-        roleFactory.saveAddRole($scope.roleAdd)
+        permitsChecked = []
+        $scope.parentPermits.forEach(parent => {
+            $checkeds = parent.child_permit.filter(function(permit){
+               return permit.checked
+           })
+           permitsChecked = permitsChecked.concat($checkeds)
+        });
+        let roleAdd = {
+            'code': $scope.roleAdd.code,
+            'name': $scope.roleAdd.name,
+            'permits' : permitsChecked
+        }
+        roleFactory.saveAddRole(roleAdd)
             .then(function (response) {
                 $('#addRoleModal').modal('hide');
                 roleFactory.getListRole($scope)
             })
             .catch(function (err) {
-                alert('Có lỗi xảy ra')
+                alert(err.data.message)
             })
     }
 
@@ -86,5 +105,12 @@ app.controller('role', function ($scope, roleFactory) {
                 roleFactory.getListRole($scope)
             }, 100);
         }
+    }
+
+    $scope.parentClick = function(index){
+        for(let item=0; item < $scope.parentPermits[index].child_permit.length; item++){
+            $scope.parentPermits[index].child_permit[item].checked = $scope.parentPermits[index].checked
+        }
+        console.log($scope.parentPermits);
     }
 });

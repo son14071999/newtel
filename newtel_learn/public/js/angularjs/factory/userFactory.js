@@ -22,6 +22,9 @@ app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
             })
             functionHandle.getListUser($scope, request)
         }
+        userFactory.getListRole = function ($params){
+            return $http.get(rootUrl + "api/getAllRole",functionHandle.header)
+        }
         return userFactory
     }
 ])

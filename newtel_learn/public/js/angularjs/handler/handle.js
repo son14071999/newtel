@@ -11,7 +11,7 @@ app.value('functionHandle', {
                 if(err.status==401){
                     window.location.replace(rootUrl + "login");
                 }else{
-                    alert(err)
+                    alert(err.data.message)
                 }
             })
     },
@@ -28,7 +28,7 @@ app.value('functionHandle', {
                 if(err.status==401){
                     window.location.replace(rootUrl + "login");
                 }else{
-                    alert(err)
+                    alert(err.data.message)
                 }
             })
     },

@@ -1,4 +1,4 @@
-app.factory('roleFactory', ['$http', '$httpParamSerializer','functionHandle', 
+app.factory('roleFactory', ['$http', '$httpParamSerializer','functionHandle',
     function($http, $httpParamSerializer, functionHandle){
         var roleFactory = {}
         roleFactory.deleteRole = function ($idRole) {
@@ -24,6 +24,14 @@ app.factory('roleFactory', ['$http', '$httpParamSerializer','functionHandle',
                 }
             })
             functionHandle.getListRole($scope, request)
+        }
+        roleFactory.getListPermit = function() {
+            return $http.get(rootUrl + "api/getAllPermit", {
+                headers: {
+                    'token': localStorage.getItem('token'),
+                    'userId': localStorage.getItem('userId'),
+                }
+            })
         }
         return roleFactory
     }

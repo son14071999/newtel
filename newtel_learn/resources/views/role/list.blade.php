@@ -42,7 +42,6 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                       <li ng-repeat="p in pages" class="page-item"><a class="page-link" ng-class="{'pageCurrent': currentPage==p}" href="#" ng-click="changePage(p)">@{{p}}</a></li>
-                      
                     </ul>
                   </nav>
               </div>

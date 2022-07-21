@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Models\Role;
+use Exception;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -53,9 +56,11 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
+            'role_id' => intval($request->role_id)
         ]);
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
+            'role_id' => intval($request->role_id)
         ], 200);
     }
 
@@ -74,7 +79,8 @@ class UserController extends Controller
             ], 405);
         }else{
             return response()->json([
-                'user' => $user
+                'user' => $user,
+                'roles' => Role::get()
             ], 200);
         }
     }
@@ -88,18 +94,37 @@ class UserController extends Controller
     public function edit(Request $request, $id)
     {
         //
-        $user = User::find($id);
-        $user_email = User::where('email',$request->email)->first();
-        if(!empty($user_email) && $user!=$user_email && $request->email==$user_email->email){
-            return response()->json([
-                'message' => 'Error'
-            ], 405);
-        }else{
+        $request->validate($this->validation($id)['validation'], $this->validation($id)['messageError']);
+        DB::beginTransaction();
+        try{
             User::find($id)->update($request->all());
+            DB::commit();
             return response()->json([
-                'message' => 'success'
+                'message' => 'success',
+                'test' => $request->role_id
             ], 200);
+        }catch(Exception $err){
+            DB::rollBack();
+            return response()->json([
+                'error' => $err
+            ], 405);
         }
+    }
+
+    private function validation($id){
+        return [
+            'validation' => [
+                'email' => 'required|unique:users,email,'.$id.'|email',
+                'name' => 'required|max:50'
+            ],
+            'messageError' => [
+                'email.required' => 'Email không được để trống',
+                'email.unique' => 'Email đã được sử dụng',
+                'email.email' => 'Email không đúng định dạng',
+                'name.required' => 'Tên không được để trống',
+                'name.max' => 'Tên không vượt quá 50 kí tự'
+            ]
+        ];
     }
 
     /**

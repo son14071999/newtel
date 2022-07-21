@@ -50,13 +50,30 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        Role::create([
-            'code' => $request->code,
-            'name' => $request->name
-        ]);
-        return response()->json([
-            'message' => 'success'
-        ], 200);
+        $request->validate($this->validation(0)['validation'], $this->validation(0)['messageError']);
+        DB::beginTransaction();
+        try{
+            $role = Role::create([
+                'code' => $request->code,
+                'name' => $request->name
+            ]);
+            $permits = $request->permits;
+            $permitIds = array_column($permits, 'id');
+            $role->permissions()->sync($permitIds);
+            DB::commit();
+            return response()->json([
+                'message' => 'success'
+            ], 200);
+
+        }
+        catch (Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'error' => $e
+            ], 405);
+        }
+
+
     }
 
     /**
@@ -89,6 +106,7 @@ class RoleController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        $request->validate($this->validation($id)['validation'], $this->validation($id)['messageError']);
         DB::beginTransaction();
         try {
             $role = Role::find($id);
@@ -115,6 +133,25 @@ class RoleController extends Controller
                 'error' => $e
             ], 405);
         }
+    }
+
+
+
+    public function validation($id){
+        return [
+            'validation' => [
+                'code' => 'required|unique:roles,code,'.$id.'|regex:/^\S+$/i'.'|max:30',
+                'name' => 'required|unique:roles,name,'.$id
+            ],
+            'messageError' => [
+                'code.required' => 'Code không được để trống',
+                'code.unique' => 'Code đã được sử dụng',
+                'code.regex' => 'Code không được có khoảng trắng',
+                'code.max' => 'Độ dài tối đa của code là 30',
+                'name.required' => 'Tên role không được để trống',
+                'name.unique' => 'Tên role đã được sử dụng'
+            ]
+        ];
     }
 
     /**
