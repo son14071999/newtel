@@ -36,6 +36,20 @@ angulajs route
 
 
 
+tại sao khi lưu localstorete để lưu menu current thì phải f5 lại ms đc ?
+
+
+
+
+cú pháp: 
+    1. Không dùng được trait trong controller?
+    2. Không lấy được property là array trong ?
+logic: 
+    3. Giới hạn số request gửi lên serve
+    4. ng-model trong editRole nếu cho lên thẻ span thì ko gửi đc index qua trong khi thẻ span vẫn trong repeat?
+    5. Nghịch đảo của checked trong hàm parentClick?
+    6. api gửt request lên serve(ko kèm theo userId, email, token, jwt), bên serve dùng Auth để check đăng nhập. Auth dựa vào cơ chế nào để biết đc use đn là ai trong khi server chỉ lưu session ?
+    7. laravel/sql có cái j hỗ trợ gần giống $facet bên mongodb ko?
 
 
 
@@ -48,3 +62,9 @@ angulajs route
 
 
 
+
+
+brainstorm
+flow 
+diagrams
+lazy loading

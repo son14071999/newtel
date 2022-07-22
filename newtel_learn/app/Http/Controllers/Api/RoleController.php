@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\Permit;
 use App\Models\Role_permit;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\PermitController;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -30,16 +31,6 @@ class RoleController extends Controller
             'roles' => $roles,
 
         ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -84,8 +75,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        $role = Role::find($id);
-        $permits = Permit::get();
+        $role = Role::find($id)->load('permissions');
         if (empty($role)) {
             return response()->json([
                 'message' => 'Role ko tồn tại'
@@ -93,7 +83,6 @@ class RoleController extends Controller
         } else {
             return response()->json([
                 'role' => $role,
-                'permits' => $permits
             ], 200);
         }
     }

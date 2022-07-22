@@ -46,14 +46,14 @@ Route::group(['middleware' => 'authLogin'], function () {
     })->middleware('checkPermit:addUser');
     Route::post('addUser', [UserController::class, 'store'])->name('addUserPost')->middleware('checkPermit:addUser');
     // role
-    Route::get('listRole', [RoleController::class, 'index'])->name('listRole')->middleware('checkPermit:viewListUser');
-    Route::get('showRole/{id}', [RoleController::class, 'show'])->name('showRole')->middleware('checkPermit:viewUser');
-    Route::post('editRole/{id}', [RoleController::class, 'edit'])->name('editRole')->middleware('checkPermit:editUser');
-    Route::get('deleteListRole/{id}', [RoleController::class, 'destroy'])->name('deleteRole')->middleware('checkPermit:deleteUser');
+    Route::get('listRole', [RoleController::class, 'index'])->name('listRole')->middleware('checkPermit:viewListRole');
+    Route::get('showRole/{id}', [RoleController::class, 'show'])->name('showRole')->middleware('checkPermit:viewRole');
+    Route::post('editRole/{id}', [RoleController::class, 'edit'])->name('editRole')->middleware('checkPermit:editRole');
+    Route::get('deleteListRole/{id}', [RoleController::class, 'destroy'])->name('deleteRole')->middleware('checkPermit:deleteRole');
     Route::get('addRole', function () {
         return view('listRole.addRole');
-    })->middleware('checkPermit:addUser');
-    Route::post('addRole', [RoleController::class, 'store'])->name('addRolePost')->middleware('checkPermit:addUser');
+    })->middleware('checkPermit:addRole');
+    Route::post('addRole', [RoleController::class, 'store'])->name('addRolePost')->middleware('checkPermit:addRole');
 
     //
     Route::get('/getAllPermit', [PermitController::class, 'getAllPermit']);

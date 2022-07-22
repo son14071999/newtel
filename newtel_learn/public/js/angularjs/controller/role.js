@@ -1,4 +1,9 @@
 app.controller('role', function ($scope, roleFactory) {
+    $scope.data = {
+        singleRole: 0
+    };
+
+    $scope.permitSearch = ''
     $scope.paramRequest = {
         'limit': 10,
         'search': '',
@@ -19,25 +24,45 @@ app.controller('role', function ($scope, roleFactory) {
     }
 
     $scope.editRole = function ($id) {
-        roleFactory.roleEdit($id)
-            .then(function (response) {
-                $scope.roleEdit = response.data.role
-                $scope.permits = response.data.permits
-                $('#editRoleModal').modal('show')
-            }).catch(function (err) {
-                alert(err.data.message)
-            })
+        $scope.data.singleRole = $id;
+        $('#editRoleModal').modal('show');
+        // roleFactory.roleEdit($id)
+        //     .then(function (response) {
+        //         let arrPermitIdRole = response.data.role.permissions.map(p => p.id)
+        //         $scope.roleEdit = response.data.role
+        //         roleFactory.getListPermit()
+        //             .then(function (response1) {
+        //                 $scope.parentPermits = response1.data.permits
+        //                 for (let index = 0; index < $scope.parentPermits.length; index++) {
+        //                     for (let index1 = 0; index1 < $scope.parentPermits[index].child_permit.length; index1++) {
+        //                         if (arrPermitIdRole.includes($scope.parentPermits[index].child_permit[index1].id)) {
+        //                             $scope.parentPermits[index].child_permit[index1].checked = true
+        //                         }
+        //                     }
+        //                 }
+
+        //             }).catch(function (err) {
+        //                 alert(err)
+        //             })
+        //     }).catch(function (err) {
+        //         alert(err)
+        //     });
     }
 
     $scope.saveEditRole = function () {
-        var permitsChecked = $scope.permits.filter(function(permit){
-            return permit.checked
+
+        permitsChecked = []
+        $scope.parentPermits.forEach(parent => {
+            $checkeds = parent.child_permit.filter(function (permit) {
+                return permit.checked
+            })
+            permitsChecked = permitsChecked.concat($checkeds)
         })
         roleFactory.saveEditRole($scope.roleEdit.id, {
-            'code': $scope.roleEdit.code,
-            'name': $scope.roleEdit.name,
-            'permits' : permitsChecked
-        })
+                'code': $scope.roleEdit.code,
+                'name': $scope.roleEdit.name,
+                'permits': permitsChecked
+            })
             .then(function (response) {
                 console.log(response)
                 $('#editRoleModal').modal('hide');
@@ -51,26 +76,26 @@ app.controller('role', function ($scope, roleFactory) {
     $scope.addRole = function () {
         $scope.roleAdd = {}
         roleFactory.getListPermit()
-        .then(function(response){
-            $scope.parentPermits = response.data.permits
-        }).catch(function (err){
-            alert(err.data.message)
-        })
+            .then(function (response) {
+                $scope.parentPermits = response.data.permits
+            }).catch(function (err) {
+                alert(err.data.message)
+            })
         $('#addRoleModal').modal('show')
     }
 
     $scope.saveAddRole = function () {
         permitsChecked = []
         $scope.parentPermits.forEach(parent => {
-            $checkeds = parent.child_permit.filter(function(permit){
-               return permit.checked
-           })
-           permitsChecked = permitsChecked.concat($checkeds)
+            $checkeds = parent.child_permit.filter(function (permit) {
+                return permit.checked
+            })
+            permitsChecked = permitsChecked.concat($checkeds)
         });
         let roleAdd = {
             'code': $scope.roleAdd.code,
             'name': $scope.roleAdd.name,
-            'permits' : permitsChecked
+            'permits': permitsChecked
         }
         roleFactory.saveAddRole(roleAdd)
             .then(function (response) {
@@ -107,10 +132,20 @@ app.controller('role', function ($scope, roleFactory) {
         }
     }
 
-    $scope.parentClick = function(index){
-        for(let item=0; item < $scope.parentPermits[index].child_permit.length; item++){
+    $scope.searchPermit = function(){
+        setTimeout(() => {
+            roleFactory.getListPermit($scope.permitSearch)
+                .then(function (response) {
+                    $scope.parentPermits = response.data.permits
+                }).catch(function (err) {
+                    alert(err.data.message)
+                })
+        }, 1000);
+    }
+
+    $scope.parentClick = function (index) {
+        for (let item = 0; item < $scope.parentPermits[index].child_permit.length; item++) {
             $scope.parentPermits[index].child_permit[item].checked = $scope.parentPermits[index].checked
         }
-        console.log($scope.parentPermits);
     }
 });

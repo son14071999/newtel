@@ -1,5 +1,5 @@
 
-@extends('index')
+@extends('base')
 @section('content')
 <link rel="stylesheet" href="{{ url('/css/login.css') }}">
     <div class="container" ng-controller="loginController">
@@ -21,7 +21,7 @@
                   <label for="floatingPassword">Password</label>
                   <span></span>
                 </div>
-  
+
                 <div class="d-grid">
                   <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit" ng-click="login()">Sign
                     in</button>

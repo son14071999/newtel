@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
+use Exception;
 
 class CheckPermission
 {
@@ -19,24 +20,22 @@ class CheckPermission
     public function handle(Request $request, Closure $next, $permit = null)
     {
         $userId = $request->header('userId');
-        if ($user = User::find($userId)) {
-            if (($role = $user->role)
-                && ($permits = $role->permissions)
-            ) {
-                foreach ($permits as $p) {
-                    if ($p->code == $permit) {
-                        return $next($request);
-                    }
-                }
-                return response()->json([
-                    'permits' => $permits,
-                    'permit' => $permit
-                ]);
-            }
 
+        if (($user = User::find($userId))
+            && ($permits = $user->role->permissions)
+        ) {
+            foreach ($permits as $p) {
+                if ($p->code == $permit) {
+                    return $next($request);
+                }
+            }
             return response()->json([
                 'message' => 'Bạn không có quyền'
             ], 402);
         }
+        return response()->json([
+            'message' => 'Bạn chưa đăng nhập'
+        ], 401);
+
     }
 }

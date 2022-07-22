@@ -50,7 +50,7 @@
               </div>
           </div>
       </div>
-      <edit-role></edit-role>
+      <edit-role role-id="data.singleRole"></edit-role>
       <add-role></add-role>
     </div>
     <script src="{{ url('/js/angularjs/ridective.js') }}"></script>
