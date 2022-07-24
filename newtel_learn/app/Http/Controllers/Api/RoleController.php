@@ -48,8 +48,7 @@ class RoleController extends Controller
                 'code' => $request->code,
                 'name' => $request->name
             ]);
-            $permits = $request->permits;
-            $permitIds = array_column($permits, 'id');
+            $permitIds = $request->permits;
             $role->permissions()->sync($permitIds);
             DB::commit();
             return response()->json([
@@ -76,6 +75,7 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::find($id)->load('permissions');
+        $permitCodes = $role->permissions->pluck('code');
         if (empty($role)) {
             return response()->json([
                 'message' => 'Role ko tồn tại'
@@ -83,6 +83,7 @@ class RoleController extends Controller
         } else {
             return response()->json([
                 'role' => $role,
+                'permitCodes' => $permitCodes
             ], 200);
         }
     }
@@ -99,8 +100,8 @@ class RoleController extends Controller
         DB::beginTransaction();
         try {
             $role = Role::find($id);
-            $permits = $request->permits;
-            $permitIds = array_column($permits, 'id');
+            $permitCodes = $request->permits;
+            // $permitCodes = array_column($permits, 'code');
             $role_code = Role::where('code', $request->code)->first();
             if (!empty($role_code) && $role != $role_code && $request->code == $role_code->code) {
                 return response()->json([
@@ -108,12 +109,11 @@ class RoleController extends Controller
                 ], 405);
             } else {
                 Role::find($id)->update($request->all());
-                $role->permissions()->sync($permitIds);
+                $role->permissions()->sync($permitCodes);
                 DB::commit();
                 return response()->json([
                     'message' => 'success',
-                    'permits' => $permits,
-                    'permitIds' => $permitIds
+                    'permitIds' => $permitCodes
                 ], 200);
             }
         } catch (Exception $e) {

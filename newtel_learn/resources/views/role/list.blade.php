@@ -53,7 +53,7 @@
       <edit-role role-id="data.singleRole"></edit-role>
       <add-role></add-role>
     </div>
-    <script src="{{ url('/js/angularjs/ridective.js') }}"></script>
+    <script src="{{ url('/js/angularjs/directive/roleDirective.js') }}"></script>
     <script src="{{ url('/js/angularjs/controller/role.js') }}"></script>
     <script src="{{ url('/js/angularjs/factory/roleFactory.js') }}"></script>
 @endsection

@@ -42,7 +42,7 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                       <li ng-repeat="p in pages" class="page-item"><a class="page-link" ng-class="{'pageCurrent': currentPage==p}" href="#" ng-click="changePage(p)">@{{p}}</a></li>
-                      
+
                     </ul>
                   </nav>
               </div>
@@ -51,10 +51,10 @@
               </div>
           </div>
       </div>
-      <edit-user></edit-user>
+      <edit-user user-id="data.singleUser"></edit-user>
       <add-user></add-user>
     </div>
-    <script src="{{ url('/js/angularjs/ridective.js') }}"></script>
+    <script src="{{ url('/js/angularjs/directive/userDirective.js') }}"></script>
     <script src="{{ url('/js/angularjs/controller/user.js') }}"></script>
     <script src="{{ url('/js/angularjs/factory/userFactory.js') }}"></script>
 @endsection

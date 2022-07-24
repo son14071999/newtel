@@ -30,7 +30,10 @@ class CheckPermission
                 }
             }
             return response()->json([
-                'message' => 'Bạn không có quyền'
+                'message' => 'Bạn không có quyền',
+                'permit' => $permit,
+                'user' => $user,
+                'permits' => $permits
             ], 402);
         }
         return response()->json([

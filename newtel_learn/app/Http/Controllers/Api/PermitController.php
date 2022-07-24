@@ -15,7 +15,14 @@ class PermitController extends Controller
     {
         try {
             $search = isset($_GET['search']) ? $_GET['search'] : '';
-            $permitsParent = Permit::where('parent_id', null)->get()->load('childPermit');
+            $permitsParent = Permit::where('parent_id', null)->where('code', 'like', '%'.$search.'%')->get()->map(function($permit, $key){
+                $permit->checked = false;
+                $childPermits = $permit->childPermit->map(function($childPermit, $key1){
+                    $childPermit->checked = false;
+                    return $childPermit;
+                });
+                return $permit;
+            });
             return response()->json([
                 'permits' =>  $permitsParent,
                 'search' => $search
