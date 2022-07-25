@@ -26,13 +26,13 @@
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Search" ng-change="searchPermit()" ng-model="data.permitSearch">
                         </div>
-                        <div ng-repeat="parentPermit in data.listPermit">
-                            <input type="checkbox" id="chk_@{{ parentPermit.code }}" ng-value="parentPermit.code" ng-click="parentClick($index)" ng-checked="parentPermit.checked">
-                            <label for="chk_@{{ parentPermit.code }}">@{{ parentPermit.display_name }}</label>
+                        <div ng-repeat="(parentCode, parentPermit) in data.listPermit">
+                            <input type="checkbox" id="chk_@{{ parentCode }}" ng-checked="parentPermit.checked" ng-model="data.listPermit[parentCode].checked" ng-change="action.toggleParentPermit(parentCode)">
+                            <label for="chk_@{{ parentCode }}">@{{ parentPermit.display_name }}</label>
                             <br>
-                            <div ng-repeat="permit in parentPermit.child_permit" class="childPermission">
-                                <input type="checkbox" id="chk_@{{ permit.code }}" ng-value="permit.code" ng-checked="permit.checked" ng-click="childClick($parent.$index,$index)">
-                                <label for="chk_@{{ permit.code }}">@{{ permit.display_name }}</label><br>
+                            <div ng-repeat="(permitCode, permit) in parentPermit.child_permit" class="childPermission">
+                                <input type="checkbox" id="chk_@{{ permitCode }}" ng-checked="permit.checked" ng-model="data.listPermit[parentCode].child_permit[permitCode].checked">
+                                <label for="chk_@{{ permitCode }}">@{{ permit.display_name }}</label><br>
                             </div>
                         </div>
                     </div>
