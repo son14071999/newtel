@@ -3,7 +3,7 @@
 <header class="header" id="header">
     <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
 </header>
-<div class="l-navbar" id="nav-bar" ng-controller="logoutController">
+<div class="l-navbar" id="nav-bar" ng-controller="menuController">
     <nav class="nav">
         <div>
             <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span

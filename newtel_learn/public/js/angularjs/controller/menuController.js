@@ -1,5 +1,5 @@
 app.controller(
-    "logoutController",
+    "menuController",
     function ($scope, logoutFactory) {
         let url = window.location.href
         $scope.menuActive = 'user'

@@ -32,6 +32,6 @@
         </div>
       </div>
     </div>
-    <script src="{{ url('/js/angularjs/controller/login.js') }}"></script>
+    <script src="{{ url('/js/angularjs/controller/loginController.js') }}"></script>
     <script src="{{ url('/js/angularjs/factory/loginFactory.js') }}"></script>
 @endsection

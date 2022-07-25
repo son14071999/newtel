@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class CheckPermission
 {
@@ -20,24 +21,26 @@ class CheckPermission
     public function handle(Request $request, Closure $next, $permit = null)
     {
         $userId = $request->header('userId');
-
-        if (($user = User::find($userId))
-            && ($permits = $user->role->permissions)
+        if ($user = User::find($userId)
         ) {
-            foreach ($permits as $p) {
-                if ($p->code == $permit) {
-                    return $next($request);
+            if(($role = $user->role)
+            && ($permits = $role->permissions)){
+                foreach ($permits as $p) {
+                    if ($p->code == $permit) {
+                        return $next($request);
+                    }
                 }
             }
             return response()->json([
                 'message' => 'Bạn không có quyền',
                 'permit' => $permit,
                 'user' => $user,
-                'permits' => $permits
+                'auth' => Auth::check()
             ], 402);
         }
         return response()->json([
-            'message' => 'Bạn chưa đăng nhập'
+            'message' => 'Bạn chưa đăng nhập',
+            'auth' => Auth::check()
         ], 401);
 
     }

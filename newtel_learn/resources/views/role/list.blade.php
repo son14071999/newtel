@@ -1,7 +1,7 @@
 @extends('index')
 @section('content')
     <link rel="stylesheet" href="{{ url('/css/listRole.css') }}">
-    <div class="container" ng-controller="role">
+    <div class="container" ng-controller="roleController">
         <div class="row header-wrapper">
             <div class="col-lg-3 col-sm-3 col-md-3">
                 <h3>List Role</h3>
@@ -53,7 +53,8 @@
       <edit-role role-id="data.singleRole"></edit-role>
       <add-role></add-role>
     </div>
-    <script src="{{ url('/js/angularjs/directive/roleDirective.js') }}"></script>
-    <script src="{{ url('/js/angularjs/controller/role.js') }}"></script>
+    <script src="{{ url('/js/angularjs/directive/addRole.js') }}"></script>
+    <script src="{{ url('/js/angularjs/directive/editRole.js') }}"></script>
+    <script src="{{ url('/js/angularjs/controller/roleController.js') }}"></script>
     <script src="{{ url('/js/angularjs/factory/roleFactory.js') }}"></script>
 @endsection

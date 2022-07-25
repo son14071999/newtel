@@ -165,6 +165,7 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         if (!empty($role)) {
+            $role->permissions()->detach();
             $role->delete();
             return response()->json([
                 'code' => 200,

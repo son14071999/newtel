@@ -40,7 +40,7 @@
             <script src="{{ url('/js/angularjs/app.js') }}"></script>
             <script src="{{ url('/js/angularjs/handler/handle.js') }}"></script>
             <script src="{{ url('/js/angularjs/factory/logoutFactory.js') }}"></script>
-            <script src="{{ url('/js/angularjs/controller/logout.js') }}"></script>
+            <script src="{{ url('/js/angularjs/controller/menuController.js') }}"></script>
             <div style="margin-top: 120px;">
                 @yield('content')
             </div>

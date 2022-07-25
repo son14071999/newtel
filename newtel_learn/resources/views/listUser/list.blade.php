@@ -1,7 +1,7 @@
 @extends('index')
 @section('content')
     <link rel="stylesheet" href="{{ url('/css/listUser.css') }}">
-    <div class="container" ng-controller="user">
+    <div class="container" ng-controller="userController">
         <div class="row header-wrapper">
             <div class="col-lg-3 col-sm-3 col-md-3">
                 <h3>List User</h3>
@@ -54,7 +54,8 @@
       <edit-user user-id="data.singleUser"></edit-user>
       <add-user></add-user>
     </div>
-    <script src="{{ url('/js/angularjs/directive/userDirective.js') }}"></script>
-    <script src="{{ url('/js/angularjs/controller/user.js') }}"></script>
+    <script src="{{ url('/js/angularjs/directive/addUser.js') }}"></script>
+    <script src="{{ url('/js/angularjs/directive/editUser.js') }}"></script>
+    <script src="{{ url('/js/angularjs/controller/userController.js') }}"></script>
     <script src="{{ url('/js/angularjs/factory/userFactory.js') }}"></script>
 @endsection
