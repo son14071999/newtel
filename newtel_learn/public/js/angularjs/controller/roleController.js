@@ -29,7 +29,8 @@ app.controller('roleController', function ($scope, roleFactory) {
     }
 
     $scope.addRole = function () {
-        $('#addRoleModal').modal('show')
+        $scope.data.singleRole = 0;
+        $('#editRoleModal').modal('show')
     }
 
 

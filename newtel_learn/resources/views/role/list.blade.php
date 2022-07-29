@@ -51,7 +51,7 @@
           </div>
       </div>
       <edit-role role-id="data.singleRole"></edit-role>
-      <add-role></add-role>
+      <add-role role-id="data.singleRole"></add-role>
     </div>
     <script src="{{ url('/js/angularjs/directive/addRole.js') }}"></script>
     <script src="{{ url('/js/angularjs/directive/editRole.js') }}"></script>

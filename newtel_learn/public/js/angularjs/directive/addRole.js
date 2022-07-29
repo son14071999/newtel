@@ -2,10 +2,10 @@
 app.directive('addRole', function (roleFactory) {
     return {
         restrict: 'E',
-        templateUrl: rootUrl + "addRole",
+        templateUrl: rootUrl + "formRole",
         link: function (scope, element, attrs) {
             scope.data = {
-                roleAdd: {},
+                roleInfo: {},
                 listPermit: []
             }
             roleFactory.getListPermit()
@@ -21,22 +21,27 @@ app.directive('addRole', function (roleFactory) {
                 scope.data.listPermit = roleFactory.childClick(index, indexChild, scope.data.listPermit)
             }
             scope.saveAddRole = function () {
-                console.log(scope.data.listPermit);
                 permitsChecked = roleFactory.getChecked(scope.data.listPermit)
-                let roleAdd = {
-                    'code': scope.data.roleAdd.code,
-                    'name': scope.data.roleAdd.name,
+                let roleInfo = {
+                    'code': scope.data.roleInfo.code,
+                    'name': scope.data.roleInfo.name,
                     'permits': permitsChecked
                 }
-                roleFactory.saveAddRole(roleAdd)
+                roleFactory.saveAddRole(roleInfo)
                     .then(function (response) {
-                        $('#addRoleModal').modal('hide');
+                        $('#editRoleModal').modal('hide');
                         roleFactory.getListRole(scope)
                     })
                     .catch(function (err) {
                         alert(err.data.message)
                     })
             }
+            scope.$watch('roleId', (newVal, oldVal) => {
+                console.log(12345);
+                if(newVal) return true
+                scope.data.listPermit = roleFactory.resetListPermit(scope.data.listPermit)
+
+            })
             scope.searchPermit = () => {
                 setTimeout(() => {
                     roleFactory.getListPermit(scope.data.permitSearch)

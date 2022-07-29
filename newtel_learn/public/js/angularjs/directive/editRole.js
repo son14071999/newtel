@@ -19,20 +19,7 @@ app.directive('editRole', function (roleFactory) {
         }
 
         let processData = {
-            /**
-             * Thuc hien reset checked cua listPermit ve false
-             */
-            resetListPermit: function(){
-                let tmpListPermit = scope.data.listPermit;
-                _.each(tmpListPermit, (parentPermit, parentCode) => {
-                    tmpListPermit[parentCode].checked = false;
-                    _.each(tmpListPermit[parentCode].child_permit, (permit, permitCode) => {
-                        tmpListPermit[parentCode].child_permit[permitCode].checked = false;
-                    });
-                });
 
-                scope.data.listPermit = tmpListPermit;
-            },
             /**
              * Thuc hien gan quyen cua role vao listPermit (Xu ly checked)
              */
@@ -102,17 +89,15 @@ app.directive('editRole', function (roleFactory) {
                 _.each(scope.data.listPermit, (item) => {
                     listPermit.push(_.map(_.filter(item.child_permit, (permit) => {return (permit.checked)}), 'code'));
                 });
-                console.log(listPermit, 'listPermit');
                 return _.flattenDeep(listPermit);
             }
         }
 
         scope.$watch('roleId', function (newVal, oldVal) {
             if (!newVal) return false;
-            processData.resetListPermit();
+            scope.data.listPermit = roleFactory.resetListPermit(scope.data.listPermit);
             processData.getRole();
         });
-
 
         scope.saveEditRole = function () {
             console.log(scope.data.listPermit);
@@ -133,24 +118,12 @@ app.directive('editRole', function (roleFactory) {
                 })
         }
 
-        // scope.searchPermit = () => {
-        //     setTimeout(() => {
-        //         roleFactory.getListPermit(scope.data.permitSearch)
-        //             .then(function (response) {
-        //                 scope.data.parentPermits = response.data.permits
-        //                 scope.data.listPermit = response.data.permits;
-        //             }).catch(function (err) {
-        //                 alert(err.data.message)
-        //             })
-        //     }, 1000);
-        // }
-
         processData.getListPermit();
     };
 
     return {
         restrict: 'E',
-        templateUrl: rootUrl + 'editRole',
+        templateUrl: rootUrl + 'formRole',
         scope: {
             roleId: "="
         },

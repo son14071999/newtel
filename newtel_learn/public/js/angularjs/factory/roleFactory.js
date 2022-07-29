@@ -59,6 +59,17 @@ app.factory('roleFactory', ['$http', '$httpParamSerializer', 'functionHandle',
             })
             return permitsChecked
         }
+        roleFactory.resetListPermit = (listPermit) => {
+            let tmpListPermit = listPermit;
+            _.each(tmpListPermit, (parentPermit, parentCode) => {
+                tmpListPermit[parentCode].checked = false;
+                _.each(tmpListPermit[parentCode].child_permit, (permit, permitCode) => {
+                    tmpListPermit[parentCode].child_permit[permitCode].checked = false;
+                });
+            });
+
+            return tmpListPermit
+        }
         return roleFactory
     }
 ])

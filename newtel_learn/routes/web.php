@@ -36,9 +36,9 @@ Route::get('/addUser', function(){
 Route::get('/listRole', function(){
     return view('role.list');
 });
-Route::get('/editRole', function(){
-    return view('role.editRole');
+Route::get('/formRole', function(){
+    return view('role.formRole');
 });
-Route::get('/addRole', function(){
-    return view('role.addRole');
-});
+// Route::get('/addRole', function(){
+//     return view('role.addRole');
+// });
