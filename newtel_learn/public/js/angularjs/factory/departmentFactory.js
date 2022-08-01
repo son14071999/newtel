@@ -2,7 +2,7 @@ app.factory('departmentFactory', ['$http', '$httpParamSerializer', 'functionHand
     function ($http, $httpParamSerializer, functionHandle) {
         var departmentFactory = {}
         departmentFactory.deleteDepartment = function ($idDepartment) {
-            return $http.get(rootUrl + 'api/deleteListDepartment/' + $idDepartment, functionHandle.header)
+            return $http.get(rootUrl + 'api/deleteDepartment/' + $idDepartment, functionHandle.header)
         }
         departmentFactory.getListDepartment = function () {
             return $http.get(rootUrl + 'api/listDepartment' , functionHandle.header)

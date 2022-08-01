@@ -58,14 +58,13 @@ Route::group(['middleware' => 'authLogin'], function () {
     Route::post('addRole', [RoleController::class, 'store'])->name('addRolePost')->middleware('checkPermit:addRole');
     // department
     Route::get('listDepartment', [DepartmentController::class, 'index'])->name('listdepartment')->middleware('checkPermit:viewListDepartment');
-    Route::get('showdepartment/{id}', [DepartmentController::class, 'show'])->name('showdepartment')->middleware('checkPermit:viewDepartment');
-    Route::post('editdepartment/{id}', [DepartmentController::class, 'edit'])->name('editdepartment')->middleware('checkPermit:editDepartment');
-    Route::get('deleteListdepartment/{id}', [DepartmentController::class, 'destroy'])->name('deletedepartment')->middleware('checkPermit:deleteDepartment');
+    Route::get('showDepartment/{id}', [DepartmentController::class, 'show'])->name('showdepartment')->middleware('checkPermit:viewDepartment');
+    Route::post('editDepartment/{id}', [DepartmentController::class, 'edit'])->name('editdepartment')->middleware('checkPermit:editDepartment');
+    Route::get('deleteDepartment/{id}', [DepartmentController::class, 'destroy'])->name('deletedepartment')->middleware('checkPermit:deleteDepartment');
     Route::get('addDepartment', function () {
         return view('listdepartment.adddepartment');
     })->middleware('checkPermit:adddepartment');
     Route::post('addDepartment', [DepartmentController::class, 'store'])->name('adddepartmentPost')->middleware('checkPermit:addRole');
-
 
 
 

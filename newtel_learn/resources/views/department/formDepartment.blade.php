@@ -21,7 +21,7 @@
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Search" ng-change="searchDepartment()" ng-model="data.searchDepartment">
                         </div>
-                        <select name="department" class="form-select" id="department" ng-model="data.parentDepartment.id"
+                        <select name="department" class="form-select" id="department" ng-model="data.departmentInfo.parent_id"
                             aria-label="Chọn department">
                             <option value="root">Gốc</option>
                             <option ng-repeat="department in data.departments" ng-value="@{{ department.id }}"

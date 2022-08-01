@@ -9,4 +9,8 @@ class Department extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function chilDepartment() {
+        return $this->hasMany(Department::class, 'parent_id');
+    }
 }

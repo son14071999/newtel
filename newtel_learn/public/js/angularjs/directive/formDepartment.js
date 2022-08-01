@@ -7,61 +7,93 @@ app.directive('formDepartment', function (departmentFactory) {
         }
 
         processData = {
+            getDepartmentInfo: () => {
+                departmentFactory.departmentInfo(scope.departmentId)
+                .then((resp) => {
+                    scope.data.departmentInfo = resp.data
+                    _.map(scope.data.departments, (department) => {
+                        if(department.id == scope.data.departmentInfo.parent_id){
+                            department.selected = true
+                        }else{
+                            department.selected = false
+                        }
+                        return department
+                    })
+                }).catch((err) => {
+                    console.log(err);
+                })
+            },
             getDepartments: () => {
                 departmentFactory.getListDepartment()
-                .then((resp) => {
-                    scope.data.departments = resp.data
-                    processData.addPath()
-                    scope.data.Listdepartments = scope.data.departments
-                }).catch((err) => {
-                    console.log('err: ', err);
-                })
+                    .then((resp) => {
+                        scope.data.departments = resp.data
+                        processData.addPath()
+                        scope.data.Listdepartments = scope.data.departments
+                    }).catch((err) => {
+                        console.log('err: ', err);
+                    })
             },
             addPath: () => {
                 _.map(scope.data.departments, (department) => {
                     let path = ''
                     let parents = department.path.split('/')
                     _.each(parents, (parentId) => {
-                        path += '/'+_.find(scope.data.departments, (e) => e.id == parentId).name
+                        path += '/' + _.find(scope.data.departments, (e) => e.id == parentId).name
                     })
                     department.pathName = path
                     return department
                 })
-                console.log(scope.data.departments)
             }
         }
 
         scope.searchDepartment = () => {
-            console.log(123456);
-            if(!data.searchDepartment){
+            if (scope.data.searchDepartment) {
                 scope.data.departments = scope.data.Listdepartments
-                _.map(scope.data.departments, (department) => department.includes(data.searchDepartment))
-                console.log('---------', scope.data.departments)
+                scope.data.departments = _.filter(scope.data.departments, (department) => {
+                    if(department.name.includes(scope.data.searchDepartment)){
+                        return department
+                    }
+                })
             }
         }
         scope.$watch('departmentId', function (newVal, oldVal) {
             scope.data.departmentInfo = {}
-            if (!newVal) return false
             processData.getDepartments()
+            if (!newVal) return false
+            processData.getDepartmentInfo()
         });
 
 
         scope.saveDepartment = function () {
-            if(!scope.departmentId){
+            if (!scope.departmentId) {
                 let departmentInfo = {
                     'name': scope.data.departmentInfo.name,
-                    'parentId': scope.data.parentDepartment.id
+                    'parentId': scope.data.departmentInfo.parent_id
                 }
                 departmentFactory.saveAddDepartment(departmentInfo)
-                .then((response) => {
+                    .then((response) => {
+                        $('#formDepartmentModal').modal('hide');
+
+                    }).catch((err) => {
+                        console.log(err);
+                    })
+            }else{
+                let departmentInfo = {
+                    'name': scope.data.departmentInfo.name,
+                    'parentId': scope.data.departmentInfo.parent_id
+                }
+                departmentFactory.saveEditDepartment(scope.departmentId, departmentInfo)
+                .then((resp) => {
                     $('#formDepartmentModal').modal('hide');
                 }).catch((err) => {
-                    console.log(err);
+                    console.log(err)
                 })
             }
+            processData.getDepartments();
         }
 
         processData.getDepartments();
+
     };
 
     return {
@@ -69,7 +101,7 @@ app.directive('formDepartment', function (departmentFactory) {
         templateUrl: rootUrl + 'formDepartment',
         scope: {
             departmentId: "=",
-            title: '='
+            title: '=',
         },
         link: link
     }
