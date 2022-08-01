@@ -1,6 +1,7 @@
 app.controller('roleController', function ($scope, roleFactory) {
     $scope.data = {
-        singleRole: 0
+        singleRole: 0,
+        title: ''
     };
 
     $scope.permitSearch = ''
@@ -25,12 +26,14 @@ app.controller('roleController', function ($scope, roleFactory) {
 
     $scope.editRole = function ($id) {
         $scope.data.singleRole = $id;
-        $('#editRoleModal').modal('show');
+        $scope.data.title = 'Edit Role'
+        $('#formRoleModal').modal('show');
     }
 
     $scope.addRole = function () {
         $scope.data.singleRole = 0;
-        $('#editRoleModal').modal('show')
+        $scope.data.title = 'Add Role'
+        $('#formRoleModal').modal('show')
     }
 
 

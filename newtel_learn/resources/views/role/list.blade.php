@@ -50,11 +50,9 @@
               </div>
           </div>
       </div>
-      <edit-role role-id="data.singleRole"></edit-role>
-      <add-role role-id="data.singleRole"></add-role>
+      <form-role role-id="data.singleRole" title="data.title"></form-role>
     </div>
-    <script src="{{ url('/js/angularjs/directive/addRole.js') }}"></script>
-    <script src="{{ url('/js/angularjs/directive/editRole.js') }}"></script>
+    <script src="{{ url('/js/angularjs/directive/formRole.js') }}"></script>
     <script src="{{ url('/js/angularjs/controller/roleController.js') }}"></script>
     <script src="{{ url('/js/angularjs/factory/roleFactory.js') }}"></script>
 @endsection

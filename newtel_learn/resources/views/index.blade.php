@@ -16,6 +16,9 @@
                 <a href="/listRole" class="nav_link" ng-class="{'active': menuActive == 'role'}"> <i
                         class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Roles</span>
                 </a>
+                <a href="/listDepartment" class="nav_link" ng-class="{'active': menuActive == 'department'}"> <i
+                        class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Department</span>
+                </a>
 
             </div>
         </div> <a href="#" class="nav_link" ng-click="logout()"> <i class='bx bx-log-out nav_icon'></i> <span

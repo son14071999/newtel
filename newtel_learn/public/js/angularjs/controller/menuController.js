@@ -6,6 +6,9 @@ app.controller(
         if (url.indexOf('listRole') != -1) {
             $scope.menuActive = 'role'
         }
+        if (url.indexOf('listDepartment') != -1) {
+            $scope.menuActive = 'department'
+        }
         $scope.logout = function () {
             logoutFactory.logout()
                 .then((response) => {

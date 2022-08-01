@@ -39,6 +39,11 @@ Route::get('/listRole', function(){
 Route::get('/formRole', function(){
     return view('role.formRole');
 });
-// Route::get('/addRole', function(){
-//     return view('role.addRole');
-// });
+// department
+Route::get('/listDepartment', function(){
+    return view('department.list');
+});
+Route::get('/formDepartment', function(){
+    return view('department.formDepartment');
+});
+

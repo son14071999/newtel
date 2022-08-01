@@ -1,4 +1,4 @@
-app.directive('editRole', function (roleFactory) {
+app.directive('formRole', function (roleFactory) {
     let link = function (scope, element, attrs) {
         scope.data = {
             roleInfo: {},
@@ -47,7 +47,6 @@ app.directive('editRole', function (roleFactory) {
             getRole: function () {
                 roleFactory.roleInfo(scope.roleId).then((resp) => {
                     scope.data.roleInfo = resp.data.role;
-                    console.log(resp.data.role, 'resp.data.role');
                     this.rolePermit();
                 }).catch(err => console.log(err));
             },
@@ -87,35 +86,50 @@ app.directive('editRole', function (roleFactory) {
             getCheckedPermit: function(){
                 let listPermit = [];
                 _.each(scope.data.listPermit, (item) => {
-                    listPermit.push(_.map(_.filter(item.child_permit, (permit) => {return (permit.checked)}), 'code'));
+                    listPermit.push(_.map(_.filter(item.child_permit, (permit) => {return (permit.checked)}), 'id'));
                 });
                 return _.flattenDeep(listPermit);
             }
         }
 
         scope.$watch('roleId', function (newVal, oldVal) {
+            scope.data.listPermit = roleFactory.resetListPermit(scope.data.listPermit)
+            scope.data.roleInfo = {}
             if (!newVal) return false;
-            scope.data.listPermit = roleFactory.resetListPermit(scope.data.listPermit);
             processData.getRole();
         });
 
-        scope.saveEditRole = function () {
-            console.log(scope.data.listPermit);
-            console.log(processData.getCheckedPermit());
-            return false;
-            permitsChecked = roleFactory.getChecked(scope.data.listPermit)
-            roleFactory.saveEditRole(scope.data.roleInfo.id, {
+        scope.saveRole = function () {
+            if(!scope.roleId){
+                permitsChecked = processData.getCheckedPermit(scope.data.listPermit)
+                let roleInfo = {
                     'code': scope.data.roleInfo.code,
                     'name': scope.data.roleInfo.name,
                     'permits': permitsChecked
-                })
-                .then(function (response) {
-                    $('#editRoleModal').modal('hide');
-                    roleFactory.getListRole(scope)
-                })
-                .catch(function (err) {
-                    alert(err.data.message)
-                })
+                }
+                roleFactory.saveAddRole(roleInfo)
+                    .then(function (response) {
+                        $('#formRoleModal').modal('hide');
+                        roleFactory.getListRole(scope)
+                    })
+                    .catch(function (err) {
+                        alert(err.data.message)
+                    })
+            }else{
+                permitsChecked = processData.getCheckedPermit(scope.data.listPermit)
+                roleFactory.saveEditRole(scope.data.roleInfo.id, {
+                        'code': scope.data.roleInfo.code,
+                        'name': scope.data.roleInfo.name,
+                        'permits': permitsChecked
+                    })
+                    .then(function (response) {
+                        $('#formRoleModal').modal('hide');
+                        roleFactory.getListRole(scope)
+                    })
+                    .catch(function (err) {
+                        alert(err.data.message)
+                    })
+            }
         }
 
         processData.getListPermit();
@@ -125,7 +139,8 @@ app.directive('editRole', function (roleFactory) {
         restrict: 'E',
         templateUrl: rootUrl + 'formRole',
         scope: {
-            roleId: "="
+            roleId: "=",
+            title: '='
         },
         link: link
     }

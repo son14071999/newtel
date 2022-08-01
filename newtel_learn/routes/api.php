@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermitController;
+use App\Http\Controllers\Api\DepartmentController;
 use App\Models\Permit;
 use App\Models\Role;
 
@@ -45,6 +46,7 @@ Route::group(['middleware' => 'authLogin'], function () {
         return view('listUser.addUser');
     })->middleware('checkPermit:addUser');
     Route::post('addUser', [UserController::class, 'store'])->name('addUserPost')->middleware('checkPermit:addUser');
+
     // role
     Route::get('listRole', [RoleController::class, 'index'])->name('listRole')->middleware('checkPermit:viewListRole');
     Route::get('showRole/{id}', [RoleController::class, 'show'])->name('showRole')->middleware('checkPermit:viewRole');
@@ -54,6 +56,18 @@ Route::group(['middleware' => 'authLogin'], function () {
         return view('listRole.addRole');
     })->middleware('checkPermit:addRole');
     Route::post('addRole', [RoleController::class, 'store'])->name('addRolePost')->middleware('checkPermit:addRole');
+    // department
+    Route::get('listDepartment', [DepartmentController::class, 'index'])->name('listdepartment')->middleware('checkPermit:viewListDepartment');
+    Route::get('showdepartment/{id}', [DepartmentController::class, 'show'])->name('showdepartment')->middleware('checkPermit:viewDepartment');
+    Route::post('editdepartment/{id}', [DepartmentController::class, 'edit'])->name('editdepartment')->middleware('checkPermit:editDepartment');
+    Route::get('deleteListdepartment/{id}', [DepartmentController::class, 'destroy'])->name('deletedepartment')->middleware('checkPermit:deleteDepartment');
+    Route::get('addDepartment', function () {
+        return view('listdepartment.adddepartment');
+    })->middleware('checkPermit:adddepartment');
+    Route::post('addDepartment', [DepartmentController::class, 'store'])->name('adddepartmentPost')->middleware('checkPermit:addRole');
+
+
+
 
     //
     Route::get('/getAllPermit', [PermitController::class, 'getAllPermit']);

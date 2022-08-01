@@ -46,7 +46,7 @@ app.factory('roleFactory', ['$http', '$httpParamSerializer', 'functionHandle',
         }
         roleFactory.getChecked = function (listPermit) {
             permitsChecked = []
-            console.log(listPermit);
+            console.log('listPermit:', listPermit);
             listPermit.forEach(parent => {
                 if (parent.checked) {
                     permitsChecked.push(parent.id)
