@@ -27,28 +27,17 @@ app.directive('formDepartment', function (departmentFactory) {
                 departmentFactory.getListDepartment()
                     .then((resp) => {
                         scope.data.departments = resp.data
-                        processData.addPath()
                         scope.data.Listdepartments = scope.data.departments
+                        scope.departments = departmentFactory.updateDepartments(scope.data.Listdepartments)
                     }).catch((err) => {
                         console.log('err: ', err);
                     })
-            },
-            addPath: () => {
-                _.map(scope.data.departments, (department) => {
-                    let path = ''
-                    let parents = department.path.split('/')
-                    _.each(parents, (parentId) => {
-                        path += '/' + _.find(scope.data.departments, (e) => e.id == parentId).name
-                    })
-                    department.pathName = path
-                    return department
-                })
             }
         }
 
         scope.searchDepartment = () => {
+            scope.data.departments = scope.data.Listdepartments
             if (scope.data.searchDepartment) {
-                scope.data.departments = scope.data.Listdepartments
                 scope.data.departments = _.filter(scope.data.departments, (department) => {
                     if(department.name.includes(scope.data.searchDepartment)){
                         return department
@@ -73,6 +62,7 @@ app.directive('formDepartment', function (departmentFactory) {
                 departmentFactory.saveAddDepartment(departmentInfo)
                     .then((response) => {
                         $('#formDepartmentModal').modal('hide');
+                        processData.getDepartments();
 
                     }).catch((err) => {
                         console.log(err);
@@ -85,11 +75,12 @@ app.directive('formDepartment', function (departmentFactory) {
                 departmentFactory.saveEditDepartment(scope.departmentId, departmentInfo)
                 .then((resp) => {
                     $('#formDepartmentModal').modal('hide');
+                    processData.getDepartments();
                 }).catch((err) => {
                     console.log(err)
                 })
             }
-            processData.getDepartments();
+
         }
 
         processData.getDepartments();
@@ -102,6 +93,7 @@ app.directive('formDepartment', function (departmentFactory) {
         scope: {
             departmentId: "=",
             title: '=',
+            departments: '='
         },
         link: link
     }

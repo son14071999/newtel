@@ -47,3 +47,7 @@ Route::get('/formDepartment', function(){
     return view('department.formDepartment');
 });
 
+Route::get('resetPassword', function() {
+    return view('auth.resetPassword');
+})->name('resetPassword');
+

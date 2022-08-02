@@ -11,6 +11,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Events\ResetPassword;
 
 class UserController extends Controller
 {
@@ -26,21 +27,13 @@ class UserController extends Controller
         $itemPerPage = intval($itemPerPage);
         $users = User::where('name','LIKE', '%'.$search.'%')
         ->orWhere('email','LIKE', '%'.$search.'%')->paginate($itemPerPage);
+        event(new ResetPassword());
         return response()->json([
             'code' => 200,
             'users' => $users,
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -136,7 +129,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
+
     }
 
     /**

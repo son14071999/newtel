@@ -16,7 +16,7 @@
                             class="fa-solid fa-plus"></i> Add Department</button></a>
             </div>
         </div>
-        <table class="table">
+        <span class="table" ng-show="!data.searchShow">
             <div ng-repeat="department in data.departments" class="wrapper-line-department" ng-show="department.show">
                 <span style="padding-left: @{{ department.paddingLeft }}">
                     <span ng-show="department.hasChild" ng-click="dropDown(department.id)" class="wrappper-icon">
@@ -30,8 +30,24 @@
                     <a href="#" ng-click="editDepartment(department.id)"><i class="fa-solid fa-pen-to-square"></i></a>
                 </span>
             </div>
-        </table>
-        <form-department department-id="data.singleDepartment" title="data.title"></form-department>
+        </span>
+
+        <div ng-show="data.searchShow">
+            <div ng-repeat="department in data.departments" class="wrapper-line-department" ng-show="department.show">
+                <div>
+                    <div> @{{ department.name }}</div>
+                    <div> @{{ department.pathName }}</div>
+                </div>
+                <span>
+                    <a href="#" ng-click="deleteDepartment(department.id)"><i
+                            class="fa-solid fa-circle-minus"></i></a>
+                    <a href="#" ng-click="editDepartment(department.id)"><i class="fa-solid fa-pen-to-square"></i></a>
+                </span>
+            </div>
+        </div>
+
+
+        <form-department department-id="data.singleDepartment" title="data.title" departments="data.departments"></form-department>
     </div>
     <script src="{{ url('/js/angularjs/directive/formDepartment.js') }}"></script>
     <script src="{{ url('/js/angularjs/controller/departmentController.js') }}"></script>

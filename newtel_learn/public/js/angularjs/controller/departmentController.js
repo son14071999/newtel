@@ -4,7 +4,8 @@ app.controller('departmentController', function ($scope, departmentFactory) {
         title: '',
         departments: [],
         listDepartments: [],
-        search: ''
+        search: '',
+        searchShow: false
     };
 
     $scope.paramRequest = {
@@ -17,11 +18,7 @@ app.controller('departmentController', function ($scope, departmentFactory) {
         .then((resp) => {
             $scope.data.departments = resp.data
             _.map($scope.data.departments, (department) => {
-                department.paddingLeft = department.path.split('/').length * 20 + "px"
-                department.hasChild = processData.hasChild(department.id)
-                department.iconAction = 'down'
-                department.show = true
-                return department
+                return departmentFactory.setDefault($scope.data.departments, department)
             })
             $scope.data.listDepartments = $scope.data.departments
         }).catch((err) => {
@@ -40,14 +37,6 @@ app.controller('departmentController', function ($scope, departmentFactory) {
     }
 
     let processData = {
-        'hasChild': (id) => {
-            for (let i = 0; i < $scope.data.departments.length; i++) {
-                if ($scope.data.departments[i].parent_id == id) {
-                    return true
-                }
-            }
-            return false
-        },
         'findChild': (department) => {
             return _.map($scope.data.departments, (item) => {
                 if(item.path.includes(department.path+"/")){
@@ -82,13 +71,17 @@ app.controller('departmentController', function ($scope, departmentFactory) {
     }
 
     $scope.searchDepartment = () => {
+        $scope.data.listDepartments = departmentFactory.updateDepartments($scope.data.listDepartments)
         $scope.data.departments = $scope.data.listDepartments
         if ($scope.data.search) {
+            $scope.data.searchShow = true
             $scope.data.departments = _.filter($scope.data.departments, (department) => {
                 if (department.name.includes($scope.data.search)) {
                     return department
                 }
             })
+        }else{
+            $scope.data.searchShow = false
         }
     }
 
