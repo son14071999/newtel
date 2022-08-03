@@ -27,9 +27,9 @@ class SendEmail implements ShouldQueue
      */
     public function handle(ResetPassword $event)
     {
-        Mail::send('email.resetPassword', [], function($email){
+        Mail::send('email.resetPassword', ['user' => $event->user], function($email) use($event){
             $email->subject('Reset password');
-            $email->to('son1999tmgl3@gmail.com', 'Nguyen Xuan Son');
+            $email->to($event->user->email, 'Nguyen Xuan Son');
         });
     }
 }

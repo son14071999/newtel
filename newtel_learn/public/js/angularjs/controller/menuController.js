@@ -5,9 +5,10 @@ app.controller(
         $scope.menuActive = 'user'
         if (url.indexOf('listRole') != -1) {
             $scope.menuActive = 'role'
-        }
-        if (url.indexOf('listDepartment') != -1) {
+        }else if (url.indexOf('listDepartment') != -1) {
             $scope.menuActive = 'department'
+        }else if(url.indexOf('issue') != -1) {
+            $scope.menuActive = 'issue'
         }
         $scope.logout = function () {
             logoutFactory.logout()

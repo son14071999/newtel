@@ -19,6 +19,9 @@
                     <a href="/listDepartment" class="nav_link" ng-class="{'active': menuActive == 'department'}"> <i
                             class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Department</span>
                     </a>
+                    <a href="/listIssue" class="nav_link" ng-class="{'active': menuActive == 'issue'}"> <i
+                            class="fa-solid fa-calendar-check"></i> <span class="nav_name">Issue</span>
+                    </a>
 
                 </div>
             </div> <a href="#" class="nav_link" ng-click="logout()"> <i class='bx bx-log-out nav_icon'></i> <span

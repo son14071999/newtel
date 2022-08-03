@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ResetPassword;
 use App\Http\Controllers\Controller;
 use App\Models\SessionUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -53,5 +55,34 @@ class LoginController extends Controller
             'status' => 'Fail',
             'message' => 'Session không hợp lệ',
          ], 304);
+    }
+
+    public function forgotPassword(Request $request) {
+        if($request->email 
+        && ($user = User::where('email', $request->email)->first())){
+            $hashRandom = Str::random(250);
+            $user->update([
+                'hash' => $hashRandom
+            ]);
+            event(new ResetPassword($user));
+            return response()->json('Success', 200);
+        }
+        return response()->json('Email không hợp lệ', 304);
+    }
+
+
+    public function updatePasswrord(Request $request){
+        if(($hash = $request->input('hash'))
+            && ($user = User::where('hash', $hash)->first())
+            && ($password = $request->password)
+            && ($passwordConfirm = $request->passwordConfirm)
+            && $password == $passwordConfirm){
+                $user->update([
+                    'password' => bcrypt($password),
+                    'hash' => null
+                ]);
+                return response()->json('Thay đổi mật khẩu thành công', 200);
+        }
+        return response()->json('Dữ liệu không hợp lệ', 304);
     }
 }

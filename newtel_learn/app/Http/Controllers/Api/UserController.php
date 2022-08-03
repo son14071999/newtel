@@ -27,7 +27,6 @@ class UserController extends Controller
         $itemPerPage = intval($itemPerPage);
         $users = User::where('name','LIKE', '%'.$search.'%')
         ->orWhere('email','LIKE', '%'.$search.'%')->paginate($itemPerPage);
-        event(new ResetPassword());
         return response()->json([
             'code' => 200,
             'users' => $users,

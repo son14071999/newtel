@@ -37,6 +37,8 @@ return array(
     'App\\Models\\Role_permit' => $baseDir . '/app/Models/Role_permit.php',
     'App\\Models\\SessionUser' => $baseDir . '/app/Models/SessionUser.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
+    'App\\Models\\issue' => $baseDir . '/app/Models/issue.php',
+    'App\\Models\\status' => $baseDir . '/app/Models/status.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',

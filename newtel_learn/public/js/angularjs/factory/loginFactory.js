@@ -5,6 +5,9 @@ app.factory('loginFactory' ,['$http', 'functionHandle',
             let url = rootUrl + "api/login";
             return  $http.post(url, $params)
         }
+        loginFactory.sentMailForgotPw = (email) => {
+            return $http.post(rootUrl + 'api/forgotPassword', {'email': email})
+        }
         return loginFactory
     }
 ])

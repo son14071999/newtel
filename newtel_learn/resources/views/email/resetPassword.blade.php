@@ -52,9 +52,10 @@
                                         <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
                                             Để đặt lại mật khẩu vui lòng ấn vào button <b>Reset Password</b>. Để đảm bảo tính bảo mật vui lòng không chia sẻ mail này ra ngoài !
                                         </p>
-                                        <a href="{{ url('resetPassword') }}"
+
+                                        <a href="{{ url('resetPassword?hash='.$user->hash) }}"
                                             style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Reset
-                                            Password</a>
+                                            Password </a>
                                     </td>
                                 </tr>
                                 <tr>

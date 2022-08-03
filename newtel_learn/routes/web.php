@@ -46,6 +46,13 @@ Route::get('/listDepartment', function(){
 Route::get('/formDepartment', function(){
     return view('department.formDepartment');
 });
+// issue
+Route::get('/listIssue', function(){
+    return view('issue.list');
+});
+// Route::get('/formDepartment', function(){
+//     return view('department.formDepartment');
+// });
 
 Route::get('resetPassword', function() {
     return view('auth.resetPassword');
