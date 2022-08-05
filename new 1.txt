@@ -1,0 +1,22 @@
+local scope eloquent
+appends model eloquent
+
+cấc loại queue  
+passport client 
+middware auth 
+
+
+
+- làm danh sách issue 
+- Tìm hiểu: 
+	+ local scope eloquent
+	+ append model eloquent 
+	+ queue, log 
+	+ xem lại basicAuth, Hmac, JWT
+	+ Oath2
+	+ Tìm hiểu về pasport -> làm oath2
+	+ tìm hiểu guzzle
+	+ tìm hiểu api document generate
+	
+	
+
