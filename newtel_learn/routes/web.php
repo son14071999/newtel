@@ -24,12 +24,12 @@ Route::get('/login', function(){
 Route::get('/listUser', function(){
     return view('listUser.list');
 });
-Route::get('/editUser', function(){
-    return view('listUser.editUser');
+Route::get('/formUser', function(){
+    return view('listUser.formUser');
 });
-Route::get('/addUser', function(){
-    return view('listUser.addUser');
-});
+// Route::get('/addUser', function(){
+//     return view('listUser.addUser');
+// });
 
 
 // role
@@ -46,13 +46,20 @@ Route::get('/listDepartment', function(){
 Route::get('/formDepartment', function(){
     return view('department.formDepartment');
 });
+Route::get('/formListDepartment', function(){
+    return view('department.formListDepartment');
+});
 // issue
 Route::get('/listIssue', function(){
     return view('issue.list');
 });
-// Route::get('/formDepartment', function(){
-//     return view('department.formDepartment');
-// });
+Route::get('/formIssue', function(){
+    return view('issue.formIssue');
+});
+
+
+
+
 
 Route::get('resetPassword', function() {
     return view('auth.resetPassword');

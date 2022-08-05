@@ -48,7 +48,8 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'role_id' => intval($request->role_id)
+            'role_id' => intval($request->role_id),
+            'department_id' => intval($request->department_id)
         ]);
         return response()->json([
             'message' => 'success',
@@ -70,10 +71,7 @@ class UserController extends Controller
                 'message' => 'User ko tồn tại'
             ], 405);
         }else{
-            return response()->json([
-                'user' => $user,
-                'roles' => Role::get()
-            ], 200);
+            return response()->json($user, 200);
         }
     }
 
@@ -119,17 +117,6 @@ class UserController extends Controller
         ];
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-
-    }
 
     /**
      * Remove the specified resource from storage.

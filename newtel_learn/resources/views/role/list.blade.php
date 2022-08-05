@@ -8,7 +8,7 @@
             </div>
             <div class="col-lg-9 col-sm-9 col-md-9">
                 <div class="input-group" style="margin-right: 20px">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" ng-change="filterNameGmail()" aria-describedby="search-addon" ng-model="paramRequest.search" />
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" ng-change="filterNameGmail()" aria-describedby="search-addon" ng-model="data.paramRequest.search" />
                     <button type="button" class="btn btn-outline-primary" ng-click="filterNameGmail()">search</button>
                 </div>
                     <a href="#" ng-click="addRole()"><button type="button" class="btn btn-success"><i
@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="role in roles">
+                <tr ng-repeat="role in data.roles">
                     <th>@{{ role.id }}</th>
                     <th>@{{ role.code }}</th>
                     <th>@{{ role.name }}</th>
@@ -41,16 +41,16 @@
               <div class="col-lg-8 col-md-8">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                      <li ng-repeat="p in pages" class="page-item"><a class="page-link" ng-class="{'pageCurrent': currentPage==p}" href="#" ng-click="changePage(p)">@{{p}}</a></li>
+                      <li ng-repeat="p in data.pages" class="page-item"><a class="page-link" ng-class="{'pageCurrent': data.currentPage==p}" href="#" ng-click="changePage(p)">@{{p}}</a></li>
                     </ul>
                   </nav>
               </div>
               <div class="col-lg-4 col-md-4">
-                <input type="number" min="1" max="2000" ng-model="paramRequest.limit" id="itemPerPage" ng-change="changeItemPerPage()">
+                <input type="number" min="1" max="2000" ng-model="data.paramRequest.limit" id="itemPerPage" ng-change="changeItemPerPage()">
               </div>
           </div>
       </div>
-      <form-role role-id="data.singleRole" title="data.title"></form-role>
+      <form-role role-id="data.singleRole" title="data.title" input-data="data"></form-role>
     </div>
     <script src="{{ url('/js/angularjs/directive/formRole.js') }}"></script>
     <script src="{{ url('/js/angularjs/controller/roleController.js') }}"></script>

@@ -13,14 +13,14 @@ app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
         userFactory.saveAddUser = function ($params){
             return $http.post(rootUrl + "api/addUser", $params,functionHandle.header)
         }
-        userFactory.getListUser = function($scope){
-            var request = $http.get(rootUrl + "api/listUser?" + $httpParamSerializer($scope.paramRequest), {
+        userFactory.getListUser = function(data){
+            var request = $http.get(rootUrl + "api/listUser?" + $httpParamSerializer(data.paramRequest), {
                 headers: {
                     'token': localStorage.getItem('token'),
                     'userId': localStorage.getItem('userId'),
                 }
             })
-            functionHandle.getListUser($scope, request)
+            functionHandle.getListUser(data, request)
         }
         userFactory.getListRole = function ($params){
             return $http.get(rootUrl + "api/getAllRole",functionHandle.header)

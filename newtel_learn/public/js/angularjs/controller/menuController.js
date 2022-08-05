@@ -7,7 +7,7 @@ app.controller(
             $scope.menuActive = 'role'
         }else if (url.indexOf('listDepartment') != -1) {
             $scope.menuActive = 'department'
-        }else if(url.indexOf('issue') != -1) {
+        }else if(url.indexOf('listIssue') != -1) {
             $scope.menuActive = 'issue'
         }
         $scope.logout = function () {

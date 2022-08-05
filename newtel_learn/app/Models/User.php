@@ -23,7 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'hash'
+        'hash',
+        'department_id'
     ];
 
     public $timestamps = true;

@@ -1,23 +1,23 @@
 app.controller('roleController', function ($scope, roleFactory) {
     $scope.data = {
         singleRole: 0,
-        title: ''
+        title: '',
+        paramRequest: {
+            limit: 10,
+            search: '',
+            page: 1
+        },
+        roles: [],
+        currentPage: 1,
+        itemPerPage: 1,
+        pages: 1
     };
-
-    $scope.permitSearch = ''
-    $scope.paramRequest = {
-        'limit': 10,
-        'search': '',
-        'page': 1
-    }
-    $scope.roleAdd = {}
-    roleFactory.getListRole($scope)
-
+    roleFactory.getListRole($scope.data)
     $scope.deleteRole = function ($idRole) {
         roleFactory.deleteRole($idRole)
             .then(function (response) {
                 alert(response.data.message)
-                roleFactory.getListRole($scope)
+                roleFactory.getListRole($scope.data)
             })
             .catch(function (err) {
                 console.log(err)
@@ -31,16 +31,16 @@ app.controller('roleController', function ($scope, roleFactory) {
     }
 
     $scope.addRole = function () {
-        $scope.data.singleRole = 0;
+        $scope.data.singleRole = 0 - Math.abs($scope.data.singleRole) - 1;
         $scope.data.title = 'Add Role'
         $('#formRoleModal').modal('show')
     }
 
 
     $scope.changeItemPerPage = function () {
-        if ($scope.paramRequest.limit) {
+        if ($scope.data.paramRequest.limit) {
             setTimeout(() => {
-                roleFactory.getListRole($scope)
+                roleFactory.getListRole($scope.data)
             }, 1000);
         }
     }
@@ -48,16 +48,16 @@ app.controller('roleController', function ($scope, roleFactory) {
 
     $scope.filterNameGmail = function () {
         setTimeout(() => {
-            $scope.paramRequest.page = 1
-            roleFactory.getListRole($scope)
+            $scope.data.paramRequest.page = 1
+            roleFactory.getListRole($scope.data)
         }, 1000);
 
     }
     $scope.changePage = function (p) {
         if (p) {
             setTimeout(() => {
-                $scope.paramRequest.page = p
-                roleFactory.getListRole($scope)
+                $scope.data.paramRequest.page = p
+                roleFactory.getListRole($scope.data)
             }, 100);
         }
     }

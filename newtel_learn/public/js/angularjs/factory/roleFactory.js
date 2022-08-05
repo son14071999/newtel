@@ -16,14 +16,14 @@ app.factory('roleFactory', ['$http', '$httpParamSerializer', 'functionHandle',
         roleFactory.logout = function () {
             return $http.post(rootUrl + 'api/logout', {}, functionHandle.header)
         }
-        roleFactory.getListRole = function ($scope) {
-            var request = $http.get(rootUrl + "api/listRole?" + $httpParamSerializer($scope.paramRequest), {
+        roleFactory.getListRole = function (data) {
+            var request = $http.get(rootUrl + "api/listRole?" + $httpParamSerializer(data.paramRequest), {
                 headers: {
                     'token': localStorage.getItem('token'),
                     'userId': localStorage.getItem('userId'),
                 }
             })
-            functionHandle.getListRole($scope, request)
+            functionHandle.getListRole(data, request)
         }
         roleFactory.getListPermit = function (filterSearch = '') {
             return $http.get(rootUrl + "api/getAllPermit?search=" + filterSearch, {
