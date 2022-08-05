@@ -1,4 +1,4 @@
-app.controller('issueController', function($scope, issueFactory) {
+app.controller('issueController', function ($scope, issueFactory) {
     $scope.data = {
         singleIssue: 0,
         title: ''
@@ -8,4 +8,6 @@ app.controller('issueController', function($scope, issueFactory) {
         $scope.data.title = 'Add Issue'
         $('#formIssueModal').modal('show')
     }
+    
 })
+

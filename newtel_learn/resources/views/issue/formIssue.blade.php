@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ url('/css/formIssue.css') }}">
 <div class="modal fade" id="formIssueModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -16,45 +17,66 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="descripttion" class="col-form-label">Tên nhiệm vụ: </label>
-                        <textarea id="descripttion" rows="4" cols="50" ng-model="data.issueInfo.descripttion">
+                        <label for="descripttion" class="col-form-label">Mô tả: </label>
+                        <textarea id="descripttion" rows="4" cols="60" ng-model="data.issueInfo.descripttion">
                             Mô tả công việc
                         </textarea>
                     </div>
 
+
                     <div class="form-group">
-                        <label for="name" class="col-form-label">Người thực hiện: </label>
-                        <select name="role" class="form-select" id="role" ng-model="data.userInfo.department_id"
-                            aria-label="Chọn department">
-                            <option value="0">--Chọn department--</option>
-                            <option ng-repeat="department in data.departments" ng-value="@{{ department.id }}"
-                                ng-selected="department.selected" style="height: 60px">
-                                    <div>@{{department.name}}</div>
-                                    <div>(@{{department.pathName}})</div>
+                        <label for="employee" class="col-form-label">Người thực hiện: </label>
+                        <select name="employee" class="form-select" id="role"
+                            ng-model="data.issueInfo.jobAssignor_id" aria-label="Chọn người thực hiện">
+                            <option value="0">--Chọn người thực hiện--</option>
+                            <option ng-repeat="employee in data.employees" ng-value="@{{ employee.id }}"
+                                ng-selected="employee.selected" style="height: 60px">@{{ employee.name }}
                             </option>
                         </select>
                     </div>
 
-                    <div style="margin-top: 7px;"><span>Chọn permission: </span></div>
-                    <div class="form-group"
-                        style="width: 100%; min-height: 150px; overflow: auto;margin-top: 5px; margin-left: 10px">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Search" ng-change="searchPermit()"
-                                ng-model="data.permitSearch">
-                        </div>
-                        <div ng-repeat="(parentCode, parentPermit) in data.listPermit">
-                            <input type="checkbox" id="chk_@{{ parentCode }}" ng-checked="parentPermit.checked"
-                                ng-model="data.listPermit[parentCode].checked"
-                                ng-change="action.toggleParentPermit(parentCode)">
-                            <label for="chk_@{{ parentCode }}">@{{ parentPermit.display_name }}</label>
-                            <br>
-                            <div ng-repeat="(permitCode, permit) in parentPermit.child_permit" class="childPermission">
-                                <input type="checkbox" id="chk_@{{ permitCode }}" ng-checked="permit.checked"
-                                    ng-model="data.listPermit[parentCode].child_permit[permitCode].checked">
-                                <label for="chk_@{{ permitCode }}">@{{ permit.display_name }}</label><br>
-                            </div>
+                    <div class="form-group">
+                        <label for="status" class="col-form-label">Trạng thái: </label>
+                        <select name="status" class="form-select" id="role" ng-model="data.issueInfo.status_id"
+                            aria-label="Chọn trạng thái">
+                            <option value="0">--Chọn trạng thái--</option>
+                            <option ng-repeat="status in data.statuses" ng-value="@{{ status.id }}"
+                                ng-selected="status.selected" style="height: 60px">@{{ status.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="md-form md-outline input-with-post-icon datepicker"
+                            inline="true">
+                            <label for="deadline">Deadline...</label>
+                            <input placeholder="Select date" type="date" id="deadline" class="form-control" ng-model="data.issueInfo.deadline">
                         </div>
                     </div>
+
+
+                    <div class="form-group">
+                        <div class="md-form md-outline input-with-post-icon datepicker"
+                            inline="true">
+                            <label for="finishDay">Ngày hoàn thành...</label>
+                            <input placeholder="Select date" type="date" id="finishDay" class="form-control" ng-model="data.issueInfo.finishDay">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="statusFinishId" class="col-form-label">Trạng thái hoàn thành: </label>
+                        <select name="status" class="form-select" ng-model="data.issueInfo.status_finish_id"
+                            aria-label="Chọn trạng thái">
+                            <option value="0">--Chọn trạng thái--</option>
+                            <option ng-repeat="status in data.statusFinishes" ng-value="@{{ status.id }}"
+                                ng-selected="status.selected" style="height: 60px">@{{ status.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    
                 </form>
             </div>
             <div class="modal-footer">

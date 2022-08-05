@@ -1,7 +1,6 @@
+const { data } = require("jquery")
+
 app.directive('formIssue', function (issueFactory) {
-    let link = function (scope, element, attrs) {
-        
-    };
     return {
         restrict: 'E',
         templateUrl: rootUrl + 'formIssue',
@@ -9,6 +8,20 @@ app.directive('formIssue', function (issueFactory) {
             issueId: "=",
             title: '='
         },
-        link: link
+        link: function (scope, element, attrs) {
+            scope.data = {
+                statuses: [],
+                finishStatuses: [],
+
+            }
+            let processData = {
+                'getListStatuses': () => {
+
+                },
+                'getListFinishStatus': () => {
+                    
+                }
+            }
+        }
     }
 })
