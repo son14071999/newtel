@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermitController;
 use App\Http\Controllers\Api\DepartmentController;
+use App\Http\Controllers\Api\StatusController;
+use App\Http\Controllers\Api\IssueController;
 use App\Models\Permit;
 use App\Models\Role;
 
@@ -34,7 +36,7 @@ Route::get('login', function () {
 Route::post('login', [LoginController::class, 'login'])->name('login');
 
 
-Route::group(['middleware' => 'authLogin'], function () {
+Route::group(['middleware' => 'api:auth'], function () {
     // Logout
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     //User
@@ -65,6 +67,13 @@ Route::group(['middleware' => 'authLogin'], function () {
         return view('listdepartment.adddepartment');
     })->middleware('checkPermit:adddepartment');
     Route::post('addDepartment', [DepartmentController::class, 'store'])->name('adddepartmentPost')->middleware('checkPermit:addRole');
+
+
+
+
+    // issue
+    Route::get('getListStatus/{id}', [StatusController::class, 'getListStatus']);
+    Route::post('addIssue', [IssueController::class, 'store']);
 
 
 

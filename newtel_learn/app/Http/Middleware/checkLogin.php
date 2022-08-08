@@ -18,9 +18,6 @@ class checkLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        // if(Auth::check()){
-            // return $next($request);
-        // }
         $token = $request->header('token');
         $userId = $request->header('userId');
         if(!empty($token) && !empty($userId) 

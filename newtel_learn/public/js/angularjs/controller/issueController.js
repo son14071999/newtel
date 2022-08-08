@@ -4,7 +4,7 @@ app.controller('issueController', function ($scope, issueFactory) {
         title: ''
     }
     $scope.addIssue = () => {
-        $scope.data.singleIsssue = 0;
+        $scope.data.singleIssue = 0 - Math.abs($scope.data.singleIssue) - 1
         $scope.data.title = 'Add Issue'
         $('#formIssueModal').modal('show')
     }

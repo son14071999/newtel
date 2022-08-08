@@ -16,8 +16,7 @@ app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
         userFactory.getListUser = function(data){
             var request = $http.get(rootUrl + "api/listUser?" + $httpParamSerializer(data.paramRequest), {
                 headers: {
-                    'token': localStorage.getItem('token'),
-                    'userId': localStorage.getItem('userId'),
+                    'token': localStorage.getItem('accessToken'),
                 }
             })
             functionHandle.getListUser(data, request)

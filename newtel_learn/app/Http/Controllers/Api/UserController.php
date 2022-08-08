@@ -11,7 +11,6 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use App\Events\ResetPassword;
 
 class UserController extends Controller
 {

@@ -34,8 +34,9 @@ app.value('functionHandle', {
     },
     'header': {
         headers: {
-            'token': localStorage.getItem('token'),
-            'userId': localStorage.getItem('userId'),
+            'Authorization': 'application/json',
+            'Content-Type': 'Bearer ' + localStorage.getItem('accessToken'),
+            'Accept': 'application/json'
         }
 
     }
