@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
+use Laravel\Passport\Client as OClient;
+use GuzzleHttp\Client;
 
 class LoginController extends Controller
 {
@@ -20,31 +23,48 @@ class LoginController extends Controller
         ];
         if(Auth::attempt($dataCheckLogin)){
             $user = Auth::user();
-            $token = $user->createToken('Test')->accessToken;
-            return response()->json($token, 200);
-
-            // $checkToken = SessionUser::where('user_id', Auth::id())->first();
-            // if(empty($checkToken)){
-            //     $userSession = SessionUser::create([
-            //         'token' => Str::random(40),
-            //         'refresh_token' => Str::random(40),
-            //         'refresh_token_expried' => date('Y-m-d H:i:s', strtotime('+20 day', time())),
-            //         'user_id' => Auth::id()
-            //     ]);
-            // }else{
-            //     $userSession = $checkToken;
-            // }
-            // return response()->json([
-            //     'code' => 200,
-            //     'userSession' => $userSession,
-            //     'userId' => Auth::id()
-            // ], 200);
+            // $token = $user->createToken('API Token')->accessToken;
+            $oClient = OClient::where('password_client', 1)->first();
+            $http = new Client;
+            $response = $http->request('POST', 'http://localhost:8000/oauth/token', [
+                'form_params' => [
+                    'grant_type' => 'password',
+                    'client_id' => '96fa9e82-f203-43c6-a270-c160f40290aa',
+                    'client_secret' => '0VVRdShCRXYdjGuzA6d3xtKGb0CXDuM9uLIfVjQT',
+                    'username' => $request->email,
+                    'password' => $request->password,
+                    'scope' => '*',
+                ],
+            ]);
+            return response()->json([
+                'email' => $request->email,
+                'password' => $request->password,
+                'token' => $oClient
+            ], 200);
+            // return response()->json($token, 200);
         }else{
             return response()->json([
                 'code' => 211,
                 'messageError' => 'Email hoặc password sai'
             ], 211);
         }
+    }
+
+    public function getTokenAndRefreshToken(OClient $oClient, $email, $password) { 
+        $oClient = OClient::where('password_client', 1)->first();
+        
+        $response = $http->request('POST', 'http://mylemp-nginx/oauth/token', [
+            'form_params' => [
+                'grant_type' => 'password',
+                'client_id' => $oClient->id,
+                'client_secret' => $oClient->secret,
+                'username' => $email,
+                'password' => $password,
+                'scope' => '*',
+            ],
+        ]);
+        $result = json_decode((string) $response->getBody(), true);
+        return response()->json($result, $this->successStatus);
     }
 
     public function logout(Request $request){

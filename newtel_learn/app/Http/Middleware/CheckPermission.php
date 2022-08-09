@@ -20,6 +20,11 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next, $permit = null)
     {
+
+        $user = Auth::user();
+        return response()->json([
+            'user' => $user
+        ], 200);
         $userId = $request->header('userId');
         if ($user = User::find($userId)
         ) {
