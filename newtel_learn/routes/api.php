@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\PermitController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\IssueController;
-use App\Models\Permit;
 use App\Models\Role;
 
 use function PHPSTORM_META\registerArgumentsSet;
@@ -91,3 +90,4 @@ Route::post('/forgotPassword', [LoginController::class, 'forgotPassword']);
 
 // Thay đổi mật khẩu
 Route::post('/updatePassword', [LoginController::class, 'updatePasswrord']);
+
