@@ -11,48 +11,55 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
-use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Token;
+use App\Models\Permit;
+use App\Models\Role;
+use Laravel\Passport\Client as OClient; 
 
 class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        $dataLogin = $request->only('email', 'password');
-        $token = '';
-        $time = \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addDays(3)->timestamp;
-      try {
-          if (! $token = JWTAuth::attempt($dataLogin , ['exp1' => $time] )
-          ) {
-              return response()->json(['messageError' => 'Email hoặc mật khẩu sai'], 400);
-          }
-      } catch (JWTException $e) {
-          return response()->json(['messageError' => 'Không thể tạo token'], 500);
-      }
-      return response()->json([
-        'token' => $token,
-        'expire' => date('Y/m/d H:s:i', $time),
-        'int' => $time
-      ], 200);
+        $oClient = OClient::where('password_client', 1)->first();
+        if (!Auth::attempt($request->only(['email', 'password']))) {
+            return response()->json('Lỗi đăng nhập', 401);
+        } else {
+            $user = $request->user();
+            $scopoes = [];
+            if($user['role_id']){
+                $scopoes = Role::getCodePermits($user['role_id']);
+            }
+            $token = $user->createToken('demo Oauth', $scopoes);
+            return response()->json([
+                'user' => $user,
+                'token' => $token,
+            ], 200);
+        }
     }
 
-    public function logout(Request $request){
-         if($sesstion=SessionUser::where('token', $request->header('token'))){
+    public function logout(Request $request)
+    {
+        if ($sesstion = SessionUser::where('token', $request->header('token'))) {
             $sesstion->delete();
             return response()->json([
                 'status' => 'Success',
                 'message' => 'Xoá thành công'
             ], 200);
-         }
-         return response()->json([
+        }
+        return response()->json([
             'status' => 'Fail',
             'message' => 'Session không hợp lệ',
-         ], 304);
+        ], 304);
     }
 
-    public function forgotPassword(Request $request) {
-        if($request->email
-        && ($user = User::where('email', $request->email)->first())){
+    public function forgotPassword(Request $request)
+    {
+        if (
+            $request->email
+            && ($user = User::where('email', $request->email)->first())
+        ) {
             $hashRandom = Str::random(250);
             $user->update([
                 'hash' => $hashRandom
@@ -64,17 +71,19 @@ class LoginController extends Controller
     }
 
 
-    public function updatePasswrord(Request $request){
-        if(($hash = $request->input('hash'))
+    public function updatePasswrord(Request $request)
+    {
+        if (($hash = $request->input('hash'))
             && ($user = User::where('hash', $hash)->first())
             && ($password = $request->password)
             && ($passwordConfirm = $request->passwordConfirm)
-            && $password == $passwordConfirm){
-                $user->update([
-                    'password' => bcrypt($password),
-                    'hash' => null
-                ]);
-                return response()->json('Thay đổi mật khẩu thành công', 200);
+            && $password == $passwordConfirm
+        ) {
+            $user->update([
+                'password' => bcrypt($password),
+                'hash' => null
+            ]);
+            return response()->json('Thay đổi mật khẩu thành công', 200);
         }
         return response()->json('Dữ liệu không hợp lệ', 304);
     }

@@ -17,4 +17,12 @@ class Permit extends Model
         return $this->hasMany(Permit::class, 'parent_id');
     }
 
+
+    public function scopeGetCode($query){
+        $permits = $query->get()->toArray(); 
+        return array_map(function ($permit) {
+            return $permit['code'];
+        }, $permits);
+    }
+
 }

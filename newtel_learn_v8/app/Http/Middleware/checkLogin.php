@@ -10,6 +10,7 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 
+
 class checkLogin
 {
     /**
@@ -22,26 +23,37 @@ class checkLogin
     public function handle(Request $request, Closure $next)
     {
         $token = JWTAuth::getToken();
+        if(JWTAuth::parseToken()->authenticate()){
+            $exp = '';
+            if(($exp = intval(JWTAuth::decode($token)['exp']))
+            && $exp >= intval(\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp)){
+                return response()->json([
+                    'token' => $token,
+                    'decode' => JWTAuth::decode($token), 
+                    'refresh' => JWTAuth::refresh($token),
+                ]);
+            }else{
+                return response()->json([
+                    'messageError' => 'Token hết hạn',
+                    'exp' => $exp,
+                ], 211);
+            }
+        }
         if($token) {
             try{
                 if(JWTAuth::parseToken()->authenticate()){
                     $exp = '';
                     if(($exp = intval(JWTAuth::decode($token)['exp']))
-                        && $exp >= intval(\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp)){
-                            return response()->json([
-                                'user1' => JWTAuth::toUser($token),
-                                'exp' => $exp,
-                                'decode' => JWTAuth::decode($token), 
-                                'now' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp,
-                                'date1' => date('Y/m/d H:s:i', 1660153537),
-                                'date2' => date('Y/m/d H:s:i', \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp)
-                            ]);
+                    && $exp >= intval(\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp)){
+                        return response()->json([
+                            'decode' => JWTAuth::decode($token), 
+                            // 'refresh' => JWTAuth::refresh($token)
+                        ]);
                     }else{
                         return response()->json([
                             'messageError' => 'Token hết hạn',
                             'exp' => $exp,
-                            'now' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp
-                        ], 401);
+                        ], 211);
                     }
                 }
             }catch(JWTException $err){

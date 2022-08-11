@@ -35,7 +35,7 @@ Route::get('login', function () {
 Route::post('login', [LoginController::class, 'login'])->name('login');
 
 
-Route::group(['middleware' => 'authLogin'], function () {
+Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     //User
     Route::get('listUser', [UserController::class, 'index'])->name('listUser')->middleware('checkPermit:viewListUser');
