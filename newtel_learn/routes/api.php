@@ -35,11 +35,11 @@ Route::get('login', function () {
 Route::post('login', [LoginController::class, 'login'])->name('login');
 
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'authLogin1'], function () {
     // Logout
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     //User
-    Route::get('listUser', [UserController::class, 'index'])->name('listUser')->middleware('checkPermit:viewListUser');
+    // Route::get('listUser', [UserController::class, 'index'])->name('listUser')->middleware('checkPermit:viewListUser');
     Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser')->middleware('checkPermit:viewUser');
     Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser')->middleware('checkPermit:editUser');
     Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser')->middleware('checkPermit:deleteUser');

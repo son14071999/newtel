@@ -35,8 +35,7 @@ Route::get('login', function () {
 Route::post('login', [LoginController::class, 'login'])->name('login');
 
 
-// Route::group(['middleware' => 'authLogin'], function () {
-    // Logout
+Route::group(['middleware' => 'authLogin'], function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     //User
     Route::get('listUser', [UserController::class, 'index'])->name('listUser')->middleware('checkPermit:viewListUser');
@@ -83,7 +82,7 @@ Route::post('login', [LoginController::class, 'login'])->name('login');
             'roles' => Role::get()
         ], 200);
     });
-// });
+});
 
 // send mail khi quên mật khẩu
 Route::post('/forgotPassword', [LoginController::class, 'forgotPassword']);

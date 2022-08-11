@@ -20,14 +20,20 @@ class LoginController extends Controller
     {
         $dataLogin = $request->only('email', 'password');
         $token = '';
+        $time = \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addDays(3)->timestamp;
       try {
-          if (! $token = JWTAuth::attempt($dataLogin)) {
+          if (! $token = JWTAuth::attempt($dataLogin , ['exp1' => $time] )
+          ) {
               return response()->json(['messageError' => 'Email hoặc mật khẩu sai'], 400);
           }
       } catch (JWTException $e) {
           return response()->json(['messageError' => 'Không thể tạo token'], 500);
       }
-      return response()->json($token, 200);
+      return response()->json([
+        'token' => $token,
+        'expire' => date('Y/m/d H:s:i', $time),
+        'int' => $time
+      ], 200);
     }
 
     public function logout(Request $request){
@@ -45,7 +51,7 @@ class LoginController extends Controller
     }
 
     public function forgotPassword(Request $request) {
-        if($request->email 
+        if($request->email
         && ($user = User::where('email', $request->email)->first())){
             $hashRandom = Str::random(250);
             $user->update([
