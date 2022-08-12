@@ -74,6 +74,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('getListStatus/{id}', [StatusController::class, 'getListStatus']);
     Route::post('addIssue', [IssueController::class, 'store']);
     Route::get('listIssue', [IssueController::class, 'index']);
+    Route::get('getIssue/{id}', [IssueController::class, 'show']);
+    Route::post('editIssue/{id}', [IssueController::class, 'edit']);
+    Route::delete('deleteIssue/{id}', [IssueController::class, 'destroy']);
 
 
 

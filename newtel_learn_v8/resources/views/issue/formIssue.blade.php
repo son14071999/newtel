@@ -35,16 +35,6 @@
                         </select>
                     </div>
 
-                    <div class="form-group" ng-show="config.status_id.show">
-                        <label for="status" class="col-form-label">Trạng thái: </label>
-                        <select name="status" class="form-select" id="status"
-                            ng-model="data.issueInfo.executor_id" aria-label="Chọn trạng thái" ng-disabled="config.status.disabled">
-                            <option value="0">--Chọn trạng thái--</option>
-                            <option ng-repeat="status in data.statuses" ng-value="@{{ status.id }}"
-                                ng-selected="status.selected" style="height: 60px">@{{ status.name }}
-                            </option>
-                        </select>
-                    </div>
 
                     <div class="form-group" ng-show="config.status_id.show">
                         <label for="status" class="col-form-label">Trạng thái: </label>
@@ -72,19 +62,6 @@
                             <label for="finishDay">Ngày hoàn thành...</label>
                             <input placeholder="Select date" type="date" id="finishDay" class="form-control" ng-model="data.issueInfo.finishDay" ng-disabled="config.finishDay.disabled">
                         </div>
-                    </div>
-
-
-
-                    <div class="form-group" ng-show="config.status_finish_id.show">
-                        <label for="statusFinishId" class="col-form-label">Trạng thái hoàn thành: </label>
-                        <select name="status" class="form-select" ng-model="data.issueInfo.status_finish_id"
-                            aria-label="Chọn trạng thái">
-                            <option value="0">--Chọn trạng thái--</option>
-                            <option ng-repeat="status in data.finishStatuses" ng-value="@{{ status.id }}"
-                                ng-selected="status.selected" style="height: 60px">@{{ status.name }}
-                            </option>
-                        </select>
                     </div>
 
 

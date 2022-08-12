@@ -30,15 +30,6 @@ class IssueController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -74,7 +65,10 @@ class IssueController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'userId' => Auth::user()->id,
+            'info' => Issue::find($id)
+        ], 200);
     }
 
     /**
@@ -83,21 +77,28 @@ class IssueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
-    }
+        $executor = ['status_id'];
+        $jobAssignor = ['name', 'descripttion', 'executor_id'];
+        $finishDay = null;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        
+        $userId = Auth::user()->id;
+        if(!empty($request->executor_id) && ($request->executor_id == $userId)){
+            if(Status::find($request->status_id)->code=='XONG'){
+                $finishDay = date('Y-m-d');
+            }
+            Issue::find($id)->update(array_merge(
+                ['finishDay' => $finishDay], $request->only($executor)
+            ));
+        }
+        if(!empty($request->jobAssignor_id) && ($request->jobAssignor_id == $userId)){
+            Issue::find($id)->update(array_merge($request->only($jobAssignor), [
+                'deadline' => date('Y-m-d',intval($request->deadline)/1000)
+            ]));
+        }
+        return response()->json('Success', 200);
     }
 
     /**
@@ -108,7 +109,14 @@ class IssueController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $issue = Issue::find($id);
+        $user = Auth::user();
+        if($user->id == $issue->jobAssignor_id){
+            $issue->delete();
+            return response()->json('Success', 200);
+        }else{
+            return response()->json('Bạn không có quyền xoá', 500);
+        }
     }
 
 

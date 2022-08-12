@@ -20,10 +20,9 @@ use Laravel\Passport\Client as OClient;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request, Auth $auth)
     {
-        $oClient = OClient::where('password_client', 1)->first();
-        if (!Auth::attempt($request->only(['email', 'password']))) {
+        if (!$auth->attempt($request->only(['email', 'password']))) {
             return response()->json('Lỗi đăng nhập', 401);
         } else {
             $user = $request->user();
@@ -38,17 +37,11 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        if ($sesstion = SessionUser::where('token', $request->header('token'))) {
-            $sesstion->delete();
-            return response()->json([
-                'status' => 'Success',
-                'message' => 'Xoá thành công'
-            ], 200);
-        }
+        $request->user()->token()->revoke();
         return response()->json([
-            'status' => 'Fail',
-            'message' => 'Session không hợp lệ',
-        ], 304);
+            'status' => 'Success',
+            'message' => 'Xoá thành công'
+        ], 200);
     }
 
     public function forgotPassword(Request $request)

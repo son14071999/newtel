@@ -9,10 +9,11 @@ app.directive('formIssue', function (issueFactory) {
         },
         link: function (scope, element, attrs) {
             scope.data = {
-                employees : [],
+                userId: 0,
+                employees: [],
                 statuses: [],
                 finishStatuses: [],
-                issueInfo: [],
+                issueInfo: {},
                 config: {
                     itemPerPage: 1,
                     pageCurrent: 5,
@@ -20,7 +21,59 @@ app.directive('formIssue', function (issueFactory) {
                     currentPage: 1
                 }
             }
-            scope.configDefault = {
+            scope.configAdd = {
+                'name': {
+                    show: true,
+                    disabled: false
+                },
+                'descripttion': {
+                    show: true,
+                    disabled: false
+                },
+                'executor_id': {
+                    show: true,
+                    disabled: false
+                },
+                'status_id': {
+                    show: false,
+                    disabled: true
+                },
+                'deadline': {
+                    show: true,
+                    disabled: false
+                },
+                'finishDay': {
+                    show: false,
+                    disabled: true
+                }
+            }
+            scope.configExecutor = {
+                'name': {
+                    show: true,
+                    disabled: true
+                },
+                'descripttion': {
+                    show: true,
+                    disabled: true
+                },
+                'executor_id': {
+                    show: true,
+                    disabled: true
+                },
+                'status_id': {
+                    show: true,
+                    disabled: false
+                },
+                'deadline': {
+                    show: true,
+                    disabled: true
+                },
+                'finishDay': {
+                    show: true,
+                    disabled: true
+                }
+            }
+            scope.configJobAssignor = {
                 'name': {
                     show: true,
                     disabled: false
@@ -42,44 +95,12 @@ app.directive('formIssue', function (issueFactory) {
                     disabled: false
                 },
                 'finishDay': {
-                    show: false,
+                    show: true,
                     disabled: true
                 },
-                'status_finish_id': {
-                    show: false,
-                    disabled: true
-                }
+
             }
-            scope.config = {
-                'name': {
-                    show: true,
-                    disabled: false
-                },
-                'descripttion': {
-                    show: true,
-                    disabled: false
-                },
-                'executor_id': {
-                    show: true,
-                    disabled: false
-                },
-                'status_id': {
-                    show: true,
-                    disabled: false
-                },
-                'deadline': {
-                    show: true,
-                    disabled: false
-                },
-                'finishDay': {
-                    show: false,
-                    disabled: true
-                },
-                'status_finish_id': {
-                    show: false,
-                    disabled: true
-                }
-            }
+            scope.config = {}
             let processData = {
                 getListStatuses: () => {
                     issueFactory.getListStatuses(1)
@@ -99,30 +120,58 @@ app.directive('formIssue', function (issueFactory) {
                 },
                 getListUser: () => {
                     issueFactory.getListUser()
-                    .then((resp) => {
-                        scope.data.employees = resp.data.users.data
-                    }).catch((err) => {
-                        console.log(err)
-                    })
+                        .then((resp) => {
+                            scope.data.employees = resp.data.users.data
+                        }).catch((err) => {
+                            console.log(err)
+                        })
 
                 }
             }
             scope.saveIssue = () => {
-                scope.data.parameters = scope.data.issueInfo
-                console.log('scope.data.parameters: ', scope.data.parameters)
-                issueFactory.saveIssue(scope.data)
-                .then((resp) => {
-                    alert('Thành công')
-                }).catch((err) => {
-                    log('err: ', err)
-                })
+                if (Number(scope.issueId) <= 0) {
+                    issueFactory.saveIssue(scope.data.issueInfo)
+                        .then((resp) => {
+                            alert('Thành công')
+                        }).catch((err) => {
+                            log('err: ', err)
+                        })
+                } else {
+                    issueFactory.editIssue(scope.data.issueInfo, scope.issueId)
+                        .then((resp) => {
+                            console.log(resp)
+                        }).catch((err) => {
+                            console.log(err)
+                        })
+                }
                 issueFactory.getListIssue(scope.inputData)
                 $('#formIssueModal').modal('hide')
             }
 
             scope.$watch('issueId', (newVal, oldVal) => {
                 if (Number(newVal) <= 0) {
-                    scope.config = scope.configDefault
+                    scope.data.issueInfo = {}
+                    scope.config = scope.configAdd
+                } else {
+                    issueFactory.getIssue(newVal)
+                        .then((resp) => {
+                            resp.data.info.deadline = resp.data.info.deadline ? new Date(resp.data.info.deadline) : ''
+                            resp.data.info.finishDay = resp.data.info.finishDay ? new Date(resp.data.info.finishDay) : ''
+                            scope.data.issueInfo = resp.data.info
+                            scope.data.userId = resp.data.userId
+                            if (scope.data.userId == scope.data.issueInfo.jobAssignor_id &&
+                                scope.data.userId == scope.data.issueInfo.executor_id) {
+                                scope.config = scope.configJobAssignor
+                                scope.config.status_id.disabled = false
+                                console.log(scope.configJobAssignor)
+                            } else if (scope.data.userId == scope.data.issueInfo.jobAssignor_id) {
+                                scope.config = scope.configJobAssignor
+                            } else if (scope.data.userId == scope.data.issueInfo.executor_id) {
+                                scope.config = scope.configExecutor
+                            }
+                        }).catch((err) => {
+                            console.log(err)
+                        })
                 }
             })
             processData.getListStatuses()
