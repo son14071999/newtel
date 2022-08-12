@@ -1,37 +1,27 @@
 app.factory('roleFactory', ['$http', '$httpParamSerializer', 'functionHandle',
     function ($http, $httpParamSerializer, functionHandle) {
         var roleFactory = {}
-        roleFactory.deleteRole = async function ($idRole) {
+        roleFactory.deleteRole = function ($idRole) {
             return $http.get(rootUrl + 'api/deleteListRole/' + $idRole, functionHandle.header)
         }
-        roleFactory.roleInfo = async function ($id) {
+        roleFactory.roleInfo = function ($id) {
             return $http.get(rootUrl + 'api/showRole/' + $id, functionHandle.header)
         }
-        roleFactory.saveEditRole = async function ($id, $params) {
+        roleFactory.saveEditRole = function ($id, $params) {
             return $http.post(rootUrl + "api/editRole/" + $id, $params, functionHandle.header)
         }
-        roleFactory.saveAddRole =async  function ($params) {
+        roleFactory.saveAddRole =  function ($params) {
             return $http.post(rootUrl + "api/addRole", $params, functionHandle.header)
         }
         roleFactory.logout = async function () {
             return $http.post(rootUrl + 'api/logout', {}, functionHandle.header)
         }
-        roleFactory.getListRole = async function (data) {
-            var request = $http.get(rootUrl + "api/listRole?" + $httpParamSerializer(data.paramRequest), {
-                headers: {
-                    'token': localStorage.getItem('token'),
-                    'userId': localStorage.getItem('userId'),
-                }
-            })
+        roleFactory.getListRole = function (data) {
+            var request = $http.get(rootUrl + "api/listRole?" + $httpParamSerializer(data.paramRequest), functionHandle.header)
             functionHandle.getListRole(data, request)
         }
-        roleFactory.getListPermit = async function (filterSearch = '') {
-            return $http.get(rootUrl + "api/getAllPermit?search=" + filterSearch, {
-                headers: {
-                    'token': localStorage.getItem('token'),
-                    'userId': localStorage.getItem('userId'),
-                }
-            })
+        roleFactory.getListPermit = function (filterSearch = '') {
+            return $http.get(rootUrl + "api/getAllPermit?search=" + filterSearch, functionHandle.header)
         }
         roleFactory.parentClick = function (index, listPermit) {
             listPermit[index].checked = !listPermit[index].checked

@@ -16,7 +16,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Token;
 use App\Models\Permit;
 use App\Models\Role;
-use Laravel\Passport\Client as OClient; 
+use Laravel\Passport\Client as OClient;
 
 class LoginController extends Controller
 {
@@ -31,11 +31,8 @@ class LoginController extends Controller
             if($user['role_id']){
                 $scopoes = Role::getCodePermits($user['role_id']);
             }
-            $token = $user->createToken('demo Oauth', $scopoes);
-            return response()->json([
-                'user' => $user,
-                'token' => $token,
-            ], 200);
+            $token = $user->createToken('demo Oauth', $scopoes)->accessToken;
+            return response()->json($token, 200);
         }
     }
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PermitController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\IssueController;
+use App\Models\Issue;
 use App\Models\Role;
 
 use function PHPSTORM_META\registerArgumentsSet;
@@ -38,33 +39,33 @@ Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     //User
-    Route::get('listUser', [UserController::class, 'index'])->name('listUser')->middleware('checkPermit:viewListUser');
-    Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser')->middleware('checkPermit:viewUser');
-    Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser')->middleware('checkPermit:editUser');
-    Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser')->middleware('checkPermit:deleteUser');
+    Route::get('listUser', [UserController::class, 'index'])->name('listUser')->middleware('scope:viewListUser');
+    Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser')->middleware('scope:viewUser');
+    Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser')->middleware('scope:editUser');
+    Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser')->middleware('scope:deleteUser');
     Route::get('addUser', function () {
         return view('listUser.addUser');
-    })->middleware('checkPermit:addUser');
-    Route::post('addUser', [UserController::class, 'store'])->name('addUserPost')->middleware('checkPermit:addUser');
+    })->middleware('scope:addUser');
+    Route::post('addUser', [UserController::class, 'store'])->name('addUserPost')->middleware('scope:addUser');
 
     // role
-    Route::get('listRole', [RoleController::class, 'index'])->name('listRole')->middleware('checkPermit:viewListRole');
-    Route::get('showRole/{id}', [RoleController::class, 'show'])->name('showRole')->middleware('checkPermit:viewRole');
-    Route::post('editRole/{id}', [RoleController::class, 'edit'])->name('editRole')->middleware('checkPermit:editRole');
-    Route::get('deleteListRole/{id}', [RoleController::class, 'destroy'])->name('deleteRole')->middleware('checkPermit:deleteRole');
+    Route::get('listRole', [RoleController::class, 'index'])->name('listRole')->middleware('scope:viewListRole');
+    Route::get('showRole/{id}', [RoleController::class, 'show'])->name('showRole')->middleware('scope:viewRole');
+    Route::post('editRole/{id}', [RoleController::class, 'edit'])->name('editRole')->middleware('scope:editRole');
+    Route::get('deleteListRole/{id}', [RoleController::class, 'destroy'])->name('deleteRole')->middleware('scope:deleteRole');
     Route::get('addRole', function () {
         return view('listRole.addRole');
-    })->middleware('checkPermit:addRole');
-    Route::post('addRole', [RoleController::class, 'store'])->name('addRolePost')->middleware('checkPermit:addRole');
+    })->middleware('scope:addRole');
+    Route::post('addRole', [RoleController::class, 'store'])->name('addRolePost')->middleware('scope:addRole');
     // department
-    Route::get('listDepartment', [DepartmentController::class, 'index'])->name('listdepartment')->middleware('checkPermit:viewListDepartment');
-    Route::get('showDepartment/{id}', [DepartmentController::class, 'show'])->name('showdepartment')->middleware('checkPermit:viewDepartment');
-    Route::post('editDepartment/{id}', [DepartmentController::class, 'edit'])->name('editdepartment')->middleware('checkPermit:editDepartment');
-    Route::get('deleteDepartment/{id}', [DepartmentController::class, 'destroy'])->name('deletedepartment')->middleware('checkPermit:deleteDepartment');
+    Route::get('listDepartment', [DepartmentController::class, 'index'])->name('listdepartment')->middleware('scope:viewListDepartment');
+    Route::get('showDepartment/{id}', [DepartmentController::class, 'show'])->name('showdepartment')->middleware('scope:viewDepartment');
+    Route::post('editDepartment/{id}', [DepartmentController::class, 'edit'])->name('editdepartment')->middleware('scope:editDepartment');
+    Route::get('deleteDepartment/{id}', [DepartmentController::class, 'destroy'])->name('deletedepartment')->middleware('scope:deleteDepartment');
     Route::get('addDepartment', function () {
         return view('listdepartment.adddepartment');
-    })->middleware('checkPermit:adddepartment');
-    Route::post('addDepartment', [DepartmentController::class, 'store'])->name('adddepartmentPost')->middleware('checkPermit:addRole');
+    })->middleware('scope:adddepartment');
+    Route::post('addDepartment', [DepartmentController::class, 'store'])->name('adddepartmentPost')->middleware('scope:addRole');
 
 
 
@@ -72,6 +73,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     // issue
     Route::get('getListStatus/{id}', [StatusController::class, 'getListStatus']);
     Route::post('addIssue', [IssueController::class, 'store']);
+    Route::get('listIssue', [IssueController::class, 'index']);
 
 
 

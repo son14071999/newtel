@@ -11,7 +11,7 @@ app.value('functionHandle', {
                 if(err.status==401){
                     window.location.replace(rootUrl + "login");
                 }else{
-                    alert(err.data.message)
+                   alert(err.data.message)
                 }
             })
     },

@@ -9,7 +9,7 @@ app.controller('userController', function ($scope, userFactory) {
         },
         pages: 1,
         currentPage: 1,
-        itemPerPage: 1, 
+        itemPerPage: 1,
         users: []
     };
 

@@ -36,6 +36,17 @@
                     </div>
 
                     <div class="form-group" ng-show="config.status_id.show">
+                        <label for="status" class="col-form-label">Trạng thái: </label>
+                        <select name="status" class="form-select" id="status"
+                            ng-model="data.issueInfo.executor_id" aria-label="Chọn trạng thái" ng-disabled="config.status.disabled">
+                            <option value="0">--Chọn trạng thái--</option>
+                            <option ng-repeat="status in data.statuses" ng-value="@{{ status.id }}"
+                                ng-selected="status.selected" style="height: 60px">@{{ status.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" ng-show="config.status_id.show">
                         <label for="status" class="col-form-label">Trạng thái: </label>
                         <select name="status" class="form-select" id="role" ng-model="data.issueInfo.status_id"
                             aria-label="Chọn trạng thái" ng-disabled="config.status_id.disabled">
@@ -76,7 +87,7 @@
                         </select>
                     </div>
 
-                    
+
                 </form>
             </div>
             <div class="modal-footer">

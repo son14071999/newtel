@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class issue extends Model
+class Issue extends Model
 {
     use HasFactory;
-    protected $timestamps = true;
+    protected $guarded = [];
+    public $timestamps = true;
 }

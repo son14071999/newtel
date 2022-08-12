@@ -12,8 +12,7 @@ app.controller(
             loginFactory.login($scope.user)
                 .then(function (response) {
                     console.log('response: ', response)
-                    localStorage.setItem('token', response.data.token)
-                    // localStorage.setItem('userId', response.data.userId)
+                    localStorage.setItem('token', response.data)
                     window.location.replace(rootUrl + "listUser");
                 })
                 .catch(function (err) {

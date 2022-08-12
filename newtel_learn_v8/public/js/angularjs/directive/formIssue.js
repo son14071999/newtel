@@ -4,7 +4,8 @@ app.directive('formIssue', function (issueFactory) {
         templateUrl: rootUrl + 'formIssue',
         scope: {
             issueId: "=",
-            title: '='
+            title: '=',
+            inputData: "="
         },
         link: function (scope, element, attrs) {
             scope.data = {
@@ -14,11 +15,10 @@ app.directive('formIssue', function (issueFactory) {
                 issueInfo: [],
                 config: {
                     itemPerPage: 1,
-                    pageCurrent: 1,
-                    pages: 1
-                },
-                parameters: {}
-
+                    pageCurrent: 5,
+                    pages: 1,
+                    currentPage: 1
+                }
             }
             scope.configDefault = {
                 'name': {
@@ -29,12 +29,12 @@ app.directive('formIssue', function (issueFactory) {
                     show: true,
                     disabled: false
                 },
-                'jobAssignor_id': {
+                'executor_id': {
                     show: true,
                     disabled: false
                 },
                 'status_id': {
-                    show: false,
+                    show: true,
                     disabled: true
                 },
                 'deadline': {
@@ -59,13 +59,13 @@ app.directive('formIssue', function (issueFactory) {
                     show: true,
                     disabled: false
                 },
-                'jobAssignor_id': {
+                'executor_id': {
                     show: true,
                     disabled: false
                 },
                 'status_id': {
-                    show: false,
-                    disabled: true
+                    show: true,
+                    disabled: false
                 },
                 'deadline': {
                     show: true,
@@ -111,12 +111,13 @@ app.directive('formIssue', function (issueFactory) {
                 scope.data.parameters = scope.data.issueInfo
                 console.log('scope.data.parameters: ', scope.data.parameters)
                 issueFactory.saveIssue(scope.data)
-                // .then((resp) => {
-                //     log('rép: ', resp)
-                // }).catch((err) => {
-                //     log('err: ', err)
-                // })
-                // $('#formIssueModal').modal('hide')
+                .then((resp) => {
+                    alert('Thành công')
+                }).catch((err) => {
+                    log('err: ', err)
+                })
+                issueFactory.getListIssue(scope.inputData)
+                $('#formIssueModal').modal('hide')
             }
 
             scope.$watch('issueId', (newVal, oldVal) => {
