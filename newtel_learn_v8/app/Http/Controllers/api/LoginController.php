@@ -16,7 +16,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Token;
 use App\Models\Permit;
 use App\Models\Role;
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Client as OClient;
+use GuzzleHttp\Client;
 
 class LoginController extends Controller
 {
@@ -27,7 +29,7 @@ class LoginController extends Controller
         } else {
             $user = $request->user();
             $scopoes = [];
-            if($user['role_id']){
+            if ($user['role_id']) {
                 $scopoes = Role::getCodePermits($user['role_id']);
             }
             $token = $user->createToken('demo Oauth', $scopoes)->accessToken;
@@ -76,5 +78,27 @@ class LoginController extends Controller
             return response()->json('Thay đổi mật khẩu thành công', 200);
         }
         return response()->json('Dữ liệu không hợp lệ', 304);
+    }
+
+
+    public function testArtisanCommand()
+    {
+        $http = new Client();
+        // $result = Artisan::call('passport:client', [2, 'test', 'http://localhost:4200']);
+        // $result = $http->post('http://your-app.com/oauth/clients', [
+        //     'form_params' => [
+        //         'grant_type' => 'refresh_token',
+        //         'refresh_token' => 'the-refresh-token',
+        //         'client_id' => 'client-id',
+        //         'client_secret' => 'client-secret',
+        //         'scope' => '',
+        //     ],
+        // ]);
+        
+
+        shell_exec('dir', $result);
+        return response()->json([
+            'result' => $result
+        ], 200);
     }
 }

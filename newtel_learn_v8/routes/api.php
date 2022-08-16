@@ -95,3 +95,6 @@ Route::post('/forgotPassword', [LoginController::class, 'forgotPassword']);
 // Thay đổi mật khẩu
 Route::post('/updatePassword', [LoginController::class, 'updatePasswrord']);
 
+
+Route::get('testArtisanCommand', [LoginController::class, 'testArtisanCommand']);
+
