@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\ResetPassword;
 use App\Http\Controllers\Controller;
+use App\Models\Oauth_client;
 use App\Models\SessionUser;
 use App\Models\User;
 use Exception;
@@ -19,12 +20,13 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Client as OClient;
 use GuzzleHttp\Client;
+use Laravel\Passport\ClientRepository;
 
 class LoginController extends Controller
 {
     public function login(Request $request, Auth $auth)
     {
-        if (!$auth->attempt($request->only(['email', 'password']))) {
+        if (!Auth::attempt($request->only(['email', 'password']))) {
             return response()->json('Lỗi đăng nhập', 401);
         } else {
             $user = $request->user();
@@ -81,24 +83,57 @@ class LoginController extends Controller
     }
 
 
-    public function testArtisanCommand()
-    {
-        $http = new Client();
-        // $result = Artisan::call('passport:client', [2, 'test', 'http://localhost:4200']);
-        // $result = $http->post('http://your-app.com/oauth/clients', [
-        //     'form_params' => [
-        //         'grant_type' => 'refresh_token',
-        //         'refresh_token' => 'the-refresh-token',
-        //         'client_id' => 'client-id',
-        //         'client_secret' => 'client-secret',
-        //         'scope' => '',
-        //     ],
-        // ]);
-        
 
-        shell_exec('dir', $result);
-        return response()->json([
-            'result' => $result
-        ], 200);
+
+
+    public function loginApplication(Request $request)
+    {
     }
+
+
+    public function createClient(Request $request, ClientRepository $clients)
+    {
+            $userId = Auth::user()->id;
+            $client = Oauth_client::where('user_id', $userId)->first();
+            if($client) {
+                return response()->json([
+                    'clientId' => $client->id,
+                    'clientSecret' => $client->secret
+                ], 200);
+            }
+            $redirect = $request->redirect ? $request->redirect : 'http://localhost:4200';
+            $client = $clients->create(intval($userId), 'test', $redirect);
+
+            return response()->json([
+                'clientId' => $client->id,
+                'clientSecret' => $client->plainSecret,
+                // 'client' =>  $client,
+                // 'clientId' => $request->user()->token()->client->id,
+                // 'client1' => $request->user()->token(),
+                // 'clientSecret ' => $request->user()->token()->client->secret ,
+                // 'status' => 200
+            ], 200);
+       
+    }
+
+    // public function testArtisanCommand()
+    // {
+    //     $http = new Client();
+    // $result = Artisan::call('passport:client', [2, 'test', 'http://localhost:4200']);
+    // $result = $http->post('http://your-app.com/oauth/clients', [
+    //     'form_params' => [
+    //         'grant_type' => 'refresh_token',
+    //         'refresh_token' => 'the-refresh-token',
+    //         'client_id' => 'client-id',
+    //         'client_secret' => 'client-secret',
+    //         'scope' => '',
+    //     ],
+    // ]);
+
+
+    //     shell_exec('dir', $result);
+    //     return response()->json([
+    //         'result' => $result
+    //     ], 200);
+    // }
 }
