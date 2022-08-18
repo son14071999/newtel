@@ -32,11 +32,27 @@ app.value('functionHandle', {
                 }
             })
     },
+
+    'getListClient': (data, clientFactory) => {
+        clientFactory
+            .then(function (response) {
+                data.clients = response.data.clients
+                data.pages = Array.from({ length: Math.ceil(response.data.clients.length/data.itemPerPage) }, (_, i) => i + 1)
+                data.currentPage = 1
+                console.log('data', data);
+            })
+            .catch(function(err){
+                if(err.status==401){
+                    window.location.replace(rootUrl + "login");
+                }else{
+                    alert(err.data.message)
+                }
+            })
+    },
     'header': {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Accept': 'application/json'
-            // 'token' : localStorage.getItem('token')
         }
 
     }

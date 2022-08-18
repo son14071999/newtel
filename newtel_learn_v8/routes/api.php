@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ClientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegisterController;
@@ -58,6 +59,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         return view('listRole.addRole');
     })->middleware('scope:addRole');
     Route::post('addRole', [RoleController::class, 'store'])->name('addRolePost')->middleware('scope:addRole');
+
     // department
     Route::get('listDepartment', [DepartmentController::class, 'index'])->name('listdepartment')->middleware('scope:viewListDepartment');
     Route::get('showDepartment/{id}', [DepartmentController::class, 'show'])->name('showdepartment')->middleware('scope:viewDepartment');
@@ -80,8 +82,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('deleteIssue/{id}', [IssueController::class, 'destroy']);
 
 
+    // Client
+    Route::post('addClient', [ClientController::class, 'store']);
+    Route::get('listClient', [ClientController::class, 'index']);
+    Route::get('showClient/{id}', [ClientController::class, 'show']);
+    Route::post('editClient/{id}', [ClientController::class, 'edit']);
+    Route::delete('deleteClient/{id}', [ClientController::class, 'destroy']);
 
-    //
+
+
+    //permit
     Route::get('/getAllPermit', [PermitController::class, 'getAllPermit']);
     Route::get('/getAllRole', function(){
         return response()->json([

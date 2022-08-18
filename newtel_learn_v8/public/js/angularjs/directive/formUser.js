@@ -19,7 +19,7 @@ app.directive('formUser', function (userFactory, departmentFactory) {
                     .then((resp) => {
                         scope.data.departments = resp.data
                         departmentFactory.addPath(scope.data.departments)
-                        console.log(scope.data.departments)
+                        console.log('scope.data.departments: ', scope.data.departments)
                     }).catch((err) => {
                         console.log(err)
                     })
@@ -28,6 +28,7 @@ app.directive('formUser', function (userFactory, departmentFactory) {
                     userFactory.getListRole()
                         .then((response) => {
                             scope.data.roles = response.data.roles
+                            console.log(scope.data.roles);
                         }).catch((err) => {
                             alert(err)
                         })
@@ -35,37 +36,46 @@ app.directive('formUser', function (userFactory, departmentFactory) {
                 'getUser': () => {
                     userFactory.userEdit(scope.userId)
                         .then(function (response) {
-                            scope.data.userInfo = response.data
-                            angular.forEach(scope.data.roles, function (item) {
-                                if (item.id == scope.data.userInfo.role_id) {
-                                    item.selected = true
-                                } else {
-                                    item.selected = false
+                            scope.data.userInfo = response.data.user
+                            roleIds = response.data.roleIds
+
+                            processData.getDefaultRoles()
+                            _.map(scope.data.roles, (role) => {
+                                if(roleIds.includes(role.id)){
+                                    role.checked = true
                                 }
+                                return role
                             })
+                            console.log(scope.data.roles)
+                            
+
                         }).catch(function (err) {
                             console.log(err)
                         })
                 },
                 'getListUser': () => {
                     userFactory.getListUser()
+                },
+                'getDefaultRoles' : () => {
+                    _.map(scope.data.roles, (role) => {
+                        role.checked = false
+                        return role
+                    })
                 }
             }
             scope.$watch('userId', function (newVal, oldVal) {
                 if (Number(newVal) <= 0) {
                     scope.data.userInfo = {}
+                    processData.getDefaultRoles()
                 } else {
-                    processData.getUser();
+                    processData.getUser()
                 }
             });
             scope.saveUser = () => {
+                roleIds = _.map(_.filter(scope.data.roles, (role) => role.checked), 'id')
+                scope.data.userInfo.role_ids = roleIds
                 if (Number(scope.userId) > 0) {
-                    userFactory.saveEditUser(scope.data.userInfo.id, {
-                            'name': scope.data.userInfo.name,
-                            'email': scope.data.userInfo.email,
-                            'role_id': scope.data.userInfo.role_id,
-                            'department_id': scope.data.userInfo.department_id
-                        })
+                    userFactory.saveEditUser(scope.data.userInfo.id, scope.data.userInfo)
                         .then(function (response) {
                             $('#formUserModal').modal('hide');
                             userFactory.getListUser(scope.inputData)

@@ -57,6 +57,14 @@ Route::get('/formIssue', function(){
     return view('issue.formIssue');
 });
 
+// client
+Route::get('/listClient', function(){
+    return view('client.list');
+});
+Route::get('/formClient', function(){
+    return view('client.formClient');
+});
+
 
 
 

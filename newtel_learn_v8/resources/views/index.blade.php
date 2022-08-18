@@ -23,6 +23,10 @@
                             class="fa-solid fa-calendar-check"></i> <span class="nav_name">Issue</span>
                     </a>
 
+                    <a href="/listClient" class="nav_link" ng-class="{'active': menuActive == 'client'}"><i
+                            class="fa-solid fa-ghost"></i> <span class="nav_name">Client</span>
+                    </a>
+
                 </div>
             </div> <a href="#" class="nav_link" ng-click="logout()"> <i class='bx bx-log-out nav_icon'></i> <span
                     class="nav_name">SignOut</span> </a>

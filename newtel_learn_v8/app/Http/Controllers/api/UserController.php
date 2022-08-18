@@ -41,19 +41,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-            'role_id' => intval($request->role_id),
-            'department_id' => intval($request->department_id)
-        ]);
-        return response()->json([
-            'message' => 'success',
-            'role_id' => intval($request->role_id)
-        ], 200);
+        $roleIds = $request->role_ids;
+        DB::beginTransaction();
+        try{
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+                'department_id' => intval($request->department_id)
+            ]);
+            $user->roles()->sync($roleIds);
+            DB::commit();
+            return response()->json([
+                'message' => 'success',
+                'role_id' => intval($request->all()),
+                'user' => $user
+            ], 200);
+        }catch(Exception $err) {
+            DB::rollBack();
+            return response()->json($err, 405);
+        }
     }
 
     /**
@@ -70,7 +79,11 @@ class UserController extends Controller
                 'message' => 'User ko tồn tại'
             ], 405);
         }else{
-            return response()->json($user, 200);
+            $roles = $user->roles->toArray();
+            return response()->json([
+                'user' => $user,
+                'roleIds' => array_map(function($o) {return $o['id'];}, $roles)
+            ], 200);
         }
     }
 
@@ -86,11 +99,15 @@ class UserController extends Controller
         $request->validate($this->validation($id)['validation'], $this->validation($id)['messageError']);
         DB::beginTransaction();
         try{
-            User::find($id)->update($request->all());
+            $roleIds = $request->role_ids;
+            $user = User::find($id);
+            $user->update($request->except('role_ids'));
+            $user->roles()->sync($roleIds);
             DB::commit();
             return response()->json([
                 'message' => 'success',
-                'test' => $request->role_id
+                'roles' => $roleIds,
+                'request' => $request->except('role_ids')
             ], 200);
         }catch(Exception $err){
             DB::rollBack();

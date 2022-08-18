@@ -19,14 +19,17 @@
                         <input type="text" class="form-control" id="name-text" ng-model="data.userInfo.name"
                             value="@{{ data.userInfo.name }}">
                     </div>
-                    <div class="form-group">
-                        <label for="password-text" class="col-form-label">Role:</label>
-                        <select name="role" class="form-select" id="role" ng-model="data.userInfo.role_id"
-                            aria-label="Chọn role">
-                            <option ng-repeat="role in data.roles" ng-value="@{{ role.id }}"
-                                ng-selected="role.selected">@{{ role.name }}</option>
-                        </select>
+
+
+                    <div class="form-group"
+                        style="width: 100%; min-height: 150px; overflow: auto;margin-top: 5px; margin-left: 10px">
+            
+                        <div ng-repeat="(roleId, role) in data.roles">
+                            <input type="checkbox" id="chk_@{{ roleId }}" ng-checked="role.checked" ng-model="data.roles[roleId].checked" >
+                            <label for="chk_@{{ roleId }}">@{{ role.name }}</label>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="password-text" class="col-form-label">Department:</label>
                         <select name="role" class="form-select" id="role" ng-model="data.userInfo.department_id"
