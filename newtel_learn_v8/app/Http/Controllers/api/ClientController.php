@@ -128,8 +128,7 @@ class ClientController extends Controller
 
     public function refreshToken(Request $request)
     {
-        $http = new Client;
-        return response()->json(123);
+        $http = new Client();
         $response = $http->post('http://localhost:8000/oauth/token', [
             'form_params' => [
                 'grant_type' => 'refresh_token',
@@ -137,7 +136,7 @@ class ClientController extends Controller
                 'client_id' => $request->clientId,
                 'client_secret' => $request->clientSecret,
                 'scope' => '',
-            ],
+            ]
         ]);
         return response()->json(['response' => $response]);
     }

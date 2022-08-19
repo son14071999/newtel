@@ -12,10 +12,13 @@ use Tymon\JWTAuth\Claims\Expiration;
 
 class IssueController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+   /**
+     * @lrd:start
+     * # Hàm lấy ds issue
+     * #  for /listIssue route
+     * - Phải đăng nhập ms vào được
+     * - CHỉ hiển thị thông tin của những issue mà b là ng giao hoặc b là người thực hiện
+     * @lrd:end
      */
     public function index()
     {

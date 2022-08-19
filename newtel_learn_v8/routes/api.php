@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('test', [LoginController::class, 'createClient']);
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     //User
-    Route::get('listUser', [UserController::class, 'index'])->name('listUser');
+    Route::get('listUser', [UserController::class, 'index'])->name('listUser')->middleware('scope:viewListUser');
     Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser')->middleware('scope:viewUser');
     Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser')->middleware('scope:editUser');
     Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser')->middleware('scope:deleteUser');
@@ -100,9 +100,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
 
-    // token
-    Route::post('/refreshToken', [ClientController::class, 'refreshToken']);
 });
+
+//client
+Route::post('/refreshToken', [ClientController::class, 'refreshToken']);
 
 // send mail khi quên mật khẩu
 Route::post('/forgotPassword', [LoginController::class, 'forgotPassword']);
@@ -111,5 +112,4 @@ Route::post('/forgotPassword', [LoginController::class, 'forgotPassword']);
 Route::post('/updatePassword', [LoginController::class, 'updatePasswrord']);
 
 
-Route::get('testArtisanCommand', [LoginController::class, 'testArtisanCommand']);
 

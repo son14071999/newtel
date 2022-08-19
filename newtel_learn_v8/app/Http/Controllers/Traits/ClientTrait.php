@@ -18,8 +18,8 @@ trait ClientTrait{
                     'grant_type' => 'password',
                     'client_id' => 'client-id',
                     'client_secret' => 'client-secret',
-                    'username' => 'taylor@laravel.com',
-                    'password' => 'my-password',
+                    'username' => $request->email,
+                    'password' => $request->password,
                     'scope' => '',
                 ],
             ]);
