@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('test', [LoginController::class, 'createClient']);
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     //User
-    Route::get('listUser', [UserController::class, 'index'])->name('listUser')->middleware('scope:viewListUser');
+    Route::get('listUser', [UserController::class, 'index'])->name('listUser');
     Route::get('showUser/{id}', [UserController::class, 'show'])->name('showUser')->middleware('scope:viewUser');
     Route::post('editUser/{id}', [UserController::class, 'edit'])->name('editUser')->middleware('scope:editUser');
     Route::get('deleteListUser/{id}', [UserController::class, 'destroy'])->name('deleteUser')->middleware('scope:deleteUser');
@@ -98,6 +98,10 @@ Route::group(['middleware' => 'auth:api'], function () {
             'roles' => Role::get()
         ], 200);
     });
+
+
+    // token
+    Route::post('/refreshToken', [ClientController::class, 'refreshToken']);
 });
 
 // send mail khi quên mật khẩu

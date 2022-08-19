@@ -27,7 +27,7 @@ use Laravel\Passport\Http\Controllers\ClientController;
 class LoginController extends Controller
 {
     use ClientTrait;
-    public function login(Request $request, Auth $auth)
+    public function login(Request $request)
     {
         if(($option = $request->input('option')) && $option == 'accessToken'){
             $client = $this->createAccessToken($request);

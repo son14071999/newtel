@@ -39,7 +39,7 @@ class ClientController extends Controller
         $userId = Auth::user()->id;
         $redirect = $request->redirect ? $request->redirect : 'http://localhost:4200';
         $name = $request->name ? $request->name : Auth::user()->name;
-        $clients->create(intval($userId), $name, $redirect);
+        $clients->create(intval($userId), $name, $redirect, null, false, 1);
         return response()->json('Success', 200);
     }
 
@@ -112,7 +112,7 @@ class ClientController extends Controller
     {
         $http = new Client;
 
-        
+
         $response = $http->post('http://your-app.com/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
@@ -123,5 +123,22 @@ class ClientController extends Controller
                 'scope' => '',
             ],
         ]);
+    }
+
+
+    public function refreshToken(Request $request)
+    {
+        $http = new Client;
+        return response()->json(123);
+        $response = $http->post('http://localhost:8000/oauth/token', [
+            'form_params' => [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $request->refreshToken,
+                'client_id' => $request->clientId,
+                'client_secret' => $request->clientSecret,
+                'scope' => '',
+            ],
+        ]);
+        return response()->json(['response' => $response]);
     }
 }

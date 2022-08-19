@@ -1,3 +1,0 @@
-app.value('departmentHandler', {
-
-})
