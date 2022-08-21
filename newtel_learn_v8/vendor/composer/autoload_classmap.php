@@ -25,7 +25,6 @@ return array(
     'App\\Http\\Middleware\\checkLogin' => $baseDir . '/app/Http/Middleware/checkLogin.php',
     'App\\Listeners\\SendEmail' => $baseDir . '/app/Listeners/SendEmail.php',
     'App\\Models\\Department' => $baseDir . '/app/Models/Department.php',
-    'App\\Models\\Issue' => $baseDir . '/app/Models/Issue.php',
     'App\\Models\\Oauth_client' => $baseDir . '/app/Models/Oauth_client.php',
     'App\\Models\\Permit' => $baseDir . '/app/Models/Permit.php',
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',

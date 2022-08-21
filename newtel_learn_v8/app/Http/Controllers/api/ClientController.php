@@ -140,4 +140,14 @@ class ClientController extends Controller
         ]);
         return response()->json(['response' => $response]);
     }
+
+    public function getredirect(Request $request) {
+        if(($clientId = $request->clientId)
+            && ($clientSecret = $request->clientSecret)
+            && ($client = Oauth_client::where(['id' =>  $clientId, 'secret' => $clientSecret])->first())
+        ) {
+            return response()->json($client);
+        }
+        return response()->json('Error', 405);
+    }
 }

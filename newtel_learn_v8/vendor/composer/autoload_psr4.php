@@ -88,7 +88,7 @@ return array(
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'GrahamCampbell\\ResultType\\' => array($vendorDir . '/graham-campbell/result-type/src'),
-    'Fruitcake\\Cors\\' => array($vendorDir . '/fruitcake/php-cors/src', $vendorDir . '/fruitcake/laravel-cors/src'),
+    'Fruitcake\\Cors\\' => array($vendorDir . '/fruitcake/laravel-cors/src', $vendorDir . '/fruitcake/php-cors/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Fideloper\\Proxy\\' => array($vendorDir . '/fideloper/proxy/src'),
     'Faker\\' => array($vendorDir . '/fakerphp/faker/src/Faker'),

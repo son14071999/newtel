@@ -88,9 +88,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('showClient/{id}', [ClientController::class, 'show']);
     Route::post('editClient/{id}', [ClientController::class, 'edit']);
     Route::delete('deleteClient/{id}', [ClientController::class, 'destroy']);
-
-
-
+    
+    
+    
     //permit
     Route::get('/getAllPermit', [PermitController::class, 'getAllPermit']);
     Route::get('/getAllRole', function(){
@@ -98,12 +98,13 @@ Route::group(['middleware' => 'auth:api'], function () {
             'roles' => Role::get()
         ], 200);
     });
-
-
+    
+    
 });
 
 //client
 Route::post('/refreshToken', [ClientController::class, 'refreshToken']);
+Route::post('getredirect', [ClientController::class, 'getredirect']);
 
 // send mail khi quên mật khẩu
 Route::post('/forgotPassword', [LoginController::class, 'forgotPassword']);

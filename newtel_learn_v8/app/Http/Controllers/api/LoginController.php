@@ -39,22 +39,6 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        if (($option = $request->input('option')) && $option == 'accessToken' && $request->input('hash')) {
-            if(Auth::attempt($request->only(['email', 'password']))){
-                $http = new Client;
-                $res = $http->post('http://localhost:8000/oauth/token', [
-                    'form_params' => [
-                        'grant_type' => 'password',
-                        'client_id' => $request->client_id,
-                        'client_secret' => 'client-secret',
-                        'username' => $request->email,
-                        'password' => $request->password,
-                        'scope' => '',
-                    ],
-                ]);
-            }
-            return response()->json($res, 200);
-        }
         if (!Auth::attempt($request->only(['email', 'password']))) {
             return response()->json('Lỗi đăng nhập', 401);
         } else {
@@ -127,9 +111,6 @@ class LoginController extends Controller
 
 
 
-    public function loginApplication(Request $request)
-    {
-    }
 
 
     public function createClient(Request $request, ClientRepository $clients)

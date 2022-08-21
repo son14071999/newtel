@@ -15,8 +15,6 @@ export class IssueService {
 
   getAll() {
     this.commonService.checkAccessToken();
-    console.log(456);
-
     return this.httpClient.get(environment.url + 'api/listIssue', {
       headers: this.header,
     });

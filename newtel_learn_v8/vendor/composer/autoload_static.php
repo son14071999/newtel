@@ -547,8 +547,8 @@ class ComposerStaticInit993710ff4efb8c7efbd2d183fa953bd5
         ),
         'Fruitcake\\Cors\\' => 
         array (
-            0 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
-            1 => __DIR__ . '/..' . '/fruitcake/laravel-cors/src',
+            0 => __DIR__ . '/..' . '/fruitcake/laravel-cors/src',
+            1 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
         ),
         'Firebase\\JWT\\' => 
         array (
@@ -673,7 +673,6 @@ class ComposerStaticInit993710ff4efb8c7efbd2d183fa953bd5
         'App\\Http\\Middleware\\checkLogin' => __DIR__ . '/../..' . '/app/Http/Middleware/checkLogin.php',
         'App\\Listeners\\SendEmail' => __DIR__ . '/../..' . '/app/Listeners/SendEmail.php',
         'App\\Models\\Department' => __DIR__ . '/../..' . '/app/Models/Department.php',
-        'App\\Models\\Issue' => __DIR__ . '/../..' . '/app/Models/Issue.php',
         'App\\Models\\Oauth_client' => __DIR__ . '/../..' . '/app/Models/Oauth_client.php',
         'App\\Models\\Permit' => __DIR__ . '/../..' . '/app/Models/Permit.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
