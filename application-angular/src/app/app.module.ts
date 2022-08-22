@@ -8,6 +8,10 @@ import { IssueComponent } from './components/issue/issue.component';
 import { IssueRoutes } from './routers/issue.routing';
 import { CommonService } from './services/common.service';
 import { IssueService } from './services/issue.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -18,7 +22,10 @@ import { IssueService } from './services/issue.service';
     BrowserModule,
     AppRoutingModule,
     IssueRoutes,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    DialogModule,
+    FormsModule
   ],
   providers: [
     IssueService,

@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         return view('listUser.addUser');
     })->middleware('scope:addUser');
     Route::post('addUser', [UserController::class, 'store'])->name('addUserPost')->middleware('scope:addUser');
+    Route::post('getPermitsUser', [UserController::class, 'getPermitsUser']);
 
     // role
     Route::get('listRole', [RoleController::class, 'index'])->name('listRole')->middleware('scope:viewListRole');

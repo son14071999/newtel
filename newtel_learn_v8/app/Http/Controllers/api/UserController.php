@@ -9,6 +9,7 @@ use App\Models\Role;
 use Exception;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -154,5 +155,10 @@ class UserController extends Controller
             'code' => 405,
             'message' => 'Người dùng không tồn tại'
         ], 405);
+    }
+
+    public function getPermitsUser() {
+        $user = Auth::user();
+        
     }
 }

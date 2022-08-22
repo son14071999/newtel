@@ -11,7 +11,8 @@
   </div>
 
   <div class="col-sm-2">
-    <button type="button" class="btn btn-primary btn-add" data-toggle="button" aria-pressed="false" autocomplete="off">Add issue</button>
+    <button type="button" (click)="showDialog(0, 'Add Issue')" icon="pi pi-info-circle" label="Show"
+      class="btn btn-primary btn-add">Add issue</button>
   </div>
 </div>
 
@@ -33,15 +34,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td scope="row"></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+      <tr *ngFor="let issue of issues">
+        <td scope="row">{{ issue.stt }}</td>
+        <td>{{ issue.name }}</td>
+        <td>{{ issue.descripttion }}</td>
+        <td>{{ issue.executor }}</td>
+        <td>{{ issue.jobAssignor }}</td>
+        <td>{{ issue.deadline }}</td>
+        <td>{{ issue.status }}</td>
+        <td>
+          <a (click)="showDialog(issue.id, 'Edit Issue')" class="wrapper-action"><i class="fa-solid fa-pen"></i></a>
+          <a class="wrapper-action"><i class="fa-solid fa-circle-minus"></i></a>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -50,22 +54,61 @@
 
 
 <!-- modal -->
-<div class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+
+<p-dialog header="{{ title }}" [(visible)]="display" position="top" [modal]="true" [style]="{width: '50vw'}"
+  [draggable]="false" [resizable]="false">
+
+
+  <form>
+    <div class="form-group" ng-show="config.name.show">
+      <label for="name" class="col-form-label">Tên nhiệm vụ: </label>
+      <input type="text" class="form-control" id="name" [(ngModel)]="currentIssue.name" name="name">
+    </div>
+
+    <div class="form-group" ng-show="config.descripttion.show">
+      <label for="descripttion" class="col-form-label">Mô tả: </label>
+      <textarea id="descripttion" rows="4" cols="60" [(ngModel)]="currentIssue.descripttion" name="descripttion">
+            Mô tả công việc
+        </textarea>
+    </div>
+
+
+    <div class="form-group" ng-show="config.executor_id.show">
+      <label for="employee" class="col-form-label">Người thực hiện: </label>
+      <select name="employee" class="form-select" id="role" [(ngModel)]="currentIssue.executor_id"
+        aria-label="Chọn người thực hiện" name="executor_id">
+        <option value="0">--Chọn người thực hiện--</option>
+        <!-- <option ng-repeat="employee in data.employees" ng-value="@{{ employee.id }}" ng-selected="employee.selected"
+          style="height: 60px">@{{ employee.name }}
+        </option> -->
+      </select>
+    </div>
+
+
+    <div class="form-group" ng-show="config.status_id.show">
+      <label for="status" class="col-form-label">Trạng thái: </label>
+      <select name="status" class="form-select" id="role" [(ngModel)]="currentIssue.status_id"
+        aria-label="Chọn trạng thái" name="status_id">
+        <option value="0">--Chọn trạng thái--</option>
+        <!-- <option ng-repeat="status in data.statuses" ng-value="@{{ status.id }}" ng-selected="status.selected"
+          style="height: 60px">@{{ status.name }}
+        </option> -->
+      </select>
+    </div>
+
+    <div class="form-group" ng-show="config.deadline.show">
+      <div class="md-form md-outline input-with-post-icon datepicker" inline="true">
+        <label for="deadline">Deadline...</label>
+        <input placeholder="Select date" data-date-format="DD/MMMM/YYYY" type="date" id="deadline" class="form-control"
+        [(ngModel)]="currentIssue.deadline" name="deadline">
       </div>
     </div>
-  </div>
-</div>
+
+
+  </form>
+
+  <ng-template pTemplate="footer">
+    <button type="button" (click)="save()" icon="pi pi-check" label="Show" class="btn btn-primary btn-add">Save</button>
+    <!-- <p-button icon="pi pi-check" (click)="display=false" label="Ok" styleClass="p-button-text"></p-button> -->
+  </ng-template>
+</p-dialog>

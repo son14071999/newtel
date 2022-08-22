@@ -34,7 +34,7 @@ app.directive('formUser', function (userFactory, departmentFactory) {
                         })
                 },
                 'getUser': () => {
-                    userFactory.userEdit(scope.userId)
+                    userFactory.getUser(scope.userId)
                         .then(function (response) {
                             scope.data.userInfo = response.data.user
                             roleIds = response.data.roleIds

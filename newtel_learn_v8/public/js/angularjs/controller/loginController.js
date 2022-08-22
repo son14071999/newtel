@@ -1,6 +1,6 @@
 app.controller(
     "loginController",
-    function ($scope, loginFactory) {
+    function ($scope, loginFactory, userFactory) {
         $scope.data = {
             showFormLogin: true,
             showFormForgotPassword: false,
@@ -16,6 +16,7 @@ app.controller(
                 loginFactory.getAccessToken(clientId, clientSecret, $scope.user.email, $scope.user.password)
                     .then((resp) => {
                         localStorage.setItem('token', resp.data.access_token)
+                        userFactory.getPermitsUser()
                         loginFactory.getredirect(clientId, clientSecret)
                             .then((subResp) => {
                                 redirect = subResp.data.redirect

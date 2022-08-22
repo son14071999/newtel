@@ -4,7 +4,7 @@ app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
         userFactory.deleteUser = function ($idUser) {
             return $http.get(rootUrl + 'api/deleteListUser/' + $idUser, functionHandle.header)
         }
-        userFactory.userEdit = function ($id) {
+        userFactory.getUser = function ($id) {
             return $http.get(rootUrl + 'api/showUser/' + $id, functionHandle.header)
         }
         userFactory.saveEditUser = function ($id, $params) {
@@ -19,6 +19,10 @@ app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
         }
         userFactory.getListRole = function ($params){
             return $http.get(rootUrl + "api/getAllRole",functionHandle.header)
+        }
+
+        userFactory.getPermitsUser = function() {
+            return $http.get('api/getPermitsUser', functionHandle.header)
         }
         return userFactory
     }

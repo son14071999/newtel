@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   url: 'http://localhost:8000/',
-  client_id: 6,
-  clientSecret: '5hVAKzVLMuyAIbeZuqoB8Ec3NE7yRlwNE56pDkK5',
+  client_id: 22,
+  clientSecret: 'MBS3nhjmSS5JiYqg3wJNrLW8XkEJpaCwJAL2hExn',
   header: {
     Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
     Accept: 'application/json',

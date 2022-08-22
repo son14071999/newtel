@@ -10,7 +10,7 @@ export class IssueService {
   constructor(
     private httpClient: HttpClient,
     private commonService: CommonService
-  ) {}
+  ) { }
   private header = new HttpHeaders(environment.header);
 
   getAll() {
@@ -18,5 +18,12 @@ export class IssueService {
     return this.httpClient.get(environment.url + 'api/listIssue', {
       headers: this.header,
     });
+  }
+
+  getListUser() {
+    this.commonService.checkAccessToken();
+    return this.httpClient.get(environment.url + 'api/listUser', {
+      headers: this.header,
+    })
   }
 }

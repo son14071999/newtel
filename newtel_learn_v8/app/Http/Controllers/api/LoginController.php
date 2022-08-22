@@ -42,13 +42,8 @@ class LoginController extends Controller
         if (!Auth::attempt($request->only(['email', 'password']))) {
             return response()->json('Lỗi đăng nhập', 401);
         } else {
-            $user = $request->user();
-            $scopes = [];
-            $roles = $user->roles;
-            foreach ($roles as $role) {
-                $scopes = array_merge($scopes, Role::getCodePermits($role['id']));
-            }
-            $scopes = array_unique($scopes);
+           $user = $request->user();
+           $scopes = $user->getPermits($user);
             $token = $user->createToken('demo Oauth', $scopes)->accessToken;
             return response()->json($token, 200);
         }

@@ -44,4 +44,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class,'user_roles','user_id','role_id');
     }
 
+
+    public function getPermits($user)
+    {
+        $scopes = [];
+        $roles = $user->roles;
+        foreach ($roles as $role) {
+            $scopes = array_merge($scopes, Role::getCodePermits($role['id']));
+        }
+        return array_unique($scopes);
+    }
+
 }
