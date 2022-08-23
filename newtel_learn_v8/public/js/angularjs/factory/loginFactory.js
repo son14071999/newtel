@@ -8,14 +8,14 @@ app.factory('loginFactory', ['$http', 'functionHandle',
         loginFactory.sentMailForgotPw = (email) => {
             return $http.post(rootUrl + 'api/forgotPassword', { 'email': email })
         }
-        loginFactory.getAccessToken = (clientId, clientSecret, username, password) => {
+        loginFactory.getAccessToken = (clientId, clientSecret, username, password, scope) => {
             return $http.post(rootUrl + 'oauth/token', {
                 'grant_type': 'password',
                 'client_id': clientId,
                 'client_secret': clientSecret,
                 'username':  username,
                 'password': password,
-                'scope': '',
+                'scope': scope,
             })
         }
 
@@ -24,6 +24,13 @@ app.factory('loginFactory', ['$http', 'functionHandle',
                 'clientId': clientId,
                 'clientSecret': clientSecret
             }, functionHandle.header)
+        }
+
+        loginFactory.getPermitsUser = function(email, password) {
+            return $http.post('api/getPermitsUser', {
+                'email': email, 
+                'password': password
+            })
         }
         return loginFactory
     }

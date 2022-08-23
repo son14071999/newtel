@@ -52,10 +52,20 @@
 </div>
 
 
+<div class="wrapper-footer">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li *ngFor="let index of dataConfig.pages" class="page-item"><a class="page-link" [ngClass]="{'pageCurren': index==dataConfig.pageCurrent}" (click)="changePage(index)">{{ index }}</a></li>
+    </ul>
+  </nav>
+
+  <input type="number" name="itemPerPage" id="itemPerPage" [ngModel]="dataConfig.itemPerpage">
+</div>
+
 
 <!-- modal -->
 
-<p-dialog header="{{ title }}" [(visible)]="display" position="top" [modal]="true" [style]="{width: '50vw'}"
+<p-dialog header="{{ title }}" [(visible)]="display" position="top" [modal]="true" [style]="{width: '400px'}"
   [draggable]="false" [resizable]="false">
 
 
@@ -78,9 +88,9 @@
       <select name="employee" class="form-select" id="role" [(ngModel)]="currentIssue.executor_id"
         aria-label="Chọn người thực hiện" name="executor_id">
         <option value="0">--Chọn người thực hiện--</option>
-        <!-- <option ng-repeat="employee in data.employees" ng-value="@{{ employee.id }}" ng-selected="employee.selected"
-          style="height: 60px">@{{ employee.name }}
-        </option> -->
+        <option *ngFor="let user of users" value="{{ user.id }}"
+          style="height: 60px">{{ user.name }}
+        </option>
       </select>
     </div>
 
@@ -90,9 +100,9 @@
       <select name="status" class="form-select" id="role" [(ngModel)]="currentIssue.status_id"
         aria-label="Chọn trạng thái" name="status_id">
         <option value="0">--Chọn trạng thái--</option>
-        <!-- <option ng-repeat="status in data.statuses" ng-value="@{{ status.id }}" ng-selected="status.selected"
-          style="height: 60px">@{{ status.name }}
-        </option> -->
+        <option *ngFor="let status of statuses" value="{{ status.id }}"
+          style="height: 60px">{{ status.name }}
+        </option>
       </select>
     </div>
 
@@ -109,6 +119,5 @@
 
   <ng-template pTemplate="footer">
     <button type="button" (click)="save()" icon="pi pi-check" label="Show" class="btn btn-primary btn-add">Save</button>
-    <!-- <p-button icon="pi pi-check" (click)="display=false" label="Ok" styleClass="p-button-text"></p-button> -->
   </ng-template>
 </p-dialog>

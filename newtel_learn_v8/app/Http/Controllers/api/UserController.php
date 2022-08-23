@@ -157,8 +157,18 @@ class UserController extends Controller
         ], 405);
     }
 
-    public function getPermitsUser() {
-        $user = Auth::user();
-        
+    public function getPermitsUser(Request $request) {
+        if(Auth::attempt([
+            'email' => $request->email,
+            'password' => $request->password
+        ])) {
+            return response()->json((Auth::user())->getPermits(Auth::user()), 200);
+        }else{
+            return response()->json('Email hoặc mật khẩu sai', 405);
+        }
+    }
+
+    public function getAllUser() {
+        return response()->json(User::all());
     }
 }

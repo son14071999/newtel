@@ -1,6 +1,6 @@
 app.controller(
     "loginController",
-    function ($scope, loginFactory, userFactory) {
+    function ($scope, loginFactory) {
         $scope.data = {
             showFormLogin: true,
             showFormForgotPassword: false,
@@ -13,21 +13,26 @@ app.controller(
             clientId = url.searchParams.get('clientId')
             clientSecret = url.searchParams.get('clientSecret')
             if (clientId && clientSecret) {
-                loginFactory.getAccessToken(clientId, clientSecret, $scope.user.email, $scope.user.password)
-                    .then((resp) => {
-                        localStorage.setItem('token', resp.data.access_token)
-                        userFactory.getPermitsUser()
-                        loginFactory.getredirect(clientId, clientSecret)
-                            .then((subResp) => {
-                                redirect = subResp.data.redirect
-                                char = redirect.includes('?') ? '&' : '?'
-                                window.location.replace(redirect + char + 'accessToken=' + resp.data.access_token + '&refreshToken=' + resp.data.refresh_token + '&expires_in=' + resp.data.expires_in)
+                loginFactory.getPermitsUser( $scope.user.email, $scope.user.password)
+                        .then((respPermits) => {
+                            loginFactory.getAccessToken(clientId, clientSecret, $scope.user.email, $scope.user.password, respPermits.data)
+                            .then((resp) => {
+                                localStorage.setItem('token', resp.data.access_token)
+                                loginFactory.getredirect(clientId, clientSecret)
+                                    .then((subResp) => {
+                                        redirect = subResp.data.redirect
+                                        char = redirect.includes('?') ? '&' : '?'
+                                        window.location.replace(redirect + char + 'accessToken=' + resp.data.access_token + '&refreshToken=' + resp.data.refresh_token + '&expires_in=' + resp.data.expires_in)
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    })
                             }).catch((err) => {
                                 console.log(err)
                             })
-                    }).catch((err) => {
-                        console.log(err)
-                    })
+                        }).catch((err) => {
+                            console.log(err)
+                        })
+              
             } else {
                 loginFactory.login($scope.user)
                     .then(function (response) {

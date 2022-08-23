@@ -121,7 +121,7 @@ app.directive('formIssue', function (issueFactory) {
                 getListUser: () => {
                     issueFactory.getListUser()
                         .then((resp) => {
-                            scope.data.employees = resp.data.users.data
+                            scope.data.employees = resp.data
                         }).catch((err) => {
                             console.log(err)
                         })

@@ -24,7 +24,7 @@ app.factory('issueFactory', ['$http', '$httpParamSerializer', 'functionHandle',
         
 
         issueFactory.getListUser = () => {
-            return $http.get(rootUrl + 'api/listUser', functionHandle.header)
+            return $http.get(rootUrl + 'api/getListUser', functionHandle.header)
         }
 
 

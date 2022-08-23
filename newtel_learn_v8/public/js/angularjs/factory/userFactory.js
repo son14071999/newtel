@@ -20,10 +20,6 @@ app.factory('userFactory', ['$http', '$httpParamSerializer','functionHandle',
         userFactory.getListRole = function ($params){
             return $http.get(rootUrl + "api/getAllRole",functionHandle.header)
         }
-
-        userFactory.getPermitsUser = function() {
-            return $http.get('api/getPermitsUser', functionHandle.header)
-        }
         return userFactory
     }
 ])
