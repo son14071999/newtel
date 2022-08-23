@@ -11,17 +11,21 @@ import { IssueService } from './services/issue.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
+import { HomeComponent } from './components/home/home.component';
+import { HomeRoutes } from './routers/home.routing';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     IssueComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     IssueRoutes,
+    HomeRoutes,
     HttpClientModule,
     BrowserAnimationsModule,
     DialogModule,

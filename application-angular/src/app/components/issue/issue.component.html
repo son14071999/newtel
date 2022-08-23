@@ -2,7 +2,7 @@
   <div class="col-sm-5">
     <div class="form-group">
       <label for=""></label>
-      <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Search">
+      <input type="text" class="form-control" name="" [(ngModel)]="dataConfig.search" placeholder="Search" (change)="getConfig()">
     </div>
   </div>
 
@@ -44,7 +44,7 @@
         <td>{{ issue.status }}</td>
         <td>
           <a (click)="showDialog(issue.id, 'Edit Issue')" class="wrapper-action"><i class="fa-solid fa-pen"></i></a>
-          <a class="wrapper-action"><i class="fa-solid fa-circle-minus"></i></a>
+          <a (click)="deleteIssue(issue.id)" class="wrapper-action"><i class="fa-solid fa-circle-minus"></i></a>
         </td>
       </tr>
     </tbody>
@@ -59,7 +59,7 @@
     </ul>
   </nav>
 
-  <input type="number" name="itemPerPage" id="itemPerPage" [ngModel]="dataConfig.itemPerpage">
+  <input type="number" name="itemPerPage" id="itemPerPage" [(ngModel)]="dataConfig.itemPerpage" (change)="getConfig()">
 </div>
 
 

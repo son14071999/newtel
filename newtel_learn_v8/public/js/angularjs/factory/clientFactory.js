@@ -14,7 +14,7 @@ app.factory('clientFactory', ['$http', '$httpParamSerializer', 'functionHandle',
             return $http.post(rootUrl + "api/addClient", $params, functionHandle.header)
         }
         clientFactory.logout = async function () {
-            return $http.post(rootUrl + 'api/logout', {}, functionHandle.header)
+            return $http.get(rootUrl + 'api/logout', functionHandle.header)
         }
         clientFactory.getListClient = function (data) {
             $http.get(rootUrl + "api/listClient?" + $httpParamSerializer(data.paramRequest), functionHandle.header)

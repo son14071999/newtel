@@ -13,10 +13,9 @@ export class CommonService {
 
   checkAccessToken() {
     
-    let expries_in = Number(localStorage.getItem('expries_in'));
-    console.log()
-    
+    let expries_in = Number(localStorage.getItem('expries_in'));    
     let accessToken = localStorage.getItem('accessToken')
+
     if(!accessToken) {
       window.location.replace(environment.url + 'login?clientId=' + environment.client_id + '&clientSecret=' + environment.clientSecret)
     }else if(expries_in && expries_in < Date.now()){     
@@ -44,20 +43,19 @@ export class CommonService {
             }
           })
     }
-    // if (expires_in < (Date.now() + 500000)) {
-    //   this.httpClient
-    //     .post(environment.url + 'api/refreshToken',
-    //       {
-    //         clientId: environment.client_id,
-    //         clientSecret: environment.clientSecret,
-    //         refreshToken: localStorage.getItem('refreshToken')
-    //       },
-    //       { headers: this.header }
-    //     )
-    //     .subscribe((resp) => {
-    //       console.log('resp123: ', resp);
-    //     });1662381789398
-    //     });1661085863664
-    // }
+  }
+
+  logout() {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('expries_in')
+    this.httpClient.get(environment.url + 'api/logout', {headers: this.header}).subscribe(
+      (res: any) => {
+        window.location.replace(environment.url + 'login?clientId=' + environment.client_id + '&clientSecret=' + environment.clientSecret)
+      },
+      (err: any) => {
+        console.log(err);
+      }
+    )
   }
 }

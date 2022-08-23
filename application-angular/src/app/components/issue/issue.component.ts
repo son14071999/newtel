@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Issue } from 'src/app/common/issue';
 import { IssueService } from 'src/app/services/issue.service';
 import { General } from 'src/app/handler/general';
+import * as _ from 'lodash';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-issue',
@@ -26,11 +28,13 @@ export class IssueComponent implements OnInit {
   // id user hiện tại
   userId: Number = 0;
   dataConfig: any;
-  constructor(private issueService: IssueService) {
+  constructor(private issueService: IssueService
+    ) {
     this.dataConfig = {
       itemPerpage: 3,
       pageCurrent: 1,
       pages: Array.from({length: 1}, (_, i) => i + 1),
+      search: ''
     };
   }
 
@@ -45,7 +49,7 @@ export class IssueComponent implements OnInit {
       (res) => {
         this.issues = res as Issue[];
         this.issues = this.handlerGeneral.indexing(this.issues)
-        this.issuesTemp = res as Issue[]
+        this.issuesTemp = [ ...this.issues ]
         this.getConfig()
       },
       (err) => {
@@ -95,18 +99,40 @@ export class IssueComponent implements OnInit {
   }
 
   getConfig () {
-    this.issues = this.issuesTemp
-    console.log('2: ', this.issues)
-    this.issues.splice(this.dataConfig.itemPerpage * (this.dataConfig.pageCurrent - 1), this.dataConfig.itemPerpage)
-    console.log('2: ', this.issuesTemp)
-    
+    let temp = [...this.issuesTemp]
+    this.issuesTemp = this.search()    
+    let start = this.dataConfig.itemPerpage * (this.dataConfig.pageCurrent - 1)
+    this.issues = this.issuesTemp.slice(start, start + this.dataConfig.itemPerpage)
     let p = Math.ceil(Number(this.issuesTemp.length) / Number(this.dataConfig.itemPerpage))
     this.dataConfig.pages =  Array.from({length: p}, (_, i) => i + 1)
+    this.issuesTemp = temp
   }
 
   changePage(p: Number) {
-    this.dataConfig.currentIssue = p
+    this.dataConfig.pageCurrent = p
     this.getConfig()
+  }
+
+
+  deleteIssue(id: Number) {
+    this.issueService.deleteIssue(id)
+    .subscribe(
+      (res: any) => {
+        alert(res)
+        this.getListIssue()
+      },
+      (err: any) => {
+        console.log(err)
+      }
+    )
+  }
+
+
+  search() {
+    return _.filter(this.issuesTemp, (item) => {
+      return item.name.includes(this.dataConfig.search) || item.descripttion.includes(this.dataConfig.search) 
+    })
+    
   }
 
   save() {
@@ -120,7 +146,6 @@ export class IssueComponent implements OnInit {
         console.log(err);
       }
     );
-    console.log('currentIssue: ', this.currentIssue);
-    console.log('this.itemId: ', this.itemId);
+   
   }
 }

@@ -20,7 +20,7 @@ app.factory('departmentFactory', ['$http', '$httpParamSerializer', 'functionHand
             return $http.post(rootUrl + "api/getDepartment", functionHandle.header)
         }
         departmentFactory.logout = function () {
-            return $http.post(rootUrl + 'api/logout', {}, functionHandle.header)
+            return $http.get(rootUrl + 'api/logout', functionHandle.header)
         }
         departmentFactory.updateDepartments = (departments) => {
             departments = departmentFactory.addPath(departments)

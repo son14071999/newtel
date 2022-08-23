@@ -14,7 +14,7 @@ app.factory('roleFactory', ['$http', '$httpParamSerializer', 'functionHandle',
             return $http.post(rootUrl + "api/addRole", $params, functionHandle.header)
         }
         roleFactory.logout = async function () {
-            return $http.post(rootUrl + 'api/logout', {}, functionHandle.header)
+            return $http.get(rootUrl + 'api/logout', functionHandle.header)
         }
         roleFactory.getListRole = function (data) {
             var request = $http.get(rootUrl + "api/listRole?" + $httpParamSerializer(data.paramRequest), functionHandle.header)

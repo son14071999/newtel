@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from './services/common.service';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,13 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'application-angular';
 
+  constructor(private commonService: CommonService) {
+
+  }
+
   ngOnInit() {
     this.start()
+    this.commonService.checkAccessToken();
   }
 
   start() {
@@ -17,10 +23,14 @@ export class AppComponent implements OnInit {
     let accessToken = url.searchParams.get('accessToken')
     let refreshToken = url.searchParams.get('refreshToken')
     let expries_in = url.searchParams.get('expires_in')
-    if(accessToken && refreshToken && expries_in) {
+    if (accessToken && refreshToken && expries_in) {
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', refreshToken)
       localStorage.setItem('expries_in', String(Date.now() + (Number(expries_in) - 10) * 1000))
     }
+  }
+  
+  logout() {
+    this.commonService.logout()
   }
 }

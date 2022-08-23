@@ -28,6 +28,13 @@ export class IssueService {
     })
   }
 
+  deleteIssue(id: Number) {
+    this.commonService.checkAccessToken();
+    return this.httpClient.delete(environment.url + 'api/deleteIssue/' + id, {
+      headers: this.header,
+    })
+  }
+
   getListStatus() {
     return this.httpClient.get(environment.url + 'api/getListStatus/1', {
       headers: this.header
