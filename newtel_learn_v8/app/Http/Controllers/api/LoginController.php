@@ -6,7 +6,6 @@ use App\Events\ResetPassword;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\ClientTrait;
 use App\Models\Oauth_client;
-use App\Models\SessionUser;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -110,26 +109,14 @@ class LoginController extends Controller
 
     public function createClient(Request $request, ClientRepository $clients)
     {
-        $userId = Auth::user()->id;
-        // $client = Oauth_client::where('user_id', $userId)->first();
-        // if($client) {
-        //     return response()->json([
-        //         'clientId' => $client->id,
-        //         'clientSecret' => $client->secret
-        //     ], 200);
-        // }
 
+        $userId = Auth::user()->id;
         $redirect = $request->redirect ? $request->redirect : 'http://localhost:4200';
         $name = $request->name ? $request->name : Auth::user()->name;
-        $client = $clients->create(intval($userId), 'test', $redirect);
+        $client = $clients->create(intval($userId), $name , $redirect);
         return response()->json([
             'clientId' => $client->id,
             'clientSecret' => $client->plainSecret,
-            // 'client' =>  $client,
-            // 'clientId' => $request->user()->token()->client->id,
-            // 'client1' => $request->user()->token(),
-            // 'clientSecret ' => $request->user()->token()->client->secret ,
-            // 'status' => 200
         ], 200);
     }
 }

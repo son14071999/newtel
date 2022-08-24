@@ -44,6 +44,5 @@ class AuthServiceProvider extends ServiceProvider
             'addIssue'
         ]);
 
-        //
     }
 }

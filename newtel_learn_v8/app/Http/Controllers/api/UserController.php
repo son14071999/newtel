@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
-use App\Models\User;
-use App\Models\Role;
+use App\Repositories\User\UserRepositoryInterface;
 use Exception;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -15,6 +12,11 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    public function __construct(UserRepositoryInterface $userReppository)
+    {
+        $this->userReppository = $userReppository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,11 +27,12 @@ class UserController extends Controller
         $itemPerPage = isset($_GET['limit']) ? intval($_GET['limit']) : 5;
         $search = isset($_GET['search']) ? $_GET['search'] : '';
         $itemPerPage = intval($itemPerPage);
-        $users = User::where('name','LIKE', '%'.$search.'%')
+        $users = $this->userReppository->where('name','LIKE', '%'.$search.'%')
         ->orWhere('email','LIKE', '%'.$search.'%')->paginate($itemPerPage);
         return response()->json([
             'code' => 200,
             'users' => $users,
+            'message' => 'Success',
         ], 200);
     }
 
@@ -45,7 +48,7 @@ class UserController extends Controller
         $roleIds = $request->role_ids;
         DB::beginTransaction();
         try{
-            $user = User::create([
+            $user = $this->userReppository->create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
@@ -55,11 +58,6 @@ class UserController extends Controller
             ]);
             $user->roles()->sync($roleIds);
             DB::commit();
-            return response()->json([
-                'message' => 'success',
-                'role_id' => intval($request->all()),
-                'user' => $user
-            ], 200);
         }catch(Exception $err) {
             DB::rollBack();
             return response()->json($err, 405);
@@ -74,7 +72,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = $this->userReppository->find($id);
         if(empty($user)){
             return response()->json([
                 'message' => 'User ko tồn tại'
@@ -83,7 +81,8 @@ class UserController extends Controller
             $roles = $user->roles->toArray();
             return response()->json([
                 'user' => $user,
-                'roleIds' => array_map(function($o) {return $o['id'];}, $roles)
+                'roleIds' => array_map(function($o) {return $o['id'];}, $roles),
+                'roles' => $roles
             ], 200);
         }
     }
@@ -101,7 +100,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try{
             $roleIds = $request->role_ids;
-            $user = User::find($id);
+            $user = $this->userReppository->find($id);
             $user->update($request->except('role_ids'));
             $user->roles()->sync($roleIds);
             DB::commit();
@@ -143,7 +142,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
+        $user = $this->userReppository->find($id);
         if(!empty($user)){
             $user->delete();
             return response()->json([
@@ -169,6 +168,6 @@ class UserController extends Controller
     }
 
     public function getAllUser() {
-        return response()->json(User::all());
+        return response()->json($this->userReppository->all());
     }
 }

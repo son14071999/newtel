@@ -3,21 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\PermitTrait;
-use Illuminate\Http\Request;
-use App\Models\Permit;
+use App\Repositories\Permit\PermitRepositoryInterface;
 use Exception;
 
 class PermitController extends Controller
 {
-    use PermitTrait;
+
+    public function __construct(PermitRepositoryInterface $permitRepository)
+    {
+            $this->permitRepository = $permitRepository;
+    }
+    // use PermitTrait;
     public function getAllPermit()
     {
         try {
             $search = isset($_GET['search']) ? $_GET['search'] : '';
-            $permitsParent = Permit::where('parent_id', null)->where('code', 'like', '%'.$search.'%')->get()->map(function($permit, $key){
+            $permitsParent = $this->permitRepository->where('parent_id', null)->where('code', 'like', '%'.$search.'%')->get()->map(function($permit, $key){
                 $permit->checked = false;
-                $childPermits = $permit->childPermit->map(function($childPermit, $key1){
+                $permit->childPermit->map(function($childPermit, $key1){
                     $childPermit->checked = false;
                     return $childPermit;
                 });

@@ -677,7 +677,6 @@ class ComposerStaticInit993710ff4efb8c7efbd2d183fa953bd5
         'App\\Models\\Permit' => __DIR__ . '/../..' . '/app/Models/Permit.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\Role_permit' => __DIR__ . '/../..' . '/app/Models/Role_permit.php',
-        'App\\Models\\SessionUser' => __DIR__ . '/../..' . '/app/Models/SessionUser.php',
         'App\\Models\\Status' => __DIR__ . '/../..' . '/app/Models/Status.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\UserRole' => __DIR__ . '/../..' . '/app/Models/UserRole.php',
