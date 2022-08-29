@@ -95,6 +95,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //permit
     Route::get('/getAllPermit', [PermitController::class, 'getAllPermit']);
     Route::get('/getAllRole', function(){
+        // return response()->json(['test' => Auth::user()]); 
         return response()->json([
             'roles' => Role::get()
         ], 200);

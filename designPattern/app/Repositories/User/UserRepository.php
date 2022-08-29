@@ -1,26 +1,15 @@
 <?php
 
-namespace Repositories\User;
+namespace App\Repositories\User;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Repositories\BaseRepository;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
-    protected $user;
-
-    function __construct(User $user)
+    public function __construct(User $user)
     {
-        $this->user = $user;
-    }
-
-    public function getAllList()
-    {
-        return $this->user->all();
-    }
-
-    public function getListById($id)
-    {
-        return $this->user->findOrFail($id);
+        parent::__construct($user);
     }
 }

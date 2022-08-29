@@ -1,10 +1,9 @@
 <?php
-    namespace Repositories\User;
+    namespace App\Repositories\User;
     use Illuminate\Database\Eloquent\Model;
     use App\Models\User;
+use App\Repositories\BaseRepositoryInterface;
 
-    interface UserRepositoryInterface {
-        public function getAllList();
-        public function getListById($id);
+    interface UserRepositoryInterface extends BaseRepositoryInterface{
     }
  ?>

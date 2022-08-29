@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserControllerTest;
 use Illuminate\Support\Facades\Route;
 use Repositories\User\UserRepository;
 use Repositories\User\UserRepositoryInterface;
@@ -15,7 +16,4 @@ use Repositories\User\UserRepositoryInterface;
 |
 */
 
-Route::get('/', function () {
-    dd(app());
-    return view('welcome');
-});
+Route::get('/', [UserControllerTest::class, 'index']);

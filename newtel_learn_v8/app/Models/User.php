@@ -45,14 +45,14 @@ class User extends Authenticatable
     }
 
 
-    // public function getPermits($user)
-    // {
-    //     $scopes = [];
-    //     $roles = $user->roles;
-    //     foreach ($roles as $role) {
-    //         $scopes = array_merge($scopes, Role::getCodePermits($role['id']));
-    //     }
-    //     return array_unique($scopes);
-    // }
+    public function getPermits($user)
+    {
+        $scopes = [];
+        $roles = $user->roles;
+        foreach ($roles as $role) {
+            $scopes = array_merge($scopes, Role::getCodePermits($role['id']));
+        }
+        return array_unique($scopes);
+    }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { CommonService } from './services/common.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', refreshToken)
       localStorage.setItem('expries_in', String(Date.now() + (Number(expries_in) - 10) * 1000))
+      environment.header.Authorization =  'Bearer ' + accessToken
     }
   }
   

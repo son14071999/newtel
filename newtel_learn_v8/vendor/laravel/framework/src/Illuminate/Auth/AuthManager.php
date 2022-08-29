@@ -79,7 +79,7 @@ class AuthManager implements FactoryContract
     protected function resolve($name)
     {
         $config = $this->getConfig($name);
-
+       
         if (is_null($config)) {
             throw new InvalidArgumentException("Auth guard [{$name}] is not defined.");
         }
@@ -87,13 +87,12 @@ class AuthManager implements FactoryContract
         if (isset($this->customCreators[$config['driver']])) {
             return $this->callCustomCreator($name, $config);
         }
-
+        
         $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
 
         if (method_exists($this, $driverMethod)) {
             return $this->{$driverMethod}($name, $config);
         }
-
         throw new InvalidArgumentException(
             "Auth driver [{$config['driver']}] for guard [{$name}] is not defined."
         );
@@ -121,9 +120,7 @@ class AuthManager implements FactoryContract
     public function createSessionDriver($name, $config)
     {
         $provider = $this->createUserProvider($config['provider'] ?? null);
-
         $guard = new SessionGuard($name, $provider, $this->app['session.store']);
-
         // When using the remember me functionality of the authentication services we
         // will need to be set the encryption instance of the guard, which allows
         // secure, encrypted cookie values to get generated for those cookies.
@@ -333,6 +330,13 @@ class AuthManager implements FactoryContract
      */
     public function __call($method, $parameters)
     {
+        // dd($this->guards);
+        // $parameters = ['name' => 'ngao', 'atrribute' => 'ngo'];
+        // $this->test(...$parameters);
         return $this->guard()->{$method}(...$parameters);
     }
+
+    // public function test($parameters) {
+    //     dd($parameters);
+    // }
 }

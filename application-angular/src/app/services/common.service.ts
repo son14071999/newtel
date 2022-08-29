@@ -34,6 +34,7 @@ export class CommonService {
                localStorage.setItem('accessToken', value.access_token)
                localStorage.setItem('refreshToken', value.refresh_token)
                localStorage.setItem('expries_in', String(Date.now() + (Number(value.expries_in) - 10) * 1000))
+               environment.header.Authorization =  'Bearer ' + value.access_token
             },
             error(err: any) {
               localStorage.removeItem('accessToken')
@@ -43,6 +44,7 @@ export class CommonService {
             }
           })
     }
+    
   }
 
   logout() {
