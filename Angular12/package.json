@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 1407",
-    "build": "ng build",
+    "build": "ng build --base-href /angular12/ --deploy-url /angular12/ --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
