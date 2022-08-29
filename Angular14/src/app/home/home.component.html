@@ -4,13 +4,54 @@
 <div class="form-group">
   <label for="">name: </label>
   <input type="text"
-    class="form-control" aria-describedby="helpId" placeholder="Name" [value]="name">
+    class="form-control" aria-describedby="helpId" placeholder="Name" [(ngModel)]="age">
 </div>
 
 <div class="form-group">
   <label for="">name: </label>
   <input type="text"
-    class="form-control" aria-describedby="helpId" placeholder="Name" value="{{ name }}">
+    class="form-control" aria-describedby="helpId" placeholder="Name" value="{{ age }}">
 </div>
 
-<span></span
+<div *ngIf="age > 18">Mời b vào</div>
+<div *ngIf="age <= 18"> Trẻ con về đi</div>
+
+<a name="" id="" class="btn btn-primary" href="#" role="button" (click)="upAge()">Click</a>
+
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>stt</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Origin</th>
+        <th>Sale off</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fruit of fruits; index as i">
+        <td scope="row">{{ i + 1 }}</td>
+        <td>{{ fruit.name }}</td>
+        <td>{{ fruit.price | pricePipe: fruit.name: fruit.origin }}</td>
+        <td>{{ fruit.origin }}</td>
+        <td  [ngClass]="{'superSale' : fruit.saleOff > 50 }">{{ fruit.saleOff }} %</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="form-group">
+  <label for="province">Thành phố</label>
+  <select class="form-control" name="province" id="province" (change)="changeCity($event)">
+    <option *ngFor="let provice of provinces" value="{{ provice.name }}">{{ provice.name }}</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="district">Quận/huyện</label>
+  <select class="form-control" name="district" id="district">
+    <option *ngFor="let district of districts" value="{{ district }}">{{ district }}</option>
+  </select>
+</div>
